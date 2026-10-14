@@ -6,6 +6,7 @@ import { ArrowUpRight, MapPin, Phone, Clock, Compass } from "lucide-react";
 export default function ContactShowroom() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isInView, setIsInView] = useState(false);
+  const [parallaxY, setParallaxY] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -20,7 +21,7 @@ export default function ContactShowroom() {
           setIsInView(true);
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     );
 
     if (sectionRef.current) {
@@ -28,6 +29,35 @@ export default function ContactShowroom() {
     }
 
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const progress = (vh - rect.top) / (vh + rect.height);
+      const clamped = Math.min(Math.max(progress, 0), 1);
+
+      // Subtle parallax inside boutique image frame
+      const offset = (clamped - 0.5) * 22;
+      setParallaxY(offset);
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(handleScroll);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -43,205 +73,219 @@ export default function ContactShowroom() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative w-full min-h-screen lg:h-screen lg:max-h-screen bg-[#FBF9F5] text-stone-900 overflow-hidden border-t border-[#EAE3D6] select-none flex flex-col justify-center"
+      className="relative w-full min-h-screen bg-[#E6E6E6] text-stone-900 overflow-hidden select-none border-t border-[#D4D4D4] flex flex-col justify-center py-16 sm:py-20 lg:py-0"
     >
-      <div className="w-full grid grid-cols-1 lg:grid-cols-12 h-full lg:h-screen">
-        
-        {/* ================= LEFT COLUMN: COMPACT EDITORIAL ATELIER (FITS 1 SCREEN) ================= */}
-        <div className="lg:col-span-6 flex flex-col justify-between px-6 sm:px-10 lg:px-14 xl:px-16 py-8 sm:py-10 lg:py-10 xl:py-12 relative z-10 overflow-y-auto lg:overflow-visible">
-          <div className="max-w-xl flex flex-col justify-between h-full space-y-4 sm:space-y-5">
+      <div className="w-full max-w-[1500px] mx-auto min-h-screen flex items-center px-4 sm:px-8 lg:px-14">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center py-10 lg:py-16">
+          
+          {/* ================= LEFT COLUMN: CLEAN EDITORIAL SALON ================= */}
+          <div className="lg:col-span-6 flex flex-col justify-center space-y-7 sm:space-y-8">
             
-            {/* 1. Header Group */}
-            <div>
+            {/* Header & Subtitle */}
+            <div className="space-y-3">
               <div
-                className={`flex items-center gap-3 mb-2 sm:mb-3 transition-all duration-700 ease-out ${
+                className={`flex items-center gap-3 transition-all duration-700 ease-out ${
                   isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 }`}
               >
-                <span className="w-6 h-[1px] bg-[#4C1137]/40" />
-                <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.4em] text-[#4C1137] font-semibold">
+                <span className="w-8 h-[1px] bg-[#4C1137]/60" />
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.42em] text-[#4C1137] font-semibold">
                   The Malleshwaram Flagship
                 </span>
               </div>
 
               <h2
-                className={`font-1 text-2xl sm:text-4xl lg:text-[40px] xl:text-[44px] uppercase tracking-[0.05em] text-[#4C1137] leading-[1.08] mb-2 sm:mb-3 transition-all duration-700 delay-100 ease-out ${
+                className={`font-1 text-3xl sm:text-5xl lg:text-[46px] uppercase tracking-[0.05em] text-[#4C1137] leading-[1.08] transition-all duration-700 delay-100 ease-out ${
                   isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 }`}
               >
-                A Sanctum of <br />
-                <span className="italic font-normal tracking-[0.02em] text-[#6b1e50]">
+                A Sanctum Of <br />
+                <span className="italic font-light tracking-[0.02em] text-stone-800">
                   Timeless Adornment
                 </span>
               </h2>
 
               <p
-                className={`font-2 text-stone-600 text-xs sm:text-[13px] font-light leading-relaxed tracking-wide transition-all duration-700 delay-200 ease-out ${
+                className={`font-2 text-stone-600 text-xs sm:text-sm font-light leading-relaxed max-w-lg transition-all duration-700 delay-200 ease-out ${
                   isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 }`}
               >
-                Step into a space carved for deliberate contemplation. Our private
-                Malleshwaram viewing salon welcomes you to discover heirlooms crafted
-                with unbroken lineage.
+                Step into a space carved for private curation. Whether selecting
+                an heirloom bridal parure or commissioning custom gold karigari,
+                our viewing salon offers discreet personal guidance.
               </p>
             </div>
 
-            {/* 2. Compact Boutique Info Row */}
+            {/* Haute Concierge Form */}
             <div
-              className={`grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 py-3 sm:py-3.5 border-y border-[#E5DDD0] transition-all duration-700 delay-300 ease-out ${
+              className={`bg-white/80 backdrop-blur-md border border-[#D8D8D8] p-6 sm:p-8 rounded-none shadow-sm transition-all duration-700 delay-300 ease-out ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
             >
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-[#4C1137] font-semibold">
-                  <MapPin className="w-3 h-3 stroke-[2]" />
-                  <span>The Address</span>
-                </div>
-                <p className="font-2 text-[11px] sm:text-xs text-stone-600 leading-tight font-light">
-                  #249, Margosa Rd, Between 16th &amp; 17th Cross, Malleshwaram
-                </p>
+              <div className="flex items-center justify-between mb-5">
+                <span className="text-[10px] uppercase tracking-[0.3em] text-[#4C1137] font-semibold">
+                  Reserve Private Appointment
+                </span>
+                <span className="text-[9px] uppercase tracking-[0.2em] text-stone-400">
+                  Direct Atelier Access
+                </span>
               </div>
 
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-[#4C1137] font-semibold">
-                  <Clock className="w-3 h-3 stroke-[2]" />
-                  <span>Visiting Hours</span>
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-[9px] uppercase tracking-[0.2em] text-stone-500 font-medium block">
+                      Client Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Radhika Sharma"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full bg-transparent border-b border-stone-300 focus:border-[#4C1137] text-xs py-1.5 text-stone-900 placeholder-stone-400 focus:outline-none transition-colors"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[9px] uppercase tracking-[0.2em] text-stone-500 font-medium block">
+                      Contact Number *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+91 98765 43210"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full bg-transparent border-b border-stone-300 focus:border-[#4C1137] text-xs py-1.5 text-stone-900 placeholder-stone-400 focus:outline-none transition-colors"
+                    />
+                  </div>
                 </div>
-                <p className="font-2 text-[11px] sm:text-xs text-stone-600 leading-tight font-light">
-                  Daily: 10:30 AM – 8:30 PM <span className="text-stone-400">(Walk-ins welcome)</span>
-                </p>
-              </div>
-            </div>
 
-            {/* 3. Streamlined Minimal Form */}
-            <div
-              className={`transition-all duration-700 delay-400 ease-out ${
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
-            >
-              <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.28em] text-[#4C1137] font-semibold block mb-3">
-                Request a Private Consultation
-              </span>
-
-              <form onSubmit={handleSubmit} className="space-y-3.5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="space-y-1">
+                  <label className="text-[9px] uppercase tracking-[0.2em] text-stone-500 font-medium block">
+                    Piece or Occasion of Interest
+                  </label>
                   <input
                     type="text"
-                    required
-                    placeholder="Your Name *"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full bg-transparent border-b border-stone-300 focus:border-[#4C1137] text-xs py-1.5 text-stone-900 placeholder-stone-400 focus:outline-none transition-colors"
-                  />
-                  <input
-                    type="tel"
-                    required
-                    placeholder="Contact Number *"
-                    value={formData.phone}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone: e.target.value })
-                    }
+                    placeholder="e.g. Heritage Jadau Trousseau, 916 Temple Gold, Solitaires"
+                    value={formData.note}
+                    onChange={(e) => setFormData({ ...formData, note: e.target.value })}
                     className="w-full bg-transparent border-b border-stone-300 focus:border-[#4C1137] text-xs py-1.5 text-stone-900 placeholder-stone-400 focus:outline-none transition-colors"
                   />
                 </div>
 
-                <input
-                  type="text"
-                  placeholder="Pieces of Interest (e.g. Bridal Polki, Antique Temple Gold, Solitaires)"
-                  value={formData.note}
-                  onChange={(e) =>
-                    setFormData({ ...formData, note: e.target.value })
-                  }
-                  className="w-full bg-transparent border-b border-stone-300 focus:border-[#4C1137] text-xs py-1.5 text-stone-900 placeholder-stone-400 focus:outline-none transition-colors"
-                />
-
-                <div className="pt-1">
+                <div className="pt-2 flex items-center justify-between flex-wrap gap-4">
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-2.5 px-6 sm:px-7 py-2.5 sm:py-3 bg-[#4C1137] hover:bg-[#340b25] text-white text-[9px] sm:text-[10px] uppercase tracking-[0.28em] font-medium transition-all duration-300 shadow-sm hover:shadow-md group cursor-pointer active:scale-95"
+                    className="inline-flex items-center gap-3 px-7 py-3 bg-[#4C1137] hover:bg-[#340b25] text-white text-[10px] uppercase tracking-[0.26em] font-medium transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer active:scale-95 group"
                   >
-                    <span>{submitted ? "Inquiry Dispatched" : "Reserve Your Appointment"}</span>
+                    <span>{submitted ? "Inquiry Dispatched" : "Confirm Appointment"}</span>
                     <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </button>
+
+                  <a
+                    href="tel:+919535125553"
+                    className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-[#4C1137] hover:text-stone-900 font-medium transition-colors"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>+91 95351 25553</span>
+                  </a>
                 </div>
               </form>
             </div>
 
-            {/* 4. Compact Embedded Google Map */}
+            {/* Boutique Location & Timings Details */}
             <div
-              className={`relative w-full h-24 sm:h-28 rounded-xs overflow-hidden border border-[#E5DDD0] shadow-xs group bg-[#F5EFE6] transition-all duration-700 delay-500 ease-out ${
+              className={`grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 transition-all duration-700 delay-400 ease-out ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
             >
-              <iframe
-                title="Sri Gajkesari Jewellers Malleshwaram Location"
-                src="https://maps.google.com/maps?cid=11554011192802922623&hl=en&gl=IN&t=m&z=15&output=embed"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen={false}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="w-full h-full filter saturate-[0.85] contrast-[1.02] group-hover:saturate-100 transition-all duration-500"
+              <div className="space-y-1">
+                <div className="flex items-center gap-1.5 text-[9.5px] uppercase tracking-[0.22em] text-[#4C1137] font-semibold">
+                  <MapPin className="w-3.5 h-3.5" />
+                  <span>The Boutique</span>
+                </div>
+                <p className="font-2 text-xs text-stone-600 leading-relaxed font-light">
+                  #249, Margosa Road, Between 16th &amp; 17th Cross, Malleshwaram, Bengaluru 560003
+                </p>
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center gap-1.5 text-[9.5px] uppercase tracking-[0.22em] text-[#4C1137] font-semibold">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>Viewing Hours</span>
+                </div>
+                <p className="font-2 text-xs text-stone-600 leading-relaxed font-light">
+                  Monday to Sunday &bull; 10:30 AM – 8:30 PM
+                  <span className="block text-[11px] text-[#8C6D37] font-medium pt-0.5">
+                    Walk-ins &amp; Curated Appointments Welcome
+                  </span>
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ================= RIGHT COLUMN: HIGH-END SALON ARCHITECTURE ================= */}
+          <div className="lg:col-span-6 relative w-full h-[480px] sm:h-[580px] lg:h-[720px] rounded-none overflow-hidden border border-[#D4D4D4] bg-[#180410] shadow-xl group">
+            
+            {/* Parallax Image Stage */}
+            <div
+              className="absolute -top-[14%] inset-x-0 h-[128%] w-full will-change-transform transition-transform duration-100 ease-out"
+              style={{
+                transform: `translate3d(0, ${parallaxY}%, 0) scale(1.08)`,
+              }}
+            >
+              <img
+                src="https://srigajkesari.com/wp-content/uploads/2026/09/store-contact.webp"
+                alt="Sri Gajkesari Jewellers Flagship Salon Malleshwaram"
+                className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-1000 ease-out"
               />
+            </div>
+
+            {/* Subtle Gradient Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/30 pointer-events-none" />
+
+            {/* Top Navigation Anchor Pill */}
+            <div className="absolute top-6 right-6 z-20">
               <a
                 href="https://maps.google.com/?cid=11554011192802922623"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="absolute top-2 right-2 bg-white/95 hover:bg-white text-[#4C1137] border border-stone-200 text-[8px] sm:text-[9px] tracking-[0.18em] uppercase px-2.5 py-1 flex items-center gap-1 shadow-sm transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white/90 hover:bg-white text-[#4C1137] text-[9.5px] uppercase tracking-[0.24em] font-medium backdrop-blur-md shadow-md transition-all hover:scale-105 active:scale-95"
               >
-                <span>Navigate</span>
-                <Compass className="w-3 h-3" />
+                <span>Navigate Map</span>
+                <Compass className="w-3.5 h-3.5" />
+              </a>
+            </div>
+
+            {/* Floating Editorial Salon Plaque at Bottom */}
+            <div className="absolute bottom-6 inset-x-6 sm:bottom-8 sm:inset-x-8 z-20 p-5 sm:p-6 bg-white/95 backdrop-blur-md border border-white/60 shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span className="text-[9px] uppercase tracking-[0.35em] text-[#8C6D37] font-semibold block mb-0.5">
+                  Private Salon Experience
+                </span>
+                <h3 className="font-1 text-lg sm:text-xl text-[#4C1137] uppercase tracking-[0.06em]">
+                  Sri Gajkesari Flagship
+                </h3>
+                <p className="font-2 text-[11px] text-stone-500 font-light pt-0.5">
+                  Malleshwaram, Bengaluru &bull; Valet Available
+                </p>
+              </div>
+
+              <a
+                href="tel:+919535125553"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#4C1137] text-white hover:bg-[#340b25] text-[9.5px] uppercase tracking-[0.22em] font-medium transition-all shadow-sm active:scale-95 self-start sm:self-auto"
+              >
+                <Phone className="w-3 h-3" />
+                <span>Call Salon</span>
               </a>
             </div>
 
           </div>
-        </div>
-
-        {/* ================= RIGHT COLUMN: CRISP 100% HEIGHT BOUTIQUE VIEW ================= */}
-        <div className="lg:col-span-6 relative w-full h-[400px] sm:h-[500px] lg:h-full overflow-hidden border-t lg:border-t-0 lg:border-l border-[#EAE3D6] bg-[#220718]">
-          
-          {/* Crisp, Unstretched High-Density Image (No fractional scaling or blur) */}
-          <img
-            src="https://srigajkesari.com/wp-content/uploads/2026/09/store-contact.webp"
-            alt="Sri Gajkesari Jewellers Flagship Showroom"
-            decoding="async"
-            className={`w-full h-full object-cover object-center transition-all duration-1000 ease-out ${
-              isInView ? "scale-100 opacity-100" : "scale-105 opacity-0"
-            }`}
-          />
-
-          {/* Minimal Clean Vignettes */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/30 pointer-events-none" />
-
-          {/* Luxury Floating Concierge Plaque */}
-          <div
-            className={`absolute bottom-6 sm:bottom-8 left-6 sm:left-8 right-6 sm:right-8 p-4 sm:p-5 bg-[#FAF7F2]/95 backdrop-blur-md border border-white/60 shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 transition-all duration-700 delay-500 ease-out ${
-              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
-          >
-            <div>
-              <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.35em] text-[#4C1137] font-semibold block mb-0.5">
-                The Malleshwaram Salons
-              </span>
-              <p className="font-1 text-sm sm:text-base text-stone-900 tracking-wide">
-                Sri Gajkesari Jewellers
-              </p>
-            </div>
-
-            <a
-              href="tel:+919535125553"
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 border border-[#4C1137]/30 text-[#4C1137] hover:bg-[#4C1137] hover:text-white transition-all text-[9px] uppercase tracking-[0.22em] font-medium self-start sm:self-auto"
-            >
-              <Phone className="w-3 h-3" />
-              <span>+91 95351 25553</span>
-            </a>
-          </div>
 
         </div>
-
       </div>
     </section>
   );

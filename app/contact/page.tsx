@@ -67,7 +67,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-[#FAF8F5] text-stone-900 selection:bg-[#4C1137] selection:text-white">
       {/* 1. Global Fixed Brand Navbar */}
       <div className="fixed top-0 inset-x-0 z-50 w-full bg-[#180410] border-b border-white/10 shadow-md">
-        <SriGajkesariNavbar />
+        <SriGajkesariNavbar theme="dark" />
       </div>
 
       {/* 2. Main Contact Sanctuary */}

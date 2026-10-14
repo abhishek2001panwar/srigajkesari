@@ -2,36 +2,43 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
-interface AnimatedLineProps {
-  text: string;
+interface EditorialLineProps {
+  children: React.ReactNode;
   progress: number;
   threshold: number;
   className?: string;
-  isHeading?: boolean;
 }
 
-function AnimatedLine({
-  text,
+function EditorialLine({
+  children,
   progress,
   threshold,
   className = "",
-  isHeading = false,
-}: AnimatedLineProps) {
-  const isTriggered = progress >= threshold;
+}: EditorialLineProps) {
+  const range = 0.08;
+  const rawFraction = (progress - threshold) / range;
+  const clamped = Math.min(Math.max(rawFraction, 0), 1);
+  const easeOut = 1 - Math.pow(1 - clamped, 3);
+
+  const translateY = (1 - easeOut) * 110;
+  const opacity = Math.min(easeOut * 1.35, 1);
+  const blurVal = (1 - easeOut) * 3;
 
   return (
-    <span className="block overflow-hidden">
+    <span className="block overflow-hidden py-[2px]">
       <span
-        className={`inline-block transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${className}`}
+        className={`inline-block will-change-[transform,opacity,filter] ${className}`}
         style={{
-          transform: isTriggered ? "translateY(0)" : "translateY(115%)",
-          opacity: isTriggered ? 1 : 0,
-          transitionDelay: `${Math.round(threshold * 200)}ms`,
+          transform: `translate3d(0, ${translateY}%, 0)`,
+          opacity,
+          filter: `blur(${blurVal}px)`,
+          transition:
+            "transform 0.15s ease-out, opacity 0.15s ease-out, filter 0.15s ease-out",
         }}
       >
-        {isHeading ? text : text}
+        {children}
       </span>
     </span>
   );
@@ -39,148 +46,151 @@ function AnimatedLine({
 
 export default function OurBeginning() {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [parallax1, setParallax1] = useState(0);
+  const [parallax2, setParallax2] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+      const vh = window.innerHeight;
 
-      // Progress begins when top of section crosses 85% of viewport
-      const totalTravel = windowHeight + rect.height;
-      const currentScroll = windowHeight - rect.top;
+      const totalTravel = vh + rect.height;
+      const currentScroll = vh - rect.top;
       const progress = Math.min(Math.max(currentScroll / totalTravel, 0), 1);
 
       setScrollProgress(progress);
+      setParallax1((progress - 0.5) * -12);
+      setParallax2((progress - 0.5) * 14);
+
+      ticking = false;
     };
 
-    // Works with Lenis virtual scroll & standard browser events
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(handleScroll);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <section
       id="our-story"
       ref={sectionRef}
-      className="relative w-full min-h-screen bg-[#FAF8F5] text-stone-900 overflow-hidden select-none border-t border-[#EAE4DC]"
+      className="relative w-full bg-[#FAF8F5] text-stone-900 overflow-hidden select-none py-16 sm:py-24 lg:py-28 px-5 sm:px-10 lg:px-16 border-t border-[#EAE4DC]"
     >
-      <div className="w-full grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+      <div className="max-w-[1540px] mx-auto">
         
-        {/* ================= LEFT COLUMN: LINE-BY-LINE EDITORIAL TEXT ================= */}
-        <div className="flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-20 py-20 sm:py-24 lg:py-28 order-2 lg:order-1">
-          <div className="max-w-xl">
-            
-            {/* 1. Eyebrow Line */}
-            <div className="mb-6 overflow-hidden">
-              <span
-                className={`inline-flex items-center gap-3 transition-all duration-700 ease-out ${
-                  scrollProgress >= 0.15
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <span className="w-6 h-[1px] bg-[#4C1137]/50" />
-                <span className="text-[10px] sm:text-xs uppercase tracking-[0.4em] text-[#4C1137] font-semibold flex items-center gap-2">
-                 
-                  Our Lineage
-                </span>
+        {/* ================= 1. PROMINENT GRAND EDITORIAL HEADER ================= */}
+        <div className="w-full lg:w-[84%] ml-auto mb-10 sm:mb-14">
+          <div className="mb-2.5">
+            <EditorialLine progress={scrollProgress} threshold={0.05}>
+              <span className="text-xs sm:text-sm uppercase tracking-[0.42em] text-[#4C1137] font-semibold">
+                The Roots of Our Beginning
               </span>
-            </div>
-
-            {/* 2. Headline Lines */}
-            <h2 className="font-1 text-3xl sm:text-5xl lg:text-6xl text-[#4C1137] uppercase tracking-[0.06em] leading-[1.08] mb-8">
-              <AnimatedLine
-                text="Our Beginning"
-                progress={scrollProgress}
-                threshold={0.18}
-                isHeading
-              />
-            </h2>
-
-            {/* 3. Narrative Sentences Unfurling Line by Line */}
-            <div className="space-y-4 font-2 text-stone-600 text-xs sm:text-sm md:text-base font-light leading-relaxed tracking-wide">
-              <AnimatedLine
-                text="Before Sri Gajkesari, there was Sri Ganesh Jewellery."
-                progress={scrollProgress}
-                threshold={0.22}
-                className="font-medium text-stone-900"
-              />
-              <AnimatedLine
-                text="For decades, families walked through our doors for their biggest milestones."
-                progress={scrollProgress}
-                threshold={0.26}
-              />
-              <AnimatedLine
-                text="They relied on us for something simple yet rare: unbroken purity and trust."
-                progress={scrollProgress}
-                threshold={0.30}
-              />
-              <AnimatedLine
-                text="As time passed, our patrons sought designs that honored those trusted roots"
-                progress={scrollProgress}
-                threshold={0.34}
-                className="text-stone-500"
-              />
-              <AnimatedLine
-                text="while reflecting a modern, royal aesthetic. Sri Gajkesari was born from this evolution."
-                progress={scrollProgress}
-                threshold={0.38}
-                className="text-stone-500"
-              />
-            </div>
-
-            {/* 4. Minimalist Credentials Strip */}
-            <div className="mt-10 py-6 border-y border-[#EAE4DC] overflow-hidden">
-              <div
-                className={`flex flex-wrap items-center gap-4 sm:gap-6 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-stone-500 transition-all duration-700 ease-out ${
-                  scrollProgress >= 0.42
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <span className="text-stone-800 font-medium">Decades of Trust</span>
-                <span className="text-[#4C1137]/30">&bull;</span>
-                <span className="text-stone-800 font-medium">Ancestral Karigari</span>
-                <span className="text-[#4C1137]/30">&bull;</span>
-                <span className="text-stone-800 font-medium">Malleshwaram Flagship</span>
-              </div>
-            </div>
-
-            {/* 5. CTA Trigger */}
-            <div className="mt-10 overflow-hidden">
-              <div
-                className={`transition-all duration-700 ease-out ${
-                  scrollProgress >= 0.46
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Link
-                  href="/collection"
-                  className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#4C1137] hover:bg-[#340b25] text-white text-[10px] uppercase tracking-[0.28em] font-medium transition-all shadow-sm hover:shadow-md group active:scale-95"
-                >
-                  <span>Explore The Craft</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </Link>
-              </div>
-            </div>
-
+            </EditorialLine>
           </div>
+
+          <h2 className="font-1 text-4xl sm:text-6xl lg:text-[70px] uppercase tracking-[0.05em] text-stone-900 leading-[1.04]">
+            <EditorialLine progress={scrollProgress} threshold={0.09}>
+              <span className="text-stone-900">Ancestral Trust</span>
+            </EditorialLine>
+            <EditorialLine progress={scrollProgress} threshold={0.13}>
+              <span className="font-light italic tracking-[0.02em] text-[#4C1137] sm:ml-4 lg:ml-8 inline-block">
+                Captured In Gold
+              </span>
+            </EditorialLine>
+          </h2>
         </div>
 
-        {/* ================= RIGHT COLUMN: 1/2 WIDTH FULL-HEIGHT IMAGE ================= */}
-        <div className="relative w-full h-[450px] sm:h-[600px] lg:h-full min-h-full overflow-hidden bg-[#200416] order-1 lg:order-2 border-b lg:border-b-0 lg:border-l border-[#EAE4DC]">
-          <img
-            src="https://srigajkesari.com/wp-content/uploads/2026/09/beginning.webp"
-            alt="The Beginning - Sri Gajkesari Jewellers"
-            className={`w-full h-full object-cover object-center transition-all duration-1000 ease-out ${
-              scrollProgress >= 0.12 ? "scale-100 opacity-100" : "scale-105 opacity-0"
-            }`}
-          />
+        {/* ================= 2. ASYMMETRIC GRID: LARGER LEFT IMAGE + LARGER CENTER TEXT + RIGHT IMAGE ================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          
+          {/* Left Column: Expanded Landscape Image (5 Cols) */}
+          <div className="lg:col-span-5 w-full">
+            <div className="relative w-full aspect-[16/10] sm:aspect-[16/10.5] overflow-hidden bg-[#200416] border border-[#EAE4DC] shadow-sm">
+              <div
+                className="absolute -top-[12%] inset-x-0 h-[124%] w-full will-change-transform transition-transform duration-100 ease-out"
+                style={{
+                  transform: `translate3d(0, ${parallax1}%, 0) scale(1.08)`,
+                }}
+              >
+                <img
+                  src="https://srigajkesari.com/wp-content/uploads/2026/09/beginning.webp"
+                  alt="The Beginning - Sri Gajkesari Jewellers"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Center Column: Increased Typography + Fully Explicit 4-Sided Border Button */}
+          <div className="lg:col-span-4 flex flex-col items-center text-center px-2 sm:px-4 py-4 lg:py-0">
+            <div className="max-w-md space-y-4 font-2 text-[14px] sm:text-[15.5px] lg:text-[16px] text-stone-700 font-light leading-relaxed tracking-wide">
+              <EditorialLine progress={scrollProgress} threshold={0.16}>
+                <p>
+                  Before Sri Gajkesari, there was Sri Ganesh Jewellery. For decades,
+                  families walked through our doors for their most sacred milestones.
+                </p>
+              </EditorialLine>
+
+              <EditorialLine progress={scrollProgress} threshold={0.2}>
+                <p>
+                  They relied on our karigars for unbroken gold purity and steadfast trust.
+                  From quiet family heirlooms to grand generational celebrations,
+                  every piece we sculpt reflects devotion in its purest form.
+                </p>
+              </EditorialLine>
+
+              <EditorialLine progress={scrollProgress} threshold={0.24}>
+                <p className="text-stone-900 font-normal italic pt-1">
+                  Where your lineage takes center stage-honoring ancestral roots while
+                  embodying royal modern grace.
+                </p>
+              </EditorialLine>
+            </div>
+
+            {/* Outlined Luxury CTA Button (Explicit Border + Outline Fix) */}
+            <div className="mt-8 sm:mt-10">
+              <EditorialLine progress={scrollProgress} threshold={0.28}>
+                <Link
+                  href="/story"
+                  className="inline-flex items-center justify-center px-9 py-3.5 border-[1.5px] border-solid border-stone-900 text-stone-900 hover:bg-stone-900 hover:text-white text-[11px] uppercase tracking-[0.26em] font-medium transition-all duration-300 rounded-none group active:scale-95 box-border"
+                >
+                  <span className="whitespace-nowrap">Explore More</span>
+                  <ArrowUpRight className="w-4 h-4 ml-2.5 shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </Link>
+              </EditorialLine>
+            </div>
+          </div>
+
+          {/* Right Column: Balanced Landscape Image (3 Cols) */}
+          <div className="lg:col-span-3 w-full">
+            <div className="relative w-full aspect-[16/11] sm:aspect-[16/10.5] overflow-hidden bg-[#180410] border border-[#EAE4DC] shadow-sm">
+              <div
+                className="absolute -top-[12%] inset-x-0 h-[124%] w-full will-change-transform transition-transform duration-100 ease-out"
+                style={{
+                  transform: `translate3d(0, ${parallax2}%, 0) scale(1.08)`,
+                }}
+              >
+                <img
+                  src="https://srigajkesari.com/wp-content/uploads/2026/09/roots.webp"
+                  alt="Ancestral Goldsmithing - Sri Gajkesari Jewellers"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>

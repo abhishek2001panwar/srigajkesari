@@ -6,7 +6,7 @@
 
 @font-face {
   font-family: 'font1';
-  src: url('/fonts/PPMigra-Regular.ttf') format('truetype');
+  src: url('/fonts/PPWoodland-Regular.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -14,7 +14,7 @@
 
 @font-face {
   font-family: 'font2';
-  src: url('/fonts/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.ttf') format('truetype');
+  src: url('/fonts/dm-sans-v11-latin_latin-ext-regular.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -107,13 +107,14 @@ html.lenis body {
 /* -------------------------------------------------------------------------- */
 
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 1px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #fdfbf7;
+  background: transparent;
   border-left: 1px solid rgba(76, 17, 55, 0.06);
+  width: 3px;
 }
 
 ::-webkit-scrollbar-thumb {

@@ -1,28 +1,32 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Sparkles, ShieldCheck, Gem, Headphones } from "lucide-react";
+import { ShieldCheck, Gem, Headphones, Sparkles } from "lucide-react";
 
-interface SplitLineProps {
+interface EditorialLineProps {
   children: React.ReactNode;
-  isRevealed: boolean;
+  progress: number;
+  threshold: number;
   delayMs?: number;
   className?: string;
 }
 
-function SplitLine({
+function EditorialLine({
   children,
-  isRevealed,
+  progress,
+  threshold,
   delayMs = 0,
   className = "",
-}: SplitLineProps) {
+}: EditorialLineProps) {
+  const isTriggered = progress >= threshold;
+
   return (
-    <span className="block overflow-hidden py-[1px]">
+    <span className="block overflow-hidden py-[1.5px]">
       <span
-        className={`inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${className}`}
+        className={`inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity] ${className}`}
         style={{
-          transform: isRevealed ? "translateY(0)" : "translateY(115%)",
-          opacity: isRevealed ? 1 : 0,
+          transform: isTriggered ? "translateY(0)" : "translateY(115%)",
+          opacity: isTriggered ? 1 : 0,
           transitionDelay: `${delayMs}ms`,
         }}
       >
@@ -32,178 +36,187 @@ function SplitLine({
   );
 }
 
+const pillars = [
+  {
+    icon: ShieldCheck,
+    title: "Absolute Purity",
+    subtitle: "100% BIS Hallmarked 22KT / 18KT gold with zero compromise.",
+  },
+  {
+    icon: Gem,
+    title: "Total Transparency",
+    subtitle: "GIA & IGI certified solitaires, unclouded weights and honest karigari.",
+  },
+  {
+    icon: Headphones,
+    title: "Lifetime Sanctuary",
+    subtitle: "Archival cleaning, bespoke redesign and buyback clarity.",
+  },
+];
+
 export default function BuiltOnIntegrity() {
-  const [revealedIndex, setRevealedIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
+  const [smoothExpansion, setSmoothExpansion] = useState(0);
 
   useEffect(() => {
-    let ticking = false;
+    let rAFId: number;
+    let targetExp = 0;
+    let currentExp = 0;
 
-    const checkScrollPosition = () => {
+    const calculateTarget = () => {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const vh = window.innerHeight;
 
-      // Direct viewport percentage calculation (100% compatible with Lenis & native scroll)
-      // When top of section enters viewport:
-      const scrolledIntoView = vh - rect.top;
-      const progress = scrolledIntoView / (vh + rect.height * 0.4);
+      // Normalizes scroll travel within 1 screen height
+      const totalDistance = vh + rect.height;
+      const scrolled = vh - rect.top;
+      const rawScroll = Math.min(Math.max(scrolled / totalDistance, 0), 1);
 
-      // Fast tiered step triggers
-      if (progress > 0.6) setRevealedIndex(4);
-      else if (progress > 0.45) setRevealedIndex(3);
-      else if (progress > 0.32) setRevealedIndex(2);
-      else if (progress > 0.18) setRevealedIndex(1);
-      else if (progress <= 0.05) setRevealedIndex(0);
-
-      ticking = false;
+      // Reaches full expansion quickly and naturally while fitting 100vh
+      const normalized = Math.min(Math.max((rawScroll - 0.15) / 0.5, 0), 1);
+      targetExp = normalized * (2 - normalized);
     };
 
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(checkScrollPosition);
-        ticking = true;
+    const updateMotion = () => {
+      currentExp += (targetExp - currentExp) * 0.09;
+
+      if (Math.abs(targetExp - currentExp) > 0.0005) {
+        setSmoothExpansion(currentExp);
+      } else {
+        setSmoothExpansion(targetExp);
       }
+
+      rAFId = requestAnimationFrame(updateMotion);
     };
 
-    // Global scroll listener catching Lenis window events
-    window.addEventListener("scroll", onScroll, { passive: true });
-    checkScrollPosition();
+    const handleScroll = () => calculateTarget();
 
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    calculateTarget();
+    rAFId = requestAnimationFrame(updateMotion);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(rAFId);
+    };
   }, []);
+
+  // Proportional insets for a single screen viewport
+  const insetVal = (1 - smoothExpansion) * 28;
+  const cornerRadius = (1 - smoothExpansion) * 36;
+  const imageZoom = 1.12 - smoothExpansion * 0.07;
 
   return (
     <section
       id="integrity"
       ref={sectionRef}
-      className="relative z-30 min-h-screen w-full text-white flex items-center justify-center overflow-hidden py-20 sm:py-28 px-6 sm:px-12 select-none"
+      className="relative z-30 w-full h-screen max-h-screen bg-[#FAF8F5] text-white flex flex-col items-center justify-center overflow-hidden px-5 sm:px-10 lg:px-16 select-none"
     >
-      {/* 1. Full-Bleed Pure Background Image (Zero dark/color overlays) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+      {/* ================= 1. SMOOTH 1-SCREEN EXPANDING PORTAL ================= */}
+      <div
+        className="absolute inset-0 w-full h-full pointer-events-none z-0 will-change-[clip-path]"
+        style={{
+          clipPath: `inset(${insetVal}% ${insetVal}% ${insetVal}% ${insetVal}% round ${cornerRadius}px)`,
+        }}
+      >
         <img
           src="https://srigajkesari.com/wp-content/uploads/2026/09/integrity.webp"
           alt="Sri Gajkesari Heritage Artistry"
-          className="w-full h-full object-cover object-center scale-[1.02]"
+          className="w-full h-full object-cover object-center will-change-transform"
+          style={{
+            transform: `scale(${imageZoom})`,
+            transition: "transform 0.1s ease-out",
+          }}
         />
-      </div>
 
-      {/* 2. Editorial Narrative with Fast Line-by-Line Unfurl */}
-      <div className="relative z-10 max-w-3xl mx-auto text-center flex flex-col items-center">
+          </div>
+
+      {/* ================= 2. COMPACT SCREEN-FITTING CONTENT ================= */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center justify-center py-4">
         
-        {/* Eyebrow Label */}
-        <div className="overflow-hidden mb-3">
-          <span
-            className={`text-[9px] sm:text-[10px] uppercase tracking-[0.45em] text-[#f2dab0] font-medium inline-flex items-center gap-2 drop-shadow-md transition-all duration-500 ease-out ${
-              revealedIndex >= 1
-                ? "translate-y-0 opacity-100"
-                : "translate-y-full opacity-0"
-            }`}
-          >
-            <span className="w-6 h-[1px] bg-[#f2dab0]/80" />
-            Atelier Ethos
-            <span className="w-6 h-[1px] bg-[#f2dab0]/80" />
-          </span>
-        </div>
+      
 
-        {/* Display Headline Line-by-Line */}
-        <h2 className="font-heading text-2xl sm:text-4xl md:text-5xl uppercase tracking-[0.08em] font-light leading-tight text-[#f2dab0] drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)] mb-6">
-          <SplitLine isRevealed={revealedIndex >= 1} delayMs={50}>
-            Built on integrity,
-          </SplitLine>
-          <SplitLine isRevealed={revealedIndex >= 1} delayMs={140}>
-            <span className="italic font-normal tracking-[0.03em] text-white">
-              shaped by hand
+        {/* Display Headline */}
+        <h2 className="font-1 text-2xl sm:text-4xl md:text-5xl lg:text-[54px] uppercase tracking-[0.05em] font-normal leading-[1.08] text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.85)] mb-2">
+          <EditorialLine progress={smoothExpansion} threshold={0.26} delayMs={50}>
+            Built On Integrity,
+          </EditorialLine>
+          <EditorialLine progress={smoothExpansion} threshold={0.32} delayMs={90}>
+            <span
+              className="italic font-light tracking-[0.02em] text-transparent"
+              style={{ WebkitTextStroke: "1.3px #f2dab0" }}
+            >
+              Shaped By Hand
             </span>
-          </SplitLine>
+          </EditorialLine>
         </h2>
 
-        {/* Hairline Divider */}
+        {/* Subtle Golden Hairline Ornament */}
         <div
-          className={`flex items-center justify-center gap-3 my-4 sm:my-6 w-full max-w-xs transition-all duration-500 ease-out ${
-            revealedIndex >= 2 ? "opacity-100 scale-100" : "opacity-0 scale-90"
+          className={`flex items-center justify-center gap-2.5 my-3 w-full max-w-xs transition-all duration-700 ease-out ${
+            smoothExpansion >= 0.38 ? "opacity-100 scale-100" : "opacity-0 scale-90"
           }`}
         >
-          <span className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#f2dab0]" />
-          <div className="flex items-center gap-1.5 text-[#f2dab0] drop-shadow">
+          <span className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#f2dab0]/70" />
+          <div className="flex items-center gap-1 text-[#f2dab0]">
             <span className="w-1 h-1 rotate-45 border border-[#f2dab0]" />
-           
+            <span className="w-1.5 h-1.5 rotate-45 bg-[#f2dab0]" />
             <span className="w-1 h-1 rotate-45 border border-[#f2dab0]" />
           </div>
-          <span className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#f2dab0]" />
+          <span className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#f2dab0]/70" />
         </div>
 
-        {/* Narrative Lines */}
-        <div className="space-y-1 font-body font-light text-stone-100 text-xs sm:text-[13px] md:text-sm leading-relaxed tracking-wider max-w-2xl mx-auto mb-10 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-          <SplitLine isRevealed={revealedIndex >= 2} delayMs={40}>
+        {/* Concise Narrative */}
+        <div className="space-y-1 font-2 font-light text-stone-200 text-xs sm:text-[13px] md:text-sm leading-relaxed tracking-wide max-w-2xl mx-auto mb-6 sm:mb-8 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]">
+          <EditorialLine progress={smoothExpansion} threshold={0.42} delayMs={40}>
             Our lineage artisans rely on time-honored techniques; hand-carving
-          </SplitLine>
-          <SplitLine isRevealed={revealedIndex >= 2} delayMs={110}>
-            sacred temple motifs, precision-setting uncut Kundan, and stringing
-          </SplitLine>
-          <SplitLine isRevealed={revealedIndex >= 3} delayMs={60}>
-            luminous seed pearls to form heirlooms that resist replication.
-          </SplitLine>
-          <SplitLine
-            isRevealed={revealedIndex >= 3}
-            delayMs={130}
-            className="text-stone-200 pt-1"
+          </EditorialLine>
+          <EditorialLine progress={smoothExpansion} threshold={0.48} delayMs={70}>
+            sacred temple motifs and setting uncut Kundan-Polki to create headdresses and heirlooms.
+          </EditorialLine>
+          <EditorialLine
+            progress={smoothExpansion}
+            threshold={0.54}
+            delayMs={100}
+            className="text-[#f2dab0] pt-1 font-normal"
           >
-            In an age of mechanical mass production, we remain true to deliberate human devotion.
-          </SplitLine>
+            In an age of rapid mass production, we remain true to deliberate human devotion.
+          </EditorialLine>
         </div>
 
-        {/* 3. Three Brand Pillars */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 w-full max-w-2xl pt-6 border-t border-white/30">
-          {/* Pillar 1 */}
-          <div
-            className={`flex flex-col items-center group transition-all duration-500 ease-out ${
-              revealedIndex >= 4
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-6"
-            }`}
-          >
-            <div className="w-12 h-12 rounded-full border border-[#f2dab0]/80 flex items-center justify-center mb-3 text-[#f2dab0] bg-black/40 backdrop-blur-xs group-hover:scale-105 transition-all duration-300 shadow-md">
-              <ShieldCheck className="w-5 h-5 stroke-[1.4]" />
-            </div>
-            <h3 className="font-heading text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-[#f2dab0] font-normal drop-shadow">
-              Absolute Purity
-            </h3>
-          </div>
+        {/* ================= 3. COMPACT PILLAR CARDS ================= */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full max-w-3xl">
+          {pillars.map((pillar, idx) => {
+            const Icon = pillar.icon;
+            const cardThreshold = 0.6 + idx * 0.06;
+            const isCardRevealed = smoothExpansion >= cardThreshold;
+            const delay = 50 + idx * 70;
 
-          {/* Pillar 2 */}
-          <div
-            className={`flex flex-col items-center group transition-all duration-500 ease-out ${
-              revealedIndex >= 4
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-6"
-            }`}
-            style={{ transitionDelay: "80ms" }}
-          >
-            <div className="w-12 h-12 rounded-full border border-[#f2dab0]/80 flex items-center justify-center mb-3 text-[#f2dab0] bg-black/40 backdrop-blur-xs group-hover:scale-105 transition-all duration-300 shadow-md">
-              <Gem className="w-5 h-5 stroke-[1.4]" />
-            </div>
-            <h3 className="font-heading text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-[#f2dab0] font-normal drop-shadow">
-              Total Transparency
-            </h3>
-          </div>
+            return (
+              <div
+                key={pillar.title}
+                className={`bg-white/10 backdrop-blur-md border border-white/20 hover:border-[#f2dab0]/60 rounded-none p-4 sm:p-5 text-center flex flex-col items-center group transition-all duration-700 ease-out hover:-translate-y-1 hover:bg-white/15 shadow-xl ${
+                  isCardRevealed
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-6"
+                }`}
+                style={{ transitionDelay: `${delay}ms` }}
+              >
+                <div className="w-10 h-10 rounded-full border border-[#f2dab0]/50 bg-black/30 flex items-center justify-center text-[#f2dab0] mb-2 group-hover:scale-105 group-hover:bg-[#f2dab0] group-hover:text-[#4C1137] transition-all duration-300">
+                  <Icon className="w-4 h-4 stroke-[1.4]" />
+                </div>
 
-          {/* Pillar 3 */}
-          <div
-            className={`flex flex-col items-center group transition-all duration-500 ease-out ${
-              revealedIndex >= 4
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-6"
-            }`}
-            style={{ transitionDelay: "160ms" }}
-          >
-            <div className="w-12 h-12 rounded-full border border-[#f2dab0]/80 flex items-center justify-center mb-3 text-[#f2dab0] bg-black/40 backdrop-blur-xs group-hover:scale-105 transition-all duration-300 shadow-md">
-              <Headphones className="w-5 h-5 stroke-[1.4]" />
-            </div>
-            <h3 className="font-heading text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-[#f2dab0] font-normal drop-shadow">
-              Lifetime Support
-            </h3>
-          </div>
+                <h3 className="font-1 text-xs sm:text-[13px] uppercase tracking-[0.14em] text-white mb-1 font-medium">
+                  {pillar.title}
+                </h3>
+
+                <p className="font-2 text-[10.5px] sm:text-[11px] text-stone-300 font-light leading-snug">
+                  {pillar.subtitle}
+                </p>
+              </div>
+            );
+          })}
         </div>
 
       </div>

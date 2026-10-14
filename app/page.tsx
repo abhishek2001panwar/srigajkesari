@@ -5,6 +5,7 @@ import ContactShowroom from "@/components/sections/Contact";
 import CraftVisionSection from "@/components/sections/CraftVisionSection";
 import Footer from "@/components/sections/Footer";
 import HeroSection from "@/components/sections/HeroSection";
+import ParallaxVisualBreak from "@/components/sections/Karigiri";
 import OurBeginning from "@/components/sections/OurBeginning";
 import CustomerReviews from "@/components/sections/Review";
 
@@ -12,7 +13,7 @@ import CustomerReviews from "@/components/sections/Review";
 export default function Home() {
   return (
 <main className="relative ">
-      <SriGajkesariNavbar />
+      <SriGajkesariNavbar theme="light" />
       
       {/* 1. Hero */}
       <HeroSection />
@@ -26,6 +27,7 @@ export default function Home() {
       <BuiltOnIntegrity />
 
      <CollectionsShowcase />
+      <ParallaxVisualBreak />
      <CraftVisionSection />
      <ContactShowroom />
      <CustomerReviews />
