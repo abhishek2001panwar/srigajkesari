@@ -202,7 +202,7 @@ export default function Footer() {
 
         {/* ================= 3. LEGAL & HERITAGE SUB-FOOTER ================= */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-2 text-[11px] text-stone-500">
-          <span>&copy; {new Date().getFullYear()} Sri Gajkesari Jewellers. All rights reserved.</span>
+          <span>&copy; 2026 Sri Gajkesari Jewellers. All rights reserved.</span>
           <div className="flex items-center gap-3 uppercase tracking-[0.22em] text-[9.5px] text-stone-500">
             <span>Bengaluru Lineage</span>
             <span className="text-stone-300">&bull;</span>
