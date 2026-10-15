@@ -103,25 +103,27 @@ html.lenis body {
 }
 
 /* -------------------------------------------------------------------------- */
-/* 6. LUXURY CUSTOM SCROLLBAR                                                 */
+/* 6. LUXURY CUSTOM SCROLLBAR (SLIDER ONLY) */
 /* -------------------------------------------------------------------------- */
 
+/* Scrollbar dimensions */
 ::-webkit-scrollbar {
-  width: 1px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
 }
 
+/* Completely transparent track */
 ::-webkit-scrollbar-track {
   background: transparent;
-  border-left: 1px solid rgba(76, 17, 55, 0.06);
-  width: 3px;
+  border: none;
 }
 
+/* Visible floating thumb only */
 ::-webkit-scrollbar-thumb {
   background-color: #4C1137;
   border-radius: 9999px;
-  border: 1.5px solid #fdfbf7;
-  transition: background-color 0.3s ease;
+  border: none;
+  transition: background-color 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -132,12 +134,13 @@ html.lenis body {
   background-color: #320a23;
 }
 
+/* Hide corner background */
 ::-webkit-scrollbar-corner {
-  background: #fdfbf7;
+  background: transparent;
 }
 
-/* Firefox scrollbar fallback */
+/* Firefox: thumb color + transparent track */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #4C1137 #fdfbf7;
+  scrollbar-color: #4C1137 transparent;
 }

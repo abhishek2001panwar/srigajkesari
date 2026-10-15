@@ -1,179 +1,141 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
-interface SriGajkesariNavbarProps {
-  /**
-   * Theme mode:
-   * - "light": 100% Transparent, no borders, white logo (/logo.png), white text.
-   * - "dark": Solid clean white background, subtle border, original burgundy logo, dark text.
-   */
+interface AppleNavbarProps {
   theme?: "light" | "dark";
 }
 
-const navLinks = [
+const links = [
   { label: "Home", href: "/" },
   { label: "Our Story", href: "/story" },
   { label: "Collections", href: "/collection" },
   { label: "Contact Us", href: "/contact" },
 ];
 
-export default function SriGajkesariNavbar({ theme = "light" }: SriGajkesariNavbarProps) {
-  const [isVisible, setIsVisible] = useState<boolean>(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY <= 70);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const isLight = theme === "light";
+  // light = transparent bg, white text, /logo.png
+  // dark  = white bg, black text, earlier original SVG logo
+  const isDark = theme === "dark";
 
   return (
-    <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out font-body ${
-        isVisible
-          ? "translate-y-0 opacity-100 pointer-events-auto"
-          : "-translate-y-full opacity-0 pointer-events-none"
-      } ${
-        isLight
-          ? "bg-transparent border-none"
-          : "bg-white border-b border-[#D4D4D4]"
+    <nav
+      className={`fixed top-0 inset-x-0 z-50 h-20 sm:h-24 select-none transition-all duration-300 ${
+        isDark
+          ? "bg-white shadow-xs border-b border-black/10"
+          : "bg-transparent"
       }`}
     >
-      {/* Centered Width Container */}
-      <div className="max-w-8xl mx-auto px-6 sm:px-10 lg:px-16 py-4 sm:py-5 flex items-center justify-between">
-        
-        {/* Brand Logo */}
-        <Link href="/" className="inline-flex items-center group">
+      <div
+        className={`max-w-8xl mx-auto h-full px-6 sm:px-10 lg:px-16 flex items-center justify-between transition-colors duration-300 ${
+          isDark ? "text-black" : "text-white"
+        }`}
+      >
+        {/* 1. Brand Logo */}
+        <Link href="/" className="flex items-center group shrink-0">
           <img
             src={
-              isLight
-                ? "/logo.png"
-                : "https://srigajkesari.com/wp-content/uploads/2026/09/gj-logo.svg"
+              isDark
+                ? "https://srigajkesari.com/wp-content/uploads/2026/09/gj-logo.svg"
+                : "/logo.png"
             }
             alt="Sri Gajkesari Jewellers"
-            className="h-12 sm:h-14 md:h-16 lg:h-[76px] w-auto object-contain transition-opacity duration-300 hover:opacity-90"
+            className="h-14 sm:h-16 md:h-20 w-auto object-contain rounded-sm transition-transform duration-300 group-hover:scale-105"
           />
         </Link>
 
-        {/* Desktop Navigation Links + Action */}
-        <div className="hidden md:flex items-center gap-8 lg:gap-11">
-          <nav aria-label="Primary navigation" className="flex items-center gap-7 lg:gap-9">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className={`text-[9.5px] lg:text-[10px] uppercase tracking-[0.3em] font-medium transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] hover:after:w-full after:transition-all after:duration-300 ${
-                  isLight
-                    ? "text-white/90 hover:text-white after:bg-white"
-                    : "text-stone-700 hover:text-[#4C1137] after:bg-[#4C1137]"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Heritage Action Button */}
-         {/* Interactive Luxury Concierge CTA (Direct Action with Text Roll on Hover) */}
-<a
-  href="https://wa.me/919535125553?text=Hello%20Sri%20Gajkesari%2C%20I%20would%20like%20to%20request%20a%20private%20atelier%20consultation."
-  target="_blank"
-  rel="noopener noreferrer"
-  className={`group relative inline-flex items-center overflow-hidden px-5 py-2.5 text-[9px] uppercase tracking-[0.28em] font-medium transition-all duration-300 rounded-none active:scale-95 ${
-    isLight
-      ? "border border-white/70 text-white hover:bg-white hover:text-stone-900"
-      : "border border-[#4C1137] text-[#4C1137] hover:bg-[#4C1137] hover:text-white"
-  }`}
->
-  {/* Rolling text stage */}
-  <div className="relative h-[13px] overflow-hidden flex flex-col justify-center">
-    <span className="block transition-transform duration-300 ease-out group-hover:-translate-y-full">
-      Private Consultation
-    </span>
-    <span className="absolute top-full left-0 block font-semibold transition-transform duration-300 ease-out group-hover:-translate-y-full whitespace-nowrap">
-      WhatsApp 
-    </span>
-  </div>
-
-  <ArrowUpRight className="w-3 h-3 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-</a>
+        {/* 2. Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-12 lg:gap-16">
+          {links.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              className={`transition-colors tracking-tight text-[15px] sm:text-base font-medium whitespace-nowrap ${
+                isDark
+                  ? "text-black/80 hover:text-black"
+                  : "text-white/90 hover:text-white"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
         </div>
 
-        {/* Mobile Hamburger Button */}
-        <button
-          type="button"
-          aria-label="Toggle navigation menu"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className={`md:hidden p-2 transition-colors rounded-none ${
-            isLight
-              ? "text-white hover:bg-white/10"
-              : "text-[#4C1137] border border-[#D4D4D4] hover:bg-stone-50"
-          }`}
-        >
-          {isMobileMenuOpen ? (
-            <X className="w-5 h-5 stroke-[1.8]" />
-          ) : (
-            <Menu className="w-5 h-5 stroke-[1.8]" />
-          )}
-        </button>
+        {/* 3. Action Pill */}
+        <div className="hidden md:flex items-center shrink-0">
+          <Link
+            href="https://wa.me/919535125553?text=Hello%20Sri%20Gajkesari%2C%20I%20would%20like%20to%20request%20a%20private%20atelier%20consultation."
+            className={`px-7 py-2.5 border text-xs sm:text-sm font-medium tracking-tight rounded-full transition-all duration-300 active:scale-95 whitespace-nowrap ${
+              isDark
+                ? "border-black/70 text-black hover:bg-black hover:text-white"
+                : "border-white/70 text-white hover:border-white hover:bg-white hover:text-black"
+            }`}
+          >
+            Consultation
+          </Link>
+        </div>
+
+        {/* Mobile Menu Hamburger */}
+        <div className="md:hidden flex items-center">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className={`p-2 transition-opacity opacity-90 hover:opacity-100 ${
+              isDark ? "text-black" : "text-white"
+            }`}
+            aria-label="Toggle Navigation"
+          >
+            {mobileMenuOpen ? (
+              <X className="w-7 h-7 stroke-[1.8]" />
+            ) : (
+              <Menu className="w-7 h-7 stroke-[1.8]" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer */}
-      {isMobileMenuOpen && (
+      {mobileMenuOpen && (
         <div
-          className={`md:hidden px-6 py-6 text-center transition-colors ${
-            isLight
-              ? "bg-black/90 backdrop-blur-md text-white"
-              : "bg-white border-t border-[#D4D4D4] text-stone-900"
+          className={`md:hidden fixed inset-x-0 top-20 sm:top-24 h-screen px-8 pt-8 space-y-6 backdrop-blur-2xl animate-in fade-in slide-in-from-top-2 duration-200 ${
+            isDark
+              ? "bg-white/98 text-black"
+              : "bg-black/95 text-white"
           }`}
         >
-          <nav className="flex flex-col space-y-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`text-[10px] uppercase tracking-[0.28em] font-medium py-1 transition-colors ${
-                  isLight
-                    ? "text-stone-200 hover:text-white"
-                    : "text-stone-700 hover:text-[#4C1137]"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="pt-5 mt-5 border-t border-stone-200/20 flex flex-col items-center gap-3">
+          {links.map((link) => (
             <Link
-              href="/story"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`w-full py-2.5 text-[9.5px] uppercase tracking-[0.26em] font-medium rounded-none ${
-                isLight
-                  ? "bg-white text-stone-900"
-                  : "bg-[#4C1137] text-white"
+              key={link.label}
+              href={link.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block text-2xl font-semibold tracking-tight border-b pb-4 ${
+                isDark
+                  ? "border-black/10 text-black hover:text-stone-600"
+                  : "border-white/10 text-white hover:text-stone-300"
               }`}
             >
-              The Atelier Heritage
+              {link.label}
             </Link>
-            <span
-              className={`text-[9.5px] tracking-wider font-mono ${
-                isLight ? "text-stone-300/80" : "text-stone-500"
+          ))}
+
+          <div className="pt-6">
+            <Link
+              href="https://wa.me/919535125553?text=Hello%20Sri%20Gajkesari%2C%20I%20would%20like%20to%20request%20a%20private%20atelier%20consultation."
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block w-full text-center py-4 border text-sm font-medium tracking-wide rounded-full active:scale-95 transition-all ${
+                isDark
+                  ? "border-black bg-black text-white hover:bg-stone-800"
+                  : "border-white text-white hover:bg-white hover:text-black"
               }`}
             >
-              Malleshwaram, Bengaluru &bull; +91 95351 25553
-            </span>
+              Book Private Consultation
+            </Link>
           </div>
         </div>
       )}
-    </header>
+    </nav>
   );
 }

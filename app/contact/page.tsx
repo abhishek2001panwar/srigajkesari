@@ -1,16 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  MapPin,
-  Clock,
-  Phone,
-  Mail,
-  Sparkles,
-  ArrowUpRight,
-  CheckCircle2,
-  Compass,
-} from "lucide-react";
+import { CheckCircle2, ChevronRight, Phone, Mail, Compass } from "lucide-react";
 import SriGajkesariNavbar from "@/components/Navbar";
 import Footer from "@/components/sections/Footer";
 
@@ -18,18 +9,18 @@ const appointmentTypes = [
   "Private Atelier Lounge",
   "Virtual Video Preview",
   "Bridal Trousseau Styling",
-  "Bespoke / Custom Commission",
+  "Bespoke Commission",
   "Heirloom Remodelling",
 ];
 
 const collectionsList = [
   "Rajasi (Jadau & Polki)",
-  "Suvarna (22K Gold)",
+  "Suvarna (916 Gold)",
   "Devatri (Temple Nakshi)",
-  "Ratnavali (Pearls & Emeralds)",
-  "Niharika (Solitaires)",
+  "Ratnavali (Basra Pearls)",
+  "Niharika (Rare Solitaires)",
   "Purusa (Men's Fine Jewellery)",
-  "Kasu (Sacred Malai)",
+  "Kasu (Sacred Coins)",
   "Viraasat (Antique Heirlooms)",
 ];
 
@@ -64,108 +55,108 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-stone-900 selection:bg-[#4C1137] selection:text-white">
-      {/* 1. Global Fixed Brand Navbar */}
-      <div className="fixed top-0 inset-x-0 z-50 w-full bg-[#180410] border-b border-white/10 shadow-md">
-        <SriGajkesariNavbar theme="dark" />
-      </div>
+    <div className="min-h-screen bg-[#FAF8F5] text-stone-900 selection:bg-[#4C1137] selection:text-white font-[-apple-system,BlinkMacSystemFont,'SF_Pro_Text','SF_Pro_Display','Helvetica_Neue',Helvetica,Arial,sans-serif]">
+      {/* 1. Global Dark Theme Navbar */}
+      <SriGajkesariNavbar theme="dark" />
 
-      {/* 2. Main Contact Sanctuary */}
-      <main className="w-full pt-32 sm:pt-36 lg:pt-52 pb-20 sm:pb-28 px-4 sm:px-8 lg:px-14">
-        {/* Editorial Top Heading */}
-        <div className="max-w-[1400px] mx-auto mb-12 sm:mb-16 text-center">
-          <div className="inline-flex items-center justify-center gap-2.5 mb-2.5">
-            <span className="w-8 h-[1px] bg-[#4C1137]/30" />
-            <span className="text-[10px] uppercase tracking-[0.45em] text-[#4C1137] font-semibold flex items-center gap-1.5">
-             
-              The Flagship Sanctuary
-            </span>
-            <span className="w-8 h-[1px] bg-[#4C1137]/30" />
-          </div>
+      {/* 2. Main Apple-Style Sanctuary Container */}
+      <main className="w-full pt-32 sm:pt-40 lg:pt-44 pb-20 sm:pb-28 px-6 sm:px-10 lg:px-16 select-none">
+        
+        {/* ================= EDITORIAL HEADER ================= */}
+        <div className="max-w-[1400px] mx-auto mb-14 sm:mb-20">
+          <p className="text-[12px] uppercase tracking-[0.24em] font-medium text-[#4C1137] mb-3">
+            Flagship Sanctuary &bull; Malleshwaram
+          </p>
 
-          <h1 className="font-1 text-3xl sm:text-5xl lg:text-6xl uppercase tracking-[0.05em] text-[#4C1137] leading-tight mb-3">
-            Atelier Consultations
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#4C1137] leading-[1.05] mb-5">
+            Private consultations. <br />
+            <span className="text-stone-500 font-normal">Dedicated salon.</span>
           </h1>
 
-          <p className="font-2 text-stone-600 text-xs sm:text-[13px] md:text-sm font-light max-w-xl mx-auto leading-relaxed">
-            Reserve a dedicated session with our karigars and jewellery stylists.
-            Experience our archival pieces in total privacy.
+          <p className="text-base sm:text-lg text-stone-600 font-light tracking-tight leading-relaxed max-w-2xl">
+            Reserve a quiet personal session with our karigars and jewellery stylists.
+            Experience our pure 916 gold and archival Polki collections in complete privacy.
           </p>
         </div>
 
-        {/* 50 / 50 Balanced Luxury Atelier Split */}
+        {/* ================= 2-COLUMN APPLE BENTO GRID ================= */}
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
           
-          {/* ================= LEFT COLUMN: EDITORIAL SHOWCASE (5 COLS) ================= */}
-          <div className="lg:col-span-5 relative w-full min-h-[460px] sm:min-h-[560px] lg:min-h-full rounded-md overflow-hidden border border-[#EAE4DC] shadow-sm bg-[#1a0413]">
+          {/* Left Column: Architectural Flagship Portal (5 cols) */}
+          <div className="lg:col-span-5 relative rounded-3xl overflow-hidden bg-stone-100 border border-[#EAE4DC] shadow-sm min-h-[460px] sm:min-h-[560px] lg:min-h-full group">
             <img
               src="https://srigajkesari.com/wp-content/uploads/2026/09/store-contact.webp"
               alt="Sri Gajkesari Jewellers Boutique"
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/30 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent pointer-events-none" />
 
-            {/* Floating Glass Atelier Coordinates */}
-            <div className="absolute bottom-6 inset-x-6 p-5 sm:p-6 bg-[#FAF8F5]/90 backdrop-blur-md rounded-md border border-white/60 shadow-xl space-y-4">
+            {/* Bottom Glass Card Plaque */}
+            <div className="absolute bottom-6 inset-x-6 sm:bottom-8 sm:inset-x-8 p-6 rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 shadow-lg space-y-3">
               <div>
-                <span className="text-[9px] uppercase tracking-[0.3em] text-[#4C1137] font-semibold block mb-0.5">
-                  Private Salons
-                </span>
-                <p className="font-1 text-base sm:text-lg text-stone-900 leading-snug">
-                  Sri Gajkesari Jewellers
+                <p className="text-[11px] uppercase tracking-[0.22em] font-medium text-[#4C1137] mb-1">
+                  Private Salon
                 </p>
-                <p className="font-2 text-xs text-stone-500 font-light mt-0.5">
+                <h3 className="text-base sm:text-lg font-semibold tracking-tight text-stone-900">
+                  Sri Gajkesari Jewellers
+                </h3>
+                <p className="text-xs text-stone-600 font-light tracking-tight mt-0.5">
                   Margosa Road, Malleshwaram, Bengaluru
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-stone-200/80 flex items-center justify-between text-xs">
-                <span className="font-light text-stone-500 text-[11px]">
-                  Daily 10:30 AM – 8:30 PM
+              <div className="pt-3 border-t border-stone-200/80 flex items-center justify-between text-xs">
+                <span className="text-stone-500 font-light text-[11px] tracking-tight">
+                  Daily 10:30 AM – 8:30 PM &bull; Valet
                 </span>
                 <a
                   href="tel:+919535125553"
-                  className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-[#4C1137] font-semibold hover:opacity-80 transition-opacity"
+                  className="inline-flex items-center gap-1.5 text-xs text-[#4C1137] font-medium tracking-tight hover:underline"
                 >
-                  <Phone className="w-3 h-3" />
-                  <span>Call Atelier</span>
+                  <Phone className="w-3.5 h-3.5" />
+                  <span>+91 95351 25553</span>
                 </a>
               </div>
             </div>
           </div>
 
-          {/* ================= RIGHT COLUMN: SLEEK MINIMAL FORM (7 COLS) ================= */}
-          <div className="lg:col-span-7 w-full bg-white border border-[#EAE4DC] rounded-md p-8 sm:p-12 lg:p-14 shadow-sm flex flex-col justify-between">
+          {/* Right Column: Clean Frosted Form (7 cols) */}
+          <div className="lg:col-span-7 bg-white border border-[#EAE4DC] rounded-3xl p-8 sm:p-12 lg:p-14 shadow-sm flex flex-col justify-between">
             <div>
-              <div className="mb-8 border-b border-[#EAE4DC] pb-5">
-                <span className="text-[9px] uppercase tracking-[0.3em] text-[#4C1137] font-semibold block mb-1">
-                  Private Viewing Request
+              <div className="mb-8 pb-6 border-b border-stone-200/70 flex items-center justify-between">
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#4C1137] mb-1">
+                    Atelier Access
+                  </p>
+                  <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-stone-900">
+                    Schedule Your Session
+                  </h2>
+                </div>
+                <span className="text-xs text-stone-400 font-light hidden sm:inline-block">
+                  Direct Response
                 </span>
-                <h2 className="font-1 text-2xl sm:text-3xl text-stone-900 leading-tight">
-                  Schedule Your Consultation
-                </h2>
               </div>
 
               {isSubmitted ? (
-                <div className="py-16 text-center space-y-4">
+                <div className="py-20 text-center space-y-4">
                   <div className="w-12 h-12 mx-auto rounded-full bg-[#4C1137]/10 text-[#4C1137] flex items-center justify-center">
                     <CheckCircle2 className="w-6 h-6 stroke-[1.8]" />
                   </div>
-                  <h3 className="font-1 text-2xl text-stone-900">
-                    Request Received with Discretion
+                  <h3 className="text-2xl font-semibold tracking-tight text-stone-900">
+                    Consultation Reserved
                   </h3>
-                  <p className="font-2 text-stone-500 text-xs sm:text-sm max-w-sm mx-auto font-light leading-relaxed">
+                  <p className="text-xs sm:text-sm text-stone-500 max-w-sm mx-auto font-light leading-relaxed">
                     Thank you. Our concierge will contact you via WhatsApp / Phone shortly
-                    to confirm your preferred time slot.
+                    to confirm your preferred time and private stylist.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Full Name & Phone Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Full Name & Phone */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-[10px] uppercase tracking-[0.2em] text-[#4C1137] font-semibold mb-1.5">
-                        Your Name *
+                      <label className="block text-xs text-stone-500 font-medium tracking-tight mb-2">
+                        Full Name *
                       </label>
                       <input
                         type="text"
@@ -175,13 +166,13 @@ export default function ContactPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, fullName: e.target.value })
                         }
-                        className="w-full bg-transparent border-b border-stone-300 focus:border-[#4C1137] text-xs sm:text-sm py-2 text-stone-900 placeholder-stone-400 focus:outline-none transition-colors"
+                        className="w-full bg-[#FAF8F5] border border-stone-200 rounded-2xl px-4 py-3 text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#4C1137] transition-colors"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[10px] uppercase tracking-[0.2em] text-[#4C1137] font-semibold mb-1.5">
-                        Contact Number *
+                      <label className="block text-xs text-stone-500 font-medium tracking-tight mb-2">
+                        Phone Number *
                       </label>
                       <input
                         type="tel"
@@ -191,15 +182,15 @@ export default function ContactPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, phone: e.target.value })
                         }
-                        className="w-full bg-transparent border-b border-stone-300 focus:border-[#4C1137] text-xs sm:text-sm py-2 text-stone-900 placeholder-stone-400 focus:outline-none transition-colors"
+                        className="w-full bg-[#FAF8F5] border border-stone-200 rounded-2xl px-4 py-3 text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#4C1137] transition-colors"
                       />
                     </div>
                   </div>
 
-                  {/* Email & Date Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Email & Date */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-[10px] uppercase tracking-[0.2em] text-[#4C1137] font-semibold mb-1.5">
+                      <label className="block text-xs text-stone-500 font-medium tracking-tight mb-2">
                         Email Address *
                       </label>
                       <input
@@ -210,12 +201,12 @@ export default function ContactPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
                         }
-                        className="w-full bg-transparent border-b border-stone-300 focus:border-[#4C1137] text-xs sm:text-sm py-2 text-stone-900 placeholder-stone-400 focus:outline-none transition-colors"
+                        className="w-full bg-[#FAF8F5] border border-stone-200 rounded-2xl px-4 py-3 text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#4C1137] transition-colors"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[10px] uppercase tracking-[0.2em] text-[#4C1137] font-semibold mb-1.5">
+                      <label className="block text-xs text-stone-500 font-medium tracking-tight mb-2">
                         Preferred Date *
                       </label>
                       <input
@@ -225,14 +216,14 @@ export default function ContactPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, preferredDate: e.target.value })
                         }
-                        className="w-full bg-transparent border-b border-stone-300 focus:border-[#4C1137] text-xs sm:text-sm py-2 text-stone-800 focus:outline-none transition-colors"
+                        className="w-full bg-[#FAF8F5] border border-stone-200 rounded-2xl px-4 py-3 text-xs sm:text-sm text-stone-900 focus:outline-none focus:border-[#4C1137] transition-colors"
                       />
                     </div>
                   </div>
 
-                  {/* Interactive Sleek Appointment Type Chips */}
+                  {/* Format Pills */}
                   <div>
-                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#4C1137] font-semibold mb-2.5">
+                    <label className="block text-xs text-stone-500 font-medium tracking-tight mb-2.5">
                       Session Format
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -245,7 +236,7 @@ export default function ContactPage() {
                             onClick={() =>
                               setFormData({ ...formData, appointmentType: type })
                             }
-                            className={`px-3 py-1.5 rounded-full text-[10px] uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                            className={`px-4 py-2 rounded-full text-xs font-medium tracking-tight transition-all duration-200 cursor-pointer ${
                               isSelected
                                 ? "bg-[#4C1137] text-white shadow-xs"
                                 : "bg-[#FAF8F5] text-stone-600 border border-stone-200 hover:border-stone-400"
@@ -258,9 +249,9 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  {/* Interactive Collection Interest Chips */}
+                  {/* Collection Interest Pills */}
                   <div>
-                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#4C1137] font-semibold mb-2.5">
+                    <label className="block text-xs text-stone-500 font-medium tracking-tight mb-2.5">
                       Pieces of Focus
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -273,7 +264,7 @@ export default function ContactPage() {
                             onClick={() =>
                               setFormData({ ...formData, collection: col })
                             }
-                            className={`px-3 py-1.5 rounded-full text-[10px] uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                            className={`px-4 py-2 rounded-full text-xs font-medium tracking-tight transition-all duration-200 cursor-pointer ${
                               isSelected
                                 ? "bg-[#4C1137] text-white shadow-xs"
                                 : "bg-[#FAF8F5] text-stone-600 border border-stone-200 hover:border-stone-400"
@@ -286,19 +277,19 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  {/* Requirements / Notes */}
+                  {/* Requirements Note */}
                   <div>
-                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#4C1137] font-semibold mb-1.5">
+                    <label className="block text-xs text-stone-500 font-medium tracking-tight mb-2">
                       Custom Vision &amp; Notes
                     </label>
                     <textarea
                       rows={3}
-                      placeholder="Bridal dates, family heirloom exchange, specific gemstone requests..."
+                      placeholder="Bridal dates, family heirloom exchange, specific carat specifications..."
                       value={formData.requirements}
                       onChange={(e) =>
                         setFormData({ ...formData, requirements: e.target.value })
                       }
-                      className="w-full bg-transparent border-b border-stone-300 focus:border-[#4C1137] text-xs sm:text-sm py-2 text-stone-900 placeholder-stone-400 focus:outline-none transition-colors resize-none"
+                      className="w-full bg-[#FAF8F5] border border-stone-200 rounded-2xl px-4 py-3 text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#4C1137] transition-colors resize-none"
                     />
                   </div>
 
@@ -306,10 +297,9 @@ export default function ContactPage() {
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="inline-flex items-center gap-3 px-8 py-3.5 bg-[#4C1137] hover:bg-[#340b25] text-white text-[10px] uppercase tracking-[0.28em] font-medium transition-all duration-300 shadow-sm hover:shadow-md rounded-md group cursor-pointer active:scale-95"
+                      className="px-8 py-3.5 bg-[#4C1137] hover:bg-[#340b25] text-white text-xs sm:text-sm font-medium tracking-tight rounded-full transition-all duration-200 shadow-sm active:scale-95 cursor-pointer"
                     >
-                      <span>Submit Appointment Request</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      Confirm Appointment Request
                     </button>
                   </div>
                 </form>
@@ -319,46 +309,42 @@ export default function ContactPage() {
 
         </div>
 
-        {/* ================= 3. SLEEK LOCATION & MAP COORDINATES ================= */}
-        <section className="max-w-[1400px] mx-auto mt-16 sm:mt-24 pt-12 border-t border-[#EAE4DC]">
+        {/* ================= 3. LOCATION & SEAMLESS MAP ================= */}
+        <section className="max-w-[1400px] mx-auto mt-16 sm:mt-24 pt-14 border-t border-[#EAE4DC]">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
-            {/* Minimal Boutique Info */}
+            {/* Atelier Details */}
             <div className="lg:col-span-5 space-y-6">
               <div>
-                <span className="text-[10px] uppercase tracking-[0.3em] text-[#4C1137] font-semibold block mb-1">
+                <p className="text-[12px] uppercase tracking-[0.2em] font-medium text-[#4C1137] mb-2">
                   Atelier Address
-                </span>
-                <h3 className="font-1 text-2xl sm:text-3xl text-stone-900 leading-tight mb-2">
+                </p>
+                <h3 className="text-2xl sm:text-4xl font-semibold tracking-tight text-stone-900 mb-3">
                   The Malleshwaram Flagship
                 </h3>
-                <p className="font-2 text-stone-600 text-xs sm:text-sm font-light leading-relaxed">
+                <p className="text-sm sm:text-base text-stone-600 font-light leading-relaxed">
                   Positioned between 16th &amp; 17th Cross along Margosa Road. Valet parking
-                  and dedicated private security available for bridal parties.
+                  and dedicated private viewing salons available for bridal parties.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-stone-200/70 font-2 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-stone-200/80 text-xs sm:text-sm">
                 <div>
-                  <span className="text-[10px] uppercase tracking-wider text-[#4C1137] font-semibold block mb-0.5">
-                    Visiting Hours
-                  </span>
+                  <p className="font-semibold text-stone-900 mb-1">Viewing Hours</p>
                   <p className="text-stone-600 font-light">Monday – Sunday</p>
-                  <p className="text-stone-900 font-medium">10:30 AM – 8:30 PM</p>
+                  <p className="text-[#4C1137] font-medium">10:30 AM – 8:30 PM</p>
                 </div>
 
                 <div>
-                  <span className="text-[10px] uppercase tracking-wider text-[#4C1137] font-semibold block mb-0.5">
-                    Direct Concierge
-                  </span>
+                  <p className="font-semibold text-stone-900 mb-1">Direct Concierge</p>
                   <p className="text-stone-600 font-light">+91 95351 25553</p>
-                  <p className="text-stone-500 font-light text-[11px]">support@srigajakesari.com</p>
+                  <p className="text-stone-500 font-light text-xs">support@srigajakesari.com</p>
                 </div>
               </div>
             </div>
 
-            {/* Seamless Embedded Map Box */}
-            <div className="lg:col-span-7 relative w-full h-[320px] sm:h-[380px] rounded-md overflow-hidden border border-[#EAE4DC] shadow-sm bg-[#F5EFE6] group">
+            {/* Embedded Apple-Style Map Frame */}
+            <div className="lg:col-span-7 relative w-full h-[320px] sm:h-[400px] rounded-3xl overflow-hidden border border-[#EAE4DC] shadow-sm bg-stone-100 group">
               <iframe
                 title="Sri Gajkesari Jewellers Location"
                 src="https://maps.google.com/maps?cid=11554011192802922623&hl=en&gl=IN&t=m&z=15&output=embed"
@@ -374,9 +360,9 @@ export default function ContactPage() {
                 href="https://maps.google.com/?cid=11554011192802922623"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="absolute top-3.5 right-3.5 bg-white/95 hover:bg-white text-[#4C1137] border border-stone-200 text-[9px] uppercase tracking-[0.2em] px-3.5 py-1.5 flex items-center gap-1.5 shadow-sm rounded-md transition-colors"
+                className="absolute top-4 right-4 bg-white/95 hover:bg-white text-stone-900 text-xs font-medium tracking-tight px-4 py-2 flex items-center gap-1.5 shadow-sm rounded-full backdrop-blur-md transition-all active:scale-95"
               >
-                <span>Navigate</span>
+                <span>Navigate map</span>
                 <Compass className="w-3.5 h-3.5" />
               </a>
             </div>
@@ -386,7 +372,8 @@ export default function ContactPage() {
 
       </main>
 
-      
+      {/* Global Footer */}
+      <Footer />
     </div>
   );
 }
