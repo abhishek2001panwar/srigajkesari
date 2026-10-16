@@ -20,7 +20,7 @@ const collectionLinks = [
 
 export default function Footer() {
   return (
-    <footer className="relative z-20 w-full bg-[#F5F5F7] text-[#86868B] text-[13px] sm:text-sm py-10 px-6 sm:px-10 lg:px-16 border-t border-black/10 select-none font-[-apple-system,BlinkMacSystemFont,'SF_Pro_Text','SF_Pro_Display','SF_Pro_Icons','Helvetica_Neue',Helvetica,Arial,sans-serif]">
+    <footer className="relative z-20 w-full bg-[#F5F5F7] text-[#86868B] text-[13px] sm:text-sm py-10 px-6 sm:px-10 lg:px-16 border-t border-black/10 select-none ">
       <div className="max-w-[1280px] mx-auto">
         
         {/* ================= 1. BRAND LOGO (ENLARGED & ANCHORED LEFT) ================= */}

@@ -1,10 +1,6 @@
 @import "tailwindcss";
 
-/* -------------------------------------------------------------------------- */
-/* 1. FONT DECLARATIONS                                                       */
-/* -------------------------------------------------------------------------- */
-
-@font-face {
+/* @font-face {
   font-family: 'font1';
   src: url('/fonts/PPWoodland-Regular.ttf') format('truetype');
   font-weight: 500;
@@ -28,21 +24,13 @@
   font-display: swap;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 2. TAILWIND V4 THEME CONFIGURATION                                         */
-/* -------------------------------------------------------------------------- */
-
 @theme {
   --font-1: 'font1', serif;
   --font-2: 'font2', sans-serif;
   --font-3: 'font3', sans-serif;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 3. ELEMENT DEFAULTS                                                        */
-/* -------------------------------------------------------------------------- */
 
-/* Body inherits font2 across all standard text elements */
 body,
 input,
 button,
@@ -51,19 +39,14 @@ select {
   font-family: var(--font-2);
 }
 
-/* Main display headings */
 h1, h2 {
   font-family: var(--font-1);
 }
 
-/* Subheadings & section titles */
 h3, h4, h5, h6 {
   font-family: var(--font-3);
 }
 
-/* -------------------------------------------------------------------------- */
-/* 4. UTILITY OVERRIDES (Tailwind utility classes font-1, font-2, font-3)     */
-/* -------------------------------------------------------------------------- */
 
 .font-1 {
   font-family: var(--font-1);
@@ -75,11 +58,25 @@ h3, h4, h5, h6 {
 
 .font-3 {
   font-family: var(--font-3) !important;
+}  */
+
+
+@theme {
+  --font-montserrat: var(--font-montserrat), sans-serif;
+  --font-poppins: var(--font-poppins), sans-serif;
+  --font-opensans: var(--font-opensans), sans-serif;
+
+
 }
 
-/* -------------------------------------------------------------------------- */
-/* 5. LENIS SMOOTH SCROLL BASELINE                                            */
-/* -------------------------------------------------------------------------- */
+/* ======================================================== */
+/* CHANGE THIS LINE TO TEST EACH FONT ACROSS THE ENTIRE SITE */
+/* ======================================================== */
+
+/* Option A: Test Montserrat (Recommended for luxury) */
+body {
+  font-family: var(--font-opensans) !important;
+}
 
 html.lenis,
 html.lenis body {
@@ -102,11 +99,7 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 6. LUXURY CUSTOM SCROLLBAR (SLIDER ONLY) */
-/* -------------------------------------------------------------------------- */
 
-/* Scrollbar dimensions */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;

@@ -179,7 +179,7 @@ export default function CollectionsShowcase() {
         
         {/* ================= APPLE EDITORIAL HEADER ================= */}
         <div className="flex flex-col md:flex-row md:items-end justify-between pb-10 sm:pb-14 mb-10 sm:mb-14 border-b border-black/10 gap-6">
-          <div className="max-w-xl">
+          <div className="max-w-2xl">
             <span className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#86868B] block mb-2.5">
               Curated Heirlooms
             </span>

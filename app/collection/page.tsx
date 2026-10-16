@@ -207,12 +207,7 @@ function AppleCollectionCard({ item, index }: { item: any; index: number }) {
         <div className="absolute inset-0 z-20 bg-gradient-to-r from-black/60 via-transparent to-transparent pointer-events-none" />
       </div>
 
-      {/* 2. Top-Left Collection Spec Eyebrow */}
-      <div className="absolute top-8 left-6 sm:left-12 lg:left-16 z-30">
-        <span className="text-[11px] uppercase tracking-[0.25em] font-medium text-white/60">
-          Catalogue {item.roman} &bull; {item.badge}
-        </span>
-      </div>
+     
 
       {/* 3. Bottom-Left Editorial Content */}
       <div className="absolute bottom-10 sm:bottom-14 left-6 sm:left-12 lg:left-16 z-30 max-w-xl text-white">
@@ -419,7 +414,7 @@ function CleanFooter() {
 // --- Main App / Page Component ---
 export default function App() {
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1D1D1F] selection:bg-[#4C1137] selection:text-white font-[-apple-system,BlinkMacSystemFont,'SF_Pro_Text','SF_Pro_Display','Helvetica_Neue',Helvetica,Arial,sans-serif]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1D1D1F] selection:bg-[#4C1137] selection:text-white ">
       <SriGajkesariNavbar theme="dark" />
 
       {/* 2. Apple Editorial Centered Hero */}
