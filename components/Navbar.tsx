@@ -24,29 +24,25 @@ export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 h-20 sm:h-24 select-none transition-all duration-300 ${
+      className={`fixed top-0 inset-x-0 z-50 h-32 sm:h-32 select-none transition-all duration-300 ${
         isDark
           ? "bg-white shadow-xs border-b border-black/10"
           : "bg-transparent"
       }`}
     >
       <div
-        className={`max-w-8xl mx-auto h-full px-6 sm:px-10 lg:px-16 flex items-center justify-between transition-colors duration-300 ${
+        className={`max-w-9xl mx-auto h-full px-6 sm:px-10 lg:px-10 flex items-center justify-between transition-colors duration-300 ${
           isDark ? "text-black" : "text-white"
         }`}
       >
         {/* 1. Brand Logo */}
-        <Link href="/" className="flex items-center group shrink-0">
-          <img
-            src={
-              isDark
-                ? "https://srigajkesari.com/wp-content/uploads/2026/09/gj-logo.svg"
-                : "/logo.png"
-            }
-            alt="Sri Gajkesari Jewellers"
-            className="h-14 sm:h-16 md:h-20 w-auto object-contain rounded-sm transition-transform duration-300 group-hover:scale-105"
-          />
-        </Link>
+       <Link href="/" className="flex items-center shrink-0 overflow-visible py-5">
+  <img
+    src="/logo.png"
+    alt="Sri Gajkesari"
+    className="h-24 sm:h-28 lg:h-32 w-auto max-w-none object-contain scale-125 sm:scale-150 origin-left transition-transform duration-300"
+  />
+</Link>
 
         {/* 2. Desktop Navigation */}
         <div className="hidden md:flex items-center gap-12 lg:gap-16">

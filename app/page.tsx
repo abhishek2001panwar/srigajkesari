@@ -7,6 +7,7 @@ import Footer from "@/components/sections/Footer";
 import HeroSection from "@/components/sections/HeroSection";
 import ParallaxVisualBreak from "@/components/sections/Karigiri";
 import OurBeginning from "@/components/sections/OurBeginning";
+import AtelierVideoShowcase from "@/components/sections/Portrait";
 import CustomerReviews from "@/components/sections/Review";
 
 
@@ -22,6 +23,7 @@ export default function Home() {
       <div className="relative z-10">
         <OurBeginning />
       </div>
+      <AtelierVideoShowcase />
 
       {/* 3. Built on Integrity (z-30, negative top margin pulls it ON TOP of Our Beginning) */}
       <BuiltOnIntegrity />

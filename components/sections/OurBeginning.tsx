@@ -98,7 +98,7 @@ export default function OurBeginning() {
                 Generational Heritage
               </span>
 
-              <p className="text-base sm:text-lg text-stone-900 font-medium tracking-tight leading-relaxed">
+              <p className="font-poppins text-base sm:text-lg text-stone-900 font-medium tracking-tight leading-relaxed">
                 Before Sri Gajkesari, there was Sri Ganesh Jewellery. For decades, families walked through our doors for their most sacred milestones.
               </p>
 

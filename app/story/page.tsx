@@ -210,7 +210,7 @@ export default function StoryPage() {
               The soul behind
             </ScrollRevealLine>
             <ScrollRevealLine progress={heroProgress} threshold={0.14}>
-              <span className="text-[#8C6D37] font-normal italic">
+              <span className="text-[#dfb16b] font-normal italic">
                 the sparkle.
               </span>
             </ScrollRevealLine>

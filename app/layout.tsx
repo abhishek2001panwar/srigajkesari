@@ -1,14 +1,7 @@
 import type { Metadata } from "next";
-import { Montserrat, Poppins, Open_Sans } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-montserrat",
-  display: "swap",
-});
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -16,14 +9,6 @@ const poppins = Poppins({
   variable: "--font-poppins",
   display: "swap",
 });
-
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-opensans",
-  display: "swap",
-});
-
 
 export const metadata: Metadata = {
   title: "Sri Gajkesari",
@@ -69,13 +54,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html
-      lang="en"
-      className={`${montserrat.variable} ${poppins.variable} ${openSans.variable}  h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col"><SmoothScroll>{children}</SmoothScroll></body>
+    <html lang="en" className={`${poppins.variable} h-full antialiased`}>
+      <body className={`${poppins.className} min-h-full flex flex-col`}>
+        <SmoothScroll>{children}</SmoothScroll>
+      </body>
     </html>
   );
 }

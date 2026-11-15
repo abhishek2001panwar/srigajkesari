@@ -119,14 +119,15 @@ export default function HeroWithLoader() {
           </div>
 
           {/* Refined Heading (Medium Weight, Less Bold) */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[84px] font-normal sm:font-medium tracking-tight leading-[1.05] text-white mb-3 sm:mb-4">
+          <h1 className="text-4xl  sm:text-6xl md:text-7xl lg:text-[84px] font-normal sm:font-medium tracking-tight leading-[1.05] text-white mb-3 sm:mb-4">
             <span className="block overflow-hidden py-1">
               <span
-                className="inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
+                className=" inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
                 style={{
                   transform: isContentReady ? "translate3d(0, 0, 0)" : "translate3d(0, 110%, 0)",
                   opacity: isContentReady ? 1 : 0,
                   transitionDelay: "100ms",
+                
                 }}
               >
                 Crafted for every
@@ -135,7 +136,7 @@ export default function HeroWithLoader() {
 
             <span className="block overflow-hidden py-1">
               <span
-                className="inline-block font-light text-[#f2dab0] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
+                className="inline-block font-logo font-light text-[#dfb16b] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
                 style={{
                   transform: isContentReady ? "translate3d(0, 0, 0)" : "translate3d(0, 110%, 0)",
                   opacity: isContentReady ? 1 : 0,
@@ -172,14 +173,14 @@ export default function HeroWithLoader() {
           >
             <Link
               href="/collection"
-              className="px-7 py-3 bg-[#4C1137] hover:bg-[#380b28] text-white text-xs sm:text-sm font-medium tracking-wide rounded-full transition-all duration-200 active:scale-95 shadow-lg border border-white/10"
+              className="px-7 py-3 bg-[#491239] hover:bg-[#380b28] text-white text-xs sm:text-sm font-medium tracking-wide rounded-full transition-all duration-200 active:scale-95 shadow-lg border border-white/10"
             >
               Explore Collections
             </Link>
 
             <Link
               href="/story"
-              className="flex items-center gap-1.5 text-[#f2dab0] hover:text-white hover:underline text-xs sm:text-sm font-normal tracking-wide transition-colors group"
+              className="flex items-center gap-1.5 text-[#dfb16b] hover:text-white hover:underline text-xs sm:text-sm font-normal tracking-wide transition-colors group"
             >
               <span>Our  story</span>
               <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
