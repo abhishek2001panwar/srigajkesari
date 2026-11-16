@@ -20,7 +20,7 @@ const collectionsData: CollectionItem[] = [
     tagline: "Beads & Basra Pearls",
     description:
       "Hand-strung natural pearls, luminous emerald beads, and fluid heritage strands.",
-    image: "https://srigajkesari.com/wp-content/uploads/2026/09/ratnavali.webp",
+    image: "/ratnavali.webp",
     href: "/collection#ratnavali",
   },
   {
@@ -29,7 +29,7 @@ const collectionsData: CollectionItem[] = [
     tagline: "The 916 Gold Heritage",
     description:
       "Rooted in Karnataka’s deep-earth gold traditions, sculpted with generational heft.",
-    image: "https://srigajkesari.com/wp-content/uploads/2026/09/suvarna.jpg",
+    image: "/suvarna.jpg",
     href: "/collection#suvarna",
   },
   {
@@ -38,7 +38,7 @@ const collectionsData: CollectionItem[] = [
     tagline: "The Royal Jadau",
     description:
       "Uncut Polki and hand-set Kundan capturing the durbar aesthetics of Rajasthan.",
-    image: "https://srigajkesari.com/wp-content/uploads/2026/09/rajasi.jpg",
+    image: "/rajasi.jpg",
     href: "/collection#rajasi",
   },
   {
@@ -47,7 +47,7 @@ const collectionsData: CollectionItem[] = [
     tagline: "Temple Nakshi Sculpture",
     description:
       "Hand-carved sacred iconography and divine relief motifs in pure gold.",
-    image: "https://srigajkesari.com/wp-content/uploads/2026/09/devatri.jpg",
+    image: "/devatri.jpg",
     href: "/collection#devatri",
   },
   {
@@ -56,7 +56,7 @@ const collectionsData: CollectionItem[] = [
     tagline: "Antique Heirlooms",
     description:
       "Vintage-finish gold holding historic patinas and permanent family heirloom value.",
-    image: "https://srigajkesari.com/wp-content/uploads/2026/09/viraasat.jpg",
+    image: "/viraasat.jpg",
     href: "/collection#viraasat",
   },
   {
@@ -65,7 +65,7 @@ const collectionsData: CollectionItem[] = [
     tagline: "The Diamond Reserve",
     description:
       "Certified rare solitaires paired with sleek modern architectural silhouettes.",
-    image: "https://srigajkesari.com/wp-content/uploads/2026/10/niharika.jpg",
+    image: "/niharika.jpg",
     href: "/collection#niharika",
   },
   {
@@ -74,7 +74,7 @@ const collectionsData: CollectionItem[] = [
     tagline: "Men's Fine Jewellery",
     description:
       "Ergonomic weight, solid gold precision, and understated solitaire craftsmanship.",
-    image: "https://srigajkesari.com/wp-content/uploads/2026/10/purusa.jpg",
+    image: "/purusa.jpg",
     href: "/collection#purusa",
   },
   {
@@ -83,7 +83,7 @@ const collectionsData: CollectionItem[] = [
     tagline: "The Sacred Kasu Mala",
     description:
       "Auspicious coin strands of prosperity designed to transition across generations.",
-    image: "https://srigajkesari.com/wp-content/uploads/2026/10/kasu.jpg",
+    image: "/kasu.jpg",
     href: "/collection#kasu",
   },
 ];

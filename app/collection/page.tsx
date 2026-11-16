@@ -26,8 +26,8 @@ const collectionsData = [
     description:
       "Inspired by the royal durbars of Rajasthan, the Rajasi collection features hand-set Kundan-Polki work in 22KT gold. Designed for generational weddings and royal trousseaus, each piece captures the timeless charm of uncut gemstones.",
     images: [
-      "https://srigajkesari.com/wp-content/uploads/2026/09/r1.webp",
-      "https://srigajkesari.com/wp-content/uploads/2026/09/r2.webp",
+      "/collection/r1.webp",
+      "/collection/r2.webp",
     ],
   },
   {
@@ -39,8 +39,8 @@ const collectionsData = [
     description:
       "Rooted in the legendary deep-earth gold heritage of Karnataka. Sculpted with authentic ancestral heft, every piece commands an understated presence passed seamlessly down family lineages.",
     images: [
-      "https://srigajkesari.com/wp-content/uploads/2026/09/suv1.webp",
-      "https://srigajkesari.com/wp-content/uploads/2026/09/suv2.webp",
+      "/collection/suv1.webp",
+      "/collection/suv2.webp",
     ],
   },
   {
@@ -52,8 +52,8 @@ const collectionsData = [
     description:
       "A celebration of fluid grace and organic luminescence. Natural emerald drops, rare Basra pearls, and precious gemstone strands woven by master karigars for auspicious occasions.",
     images: [
-      "https://srigajkesari.com/wp-content/uploads/2026/09/ratna1.webp",
-      "https://srigajkesari.com/wp-content/uploads/2026/09/ratna2.webp",
+      "/collection/ratna1.webp",
+      "/collection/ratna2.webp",
     ],
   },
   {
@@ -65,8 +65,8 @@ const collectionsData = [
     description:
       "Devatri celebrates India's sacred iconography. With meticulous Nakshi hand-carving and divine relief motifs, these sacred ornaments carry blessings, cultural reverence, and permanent gold equity.",
     images: [
-      "https://srigajkesari.com/wp-content/uploads/2026/09/devatri1.webp",
-      "https://srigajkesari.com/wp-content/uploads/2026/09/devatri2.webp",
+      "/collection/devatri1.webp",
+      "/collection/devatri2.webp",
     ],
   },
   {
@@ -78,8 +78,8 @@ const collectionsData = [
     description:
       "Brilliant, rare, and certified. Niharika unites top-tier solitaires with sleek architectural silhouettes, engineered for bespoke engagements and modern black-tie occasions.",
     images: [
-      "https://srigajkesari.com/wp-content/uploads/2026/09/niharika1.webp",
-      "https://srigajkesari.com/wp-content/uploads/2026/09/niharika2.webp",
+      "/collection/niharika1.webp",
+      "/collection/niharika2.webp",
     ],
   },
   {
@@ -91,8 +91,8 @@ const collectionsData = [
     description:
       "Designed for the patron of quiet confidence. Precision edges, ergonomic weight, and heavy gold proportions sculpted for boardroom authority and family celebrations.",
     images: [
-      "https://srigajkesari.com/wp-content/uploads/2026/09/purusa1.webp",
-      "https://srigajkesari.com/wp-content/uploads/2026/09/purusa2.webp",
+      "/collection/purusa1.webp",
+      "/collection/purusa2.webp",
     ],
   },
   {
@@ -104,8 +104,8 @@ const collectionsData = [
     description:
       "A revered emblem of prosperity and maternal blessing across South India. Cast with unbroken 916 gold purity, the Kasu Mala is crafted to grace generations without tarnishing.",
     images: [
-      "https://srigajkesari.com/wp-content/uploads/2026/09/kasu1.webp",
-      "https://srigajkesari.com/wp-content/uploads/2026/09/kasu2.webp",
+      "/collection/kasu1.webp",
+      "/collection/kasu2.webp",
     ],
   },
   {
@@ -117,8 +117,8 @@ const collectionsData = [
     description:
       "Holding historic patinas and ancient temple goldsmithing techniques. Each piece feels like an authentic artifact unearthed from a dynastic treasury.",
     images: [
-      "https://srigajkesari.com/wp-content/uploads/2026/09/vir1.webp",
-      "https://srigajkesari.com/wp-content/uploads/2026/09/vir2.webp",
+      "/collection/vir1.webp",
+      "/collection/vir2.webp",
     ],
   },
 ];

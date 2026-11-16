@@ -342,7 +342,7 @@ export default function StoryPage() {
               }}
             >
               <img
-                src="https://srigajkesari.com/wp-content/uploads/2026/09/foundation.webp"
+                src="/foundation.webp"
                 alt="Ancestral Craftsmanship - Sri Gajkesari"
                 className="w-full h-full object-cover object-center"
               />
@@ -366,7 +366,7 @@ export default function StoryPage() {
             }}
           >
             <img
-              src="https://srigajkesari.com/wp-content/uploads/2026/09/story-bg.webp"
+              src="/story-bg.webp"
               alt="The Guiding Principles"
               className="w-full h-full object-cover object-center"
             />

@@ -92,7 +92,7 @@ export default function BuiltOnIntegrity() {
         }}
       >
         <img
-          src="https://srigajkesari.com/wp-content/uploads/2026/09/integrity.webp"
+          src="/integrity.webp"
           alt="Sri Gajkesari Heritage Artistry"
           className="w-full h-full object-cover object-center will-change-transform"
           style={{

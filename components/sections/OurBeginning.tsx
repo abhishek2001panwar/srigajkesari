@@ -72,7 +72,7 @@ export default function OurBeginning() {
               }}
             >
               <img
-                src="https://srigajkesari.com/wp-content/uploads/2026/09/beginning.webp"
+                src="/about/beginning.webp"
                 alt="The Beginning - Sri Gajkesari Jewellers"
                 className="w-full h-full object-cover object-center"
               />
@@ -127,7 +127,7 @@ export default function OurBeginning() {
                 }}
               >
                 <img
-                  src="https://srigajkesari.com/wp-content/uploads/2026/09/roots.webp"
+                  src="/about/roots.webp"
                   alt="Ancestral Goldsmithing - Sri Gajkesari Jewellers"
                   className="w-full h-full object-cover object-center"
                 />

@@ -68,7 +68,7 @@ export default function CraftVisionSection() {
             }}
           >
             <img
-              src="https://srigajkesari.com/wp-content/uploads/2026/09/Frame-66.webp"
+              src="/Frame-66.webp"
               alt="Sri Gajkesari Karigari Devotion"
               className="w-full h-full object-cover object-center"
             />

@@ -178,7 +178,7 @@ export default function ContactShowroom() {
               }}
             >
               <img
-                src="https://srigajkesari.com/wp-content/uploads/2026/09/store-contact.webp"
+                src="/store-contact.webp"
                 alt="Sri Gajkesari Jewellers Flagship Salon Malleshwaram"
                 className="w-full h-full object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
               />
