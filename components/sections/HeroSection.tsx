@@ -56,7 +56,7 @@ export default function HeroWithLoader() {
         >
           {/* Hero Image */}
           <img
-            src="https://srigajkesari.com/wp-content/uploads/2026/09/home-hero.webp"
+            src="/hero.jpg"
             alt="Sri Gajkesari Fine Jewellery"
             className={`w-full h-full object-cover object-[center_30%] sm:object-center transition-transform duration-[1400ms] ease-out ${
               isExpanded ? "scale-100" : "scale-115"

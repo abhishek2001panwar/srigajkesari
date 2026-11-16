@@ -23,11 +23,11 @@ export default function Home() {
       <div className="relative z-10">
         <OurBeginning />
       </div>
-      <AtelierVideoShowcase />
+     
 
       {/* 3. Built on Integrity (z-30, negative top margin pulls it ON TOP of Our Beginning) */}
       <BuiltOnIntegrity />
-
+ <AtelierVideoShowcase />
      <CollectionsShowcase />
       <ParallaxVisualBreak />
      <CraftVisionSection />
