@@ -64,8 +64,6 @@ export default function CustomerReviews() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const maxIndex = reviewsData.length - 1;
-
   const updateActiveIndex = () => {
     if (!scrollRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
@@ -112,17 +110,19 @@ export default function CustomerReviews() {
   };
 
   return (
-    <section className="relative z-20 w-full bg-[#FFFFFF] text-[#1D1D1F] py-10 px-6 sm:px-10 lg:px-16 select-none border-t border-black/5">
+    <section className="relative z-20 w-full bg-[#FFFFFF] text-[#1D1D1F] py-16 sm:py-24 px-6 sm:px-10 lg:px-16 select-none border-t border-black/5">
       <div className="max-w-[1280px] mx-auto">
-        {/* ================= APPLE HEADER ================= */}
+        {/* ================= HEADER ================= */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between pb-6 mb-8 border-b border-black/10 gap-4">
           <div>
-            <span className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#86868B] block mb-2">
-              Patron Testimonials
+            <span className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#491239]/75 block mb-2">
+               Testimonials
             </span>
             <h2 className="text-3xl sm:text-5xl font-semibold tracking-tight text-[#1D1D1F] leading-tight">
               Worn with pride. <br />
-              <span className="text-[#86868B] font-normal">Cherished for generations.</span>
+              <span className="text-[#dfb16b] font-normal">
+                Cherished for generations.
+              </span>
             </h2>
           </div>
 
@@ -132,7 +132,7 @@ export default function CustomerReviews() {
               onClick={() => handleArrowScroll("left")}
               disabled={activeIndex === 0}
               aria-label="Previous review"
-              className="w-9 h-9 rounded-full border border-black/15 bg-white text-black flex items-center justify-center hover:bg-black hover:text-white disabled:opacity-20 disabled:hover:bg-white disabled:hover:text-black transition-all cursor-pointer active:scale-95"
+              className="w-9 h-9 rounded-full border border-[#491239]/25 bg-white text-[#491239] flex items-center justify-center hover:bg-[#491239] hover:text-[#dfb16b] disabled:opacity-25 disabled:hover:bg-white disabled:hover:text-[#491239] transition-all cursor-pointer active:scale-95"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -140,14 +140,14 @@ export default function CustomerReviews() {
               onClick={() => handleArrowScroll("right")}
               disabled={activeIndex >= reviewsData.length - 3}
               aria-label="Next review"
-              className="w-9 h-9 rounded-full border border-black/15 bg-white text-black flex items-center justify-center hover:bg-black hover:text-white disabled:opacity-20 disabled:hover:bg-white disabled:hover:text-black transition-all cursor-pointer active:scale-95"
+              className="w-9 h-9 rounded-full border border-[#491239]/25 bg-white text-[#491239] flex items-center justify-center hover:bg-[#491239] hover:text-[#dfb16b] disabled:opacity-25 disabled:hover:bg-white disabled:hover:text-[#491239] transition-all cursor-pointer active:scale-95"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* ================= APPLE BENTO HORIZONTAL CAROUSEL ================= */}
+        {/* ================= ROYAL PLUM & GOLD CAROUSEL ================= */}
         <div
           ref={scrollRef}
           className="flex items-stretch gap-6 overflow-x-auto scroll-smooth no-scrollbar py-2 snap-x snap-mandatory"
@@ -156,27 +156,27 @@ export default function CustomerReviews() {
           {reviewsData.map((item) => (
             <div
               key={item.id}
-              className="flex-shrink-0 w-[84vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] rounded-3xl bg-[#F5F5F7] border border-black/[0.04] p-8 sm:p-9 flex flex-col justify-between snap-start"
+              className="flex-shrink-0 w-[84vw] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] rounded-3xl bg-[#491239] border border-[#dfb16b]/25 hover:border-[#dfb16b]/60 shadow-[0_14px_34px_-12px_rgba(73,18,57,0.3)] p-8 sm:p-9 flex flex-col justify-between snap-start transition-all duration-300"
             >
               <div>
-                <span className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#86868B] block mb-3">
+                <span className="text-[11px] uppercase tracking-[0.2em] font-medium text-[#dfb16b] block mb-3">
                   {item.title}
                 </span>
-                <p className="text-sm sm:text-[15px] text-[#1D1D1F] font-normal tracking-tight leading-relaxed">
+                <p className="text-sm sm:text-[15px] text-[#f5e6cc]/90 font-normal tracking-tight leading-relaxed">
                   &ldquo;{item.comment}&rdquo;
                 </p>
               </div>
 
-              <div className="pt-8 mt-6 border-t border-black/10 flex items-center justify-between text-xs">
+              <div className="pt-6 mt-8 border-t border-[#dfb16b]/20 flex items-center justify-between text-xs">
                 <div>
-                  <span className="block font-semibold text-[#1D1D1F] tracking-tight">
+                  <span className="block font-semibold text-[#dfb16b] tracking-tight">
                     {item.author}
                   </span>
-                  <span className="text-[#86868B] font-normal tracking-tight">
+                  <span className="text-[#dfb16b]/70 font-normal tracking-tight">
                     {item.location}
                   </span>
                 </div>
-                <span className="text-[11px] text-[#86868B]">
+                <span className="text-[11px] text-[#dfb16b]/70">
                   {item.date}
                 </span>
               </div>

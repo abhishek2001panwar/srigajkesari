@@ -8,38 +8,47 @@ const HERO_IMAGES = [
   {
     src: "/hero/1.jpg",
     alt: "Sri Gajkesari Fine Jewellery — Royal Collection",
+    position: "object-[center_75%]",
   },
   {
     src: "/hero/2.jpg",
     alt: "Sri Gajkesari — Rajasi Jadau Couture",
+    position: "object-[center_75%]",
   },
   {
     src: "/hero/3.jpg",
     alt: "Sri Gajkesari — Devatri Temple Gold",
+    position: "object-[center_65%]",
   },
   {
     src: "/hero/4.jpg",
     alt: "Sri Gajkesari — Ratnavali Gemstones",
+    position: "object-[center_75%]",
   },
   {
     src: "/hero/5.jpg",
     alt: "Sri Gajkesari — Heritage Kasu Malai",
+    position: "object-[center_75%]",
   },
   {
     src: "/hero/6.jpg",
     alt: "Sri Gajkesari — Niharika Solitaires",
+    position: "object-[center_75%]",
   },
   {
     src: "/hero/7.jpg",
     alt: "Sri Gajkesari — Suvarna 22KT Gold",
+    position: "object-[center_75%]",
   },
   {
     src: "/hero/8.jpg",
     alt: "Sri Gajkesari — Viraasat Antique Heirlooms",
+    position: "object-[center_80%]",
   },
   {
     src: "/hero/9.jpg",
     alt: "Sri Gajkesari — Purusa Men's Couture",
+    position: "object-[center_35%]",
   },
 ];
 
@@ -96,9 +105,9 @@ export default function HeroWithLoader() {
   }, [isContentReady, activeSlide]);
 
   return (
-    <div className="relative w-full h-[100dvh] overflow-hidden select-none bg-[#000000] text-[#F5F5F7]">
+    <div className="relative w-full h-[100dvh] overflow-hidden select-none bg-[#12030d] text-[#F5F5F7]">
       
-      {/* ================= 1. CENTERING STAGE (9-IMAGE CAROUSEL TO FULLSCREEN) ================= */}
+      {/* ================= 1. FULLSCREEN CAROUSEL STAGE ================= */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <div
           className={`relative overflow-hidden will-change-[width,height,transform,border-radius] transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
@@ -107,7 +116,7 @@ export default function HeroWithLoader() {
               : "w-[300px] sm:w-[420px] md:w-[500px] h-[190px] sm:h-[260px] md:h-[310px] rounded-3xl shadow-2xl border border-white/10"
           }`}
         >
-          {/* 9-Image Luxury Cross-Fade & Subtle Ken Burns Zoom Stack */}
+          {/* Full-Bleed Edge-to-Edge Photography (Balanced Upper-Chest Focal Point, Zero Extra Zoom) */}
           {HERO_IMAGES.map((slide, idx) => {
             const isActive = idx === activeSlide;
             return (
@@ -115,25 +124,19 @@ export default function HeroWithLoader() {
                 key={slide.src}
                 src={slide.src}
                 alt={slide.alt}
-                className={`absolute inset-0 w-full h-full object-cover object-[center_30%] sm:object-center transition-all duration-[1500ms] ease-out will-change-[opacity,transform] ${
+                className={`absolute inset-0 w-full h-full object-cover ${slide.position} transition-opacity duration-[1500ms] ease-out ${
                   isActive ? "opacity-100 z-[1]" : "opacity-0 z-0"
-                } ${
-                  !isExpanded
-                    ? "scale-115"
-                    : isActive
-                    ? "scale-105"
-                    : "scale-100"
                 }`}
               />
             );
           })}
 
-          {/* Minimal Contrast Gradients */}
+          {/* Light Bottom Readability Gradient Only (Top & Center Stay 100% Clear) */}
           <div
             className={`absolute inset-0 z-[2] pointer-events-none transition-opacity duration-1000 ${
               isExpanded
-                ? "bg-gradient-to-t from-black via-black/45 to-black/20 opacity-90"
-                : "bg-black/30 opacity-70"
+                ? "bg-gradient-to-t from-black/80 via-black/25 to-transparent opacity-100"
+                : "bg-black/25 opacity-70"
             }`}
           />
         </div>
@@ -151,7 +154,7 @@ export default function HeroWithLoader() {
               Sri Gajkesari
             </span>
             <span className="w-1 h-1 rounded-full bg-white/40" />
-            <span className="font-mono text-[10px] tracking-tight text-[#86868B]">
+            <span className="font-mono text-[10px] tracking-tight text-white/60">
               {loadPercent}%
             </span>
           </div>
@@ -159,7 +162,7 @@ export default function HeroWithLoader() {
           {/* Hairline Progress Gauge */}
           <div className="w-32 h-[2px] bg-white/10 rounded-full overflow-hidden relative">
             <div
-              className="absolute left-0 top-0 h-full bg-[#f2dab0] transition-all duration-300 ease-out rounded-full"
+              className="absolute left-0 top-0 h-full bg-[#dfb16b] transition-all duration-300 ease-out rounded-full"
               style={{ width: `${loadPercent}%` }}
             />
           </div>
@@ -173,7 +176,7 @@ export default function HeroWithLoader() {
           {/* Eyebrow */}
           <div className="overflow-hidden mb-2.5 sm:mb-3">
             <span
-              className={`text-[12px] uppercase tracking-[0.24em] font-medium text-[#f2dab0]/85 block transition-all duration-700 ease-out will-change-transform ${
+              className={`text-[12px] uppercase tracking-[0.24em] font-medium text-[#f2dab0]/90 block transition-all duration-700 ease-out will-change-transform ${
                 isContentReady
                   ? "translate-y-0 opacity-100"
                   : "translate-y-full opacity-0"
@@ -184,7 +187,7 @@ export default function HeroWithLoader() {
           </div>
 
           {/* Refined Heading */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[84px] font-normal sm:font-medium tracking-tight leading-[1.05] text-white mb-3 sm:mb-4">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[84px] font-normal tracking-tight leading-[1.05] text-white mb-3 sm:mb-4">
             <span className="block overflow-hidden py-1">
               <span
                 className="inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
@@ -200,7 +203,7 @@ export default function HeroWithLoader() {
 
             <span className="block overflow-hidden py-1">
               <span
-                className="inline-block font-logo font-light text-[#dfb16b] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
+                className="inline-block font-light text-[#dfb16b] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
                 style={{
                   transform: isContentReady ? "translate3d(0, 0, 0)" : "translate3d(0, 110%, 0)",
                   opacity: isContentReady ? 1 : 0,
@@ -215,7 +218,7 @@ export default function HeroWithLoader() {
           {/* Narrative Paragraph */}
           <div className="overflow-hidden mb-6 sm:mb-8">
             <p
-              className="text-sm sm:text-base md:text-lg text-stone-300 font-light tracking-tight leading-relaxed max-w-2xl lg:max-w-3xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
+              className="text-sm sm:text-base md:text-lg text-white/90 font-light tracking-tight leading-relaxed max-w-2xl lg:max-w-3xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
               style={{
                 transform: isContentReady ? "translate3d(0, 0, 0)" : "translate3d(0, 100%, 0)",
                 opacity: isContentReady ? 1 : 0,

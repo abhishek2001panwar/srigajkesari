@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -17,17 +17,37 @@ const links = [
 
 export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
 
-  // light = transparent bg, white text, /logo.png
-  // dark  = white bg, black text, earlier original SVG logo
   const isDark = theme === "dark";
+
+  useEffect(() => {
+    if (!isDark) {
+      setIsAtTop(true);
+      return;
+    }
+
+    const handleScroll = () => {
+      setIsAtTop(window.scrollY <= 40);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isDark]);
+
+  const isHidden = isDark && !isAtTop && !mobileMenuOpen;
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 h-32 sm:h-32 select-none transition-all duration-300 ${
+      className={`fixed top-0 inset-x-0 z-50 h-32 sm:h-32 select-none transition-all duration-500 ease-out ${
         isDark
           ? "bg-white shadow-xs border-b border-black/10"
           : "bg-transparent"
+      } ${
+        isHidden
+          ? "-translate-y-full opacity-0 pointer-events-none"
+          : "translate-y-0 opacity-100"
       }`}
     >
       <div
@@ -36,13 +56,13 @@ export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
         }`}
       >
         {/* 1. Brand Logo */}
-       <Link href="/" className="flex items-center shrink-0 overflow-visible py-5">
-  <img
-    src="/logo.png"
-    alt="Sri Gajkesari"
-    className="h-24 sm:h-28 lg:h-32 w-auto max-w-none object-contain scale-125 sm:scale-150 origin-left transition-transform duration-300"
-  />
-</Link>
+        <Link href="/" className="flex items-center shrink-0 overflow-visible py-5">
+          <img
+            src="/logo.png"
+            alt="Sri Gajkesari"
+            className="h-24 sm:h-28 lg:h-32 w-auto max-w-none object-contain scale-125 sm:scale-150 origin-left transition-transform duration-300"
+          />
+        </Link>
 
         {/* 2. Desktop Navigation */}
         <div className="hidden md:flex items-center gap-12 lg:gap-16">

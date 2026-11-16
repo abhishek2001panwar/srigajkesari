@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins , Open_Sans } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 
@@ -7,6 +7,12 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-poppins",
+  display: "swap",
+});
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-opensans",
   display: "swap",
 });
 
@@ -60,8 +66,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${poppins.variable} h-full antialiased`}>
-      <body className={`${poppins.className} min-h-full flex flex-col`}>
+    <html lang="en" className={`${poppins.variable} ${openSans.variable} h-full antialiased`}>
+      <body className={`${poppins.className} ${openSans.className} min-h-full flex flex-col`}>
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>

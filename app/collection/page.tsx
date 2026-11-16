@@ -5,15 +5,11 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowRight,
-  ChevronDown,
-  Menu,
-  X,
   Phone,
-  ShieldCheck,
-  Compass,
 } from "lucide-react";
 
 import SriGajkesariNavbar from "@/components/Navbar";
+import Footer from "@/components/sections/Footer";
 
 // --- Collection Data ---
 const collectionsData = [
@@ -123,9 +119,8 @@ const collectionsData = [
   },
 ];
 
-
-// --- Apple Minimalist Fullscreen Stage Item ---
-function AppleCollectionCard({ item, index }: { item: any; index: number }) {
+// --- Fullscreen Stage Item (With Spacing & Golden Collection Name Only) ---
+function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] }) {
   const [activeImgIdx, setActiveImgIdx] = useState(0);
   const [parallaxOffset, setParallaxOffset] = useState(0);
   const cardRef = useRef<HTMLElement | null>(null);
@@ -140,8 +135,7 @@ function AppleCollectionCard({ item, index }: { item: any; index: number }) {
 
       if (rect.bottom >= 0 && rect.top <= vh) {
         const centerDiff = rect.top + rect.height / 2 - vh / 2;
-        // Controlled, butter-smooth physical drift
-        setParallaxOffset(-centerDiff * 0.14);
+        setParallaxOffset(-centerDiff * 0.06);
       }
       ticking = false;
     };
@@ -171,11 +165,11 @@ function AppleCollectionCard({ item, index }: { item: any; index: number }) {
     <article
       ref={cardRef}
       id={item.id}
-      className="relative w-full h-[88vh] sm:h-[92vh] lg:h-[96vh] min-h-[620px] max-h-[1050px] overflow-hidden select-none bg-[#12030d] border-b border-black/10 group"
+      className="relative w-full h-[84vh] sm:h-[88vh] lg:h-[92vh] min-h-[600px] max-h-[1000px] rounded-3xl overflow-hidden select-none bg-[#12030d] shadow-[0_24px_60px_-15px_rgba(18,3,13,0.28)] group scroll-mt-24"
     >
-      {/* 1. Full-Bleed Imagery with Smooth Perspective Crossfade & Parallax */}
+      {/* 1. Full-Bleed Imagery (Natural 1:1 Framing, No Over-Zoom) */}
       <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
-        {item.images.map((img: string | Blob | undefined, i: React.Key | null | undefined) => {
+        {item.images.map((img, i) => {
           const isCurrent = activeImgIdx === i;
           return (
             <div
@@ -185,15 +179,15 @@ function AppleCollectionCard({ item, index }: { item: any; index: number }) {
               }`}
             >
               <div
-                className="absolute -top-[15%] inset-x-0 h-[130%] w-full will-change-transform flex items-center justify-center"
+                className="absolute -top-[6%] inset-x-0 h-[112%] w-full will-change-transform flex items-center justify-center"
                 style={{
-                  transform: `translate3d(0, ${parallaxOffset}px, 0) scale(1.08)`,
+                  transform: `translate3d(0, ${parallaxOffset}px, 0)`,
                   transition: "transform 0.08s linear",
                 }}
               >
                 <img
                   src={img}
-                  alt={`${item.name}`}
+                  alt={item.name}
                   className="w-full h-full object-cover object-center"
                   loading="lazy"
                 />
@@ -202,43 +196,50 @@ function AppleCollectionCard({ item, index }: { item: any; index: number }) {
           );
         })}
 
-        {/* Apple High-Contrast Gradients (No harsh tints) */}
+        {/* Clean Contrast Gradients */}
         <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/85 via-black/25 to-black/10 pointer-events-none" />
         <div className="absolute inset-0 z-20 bg-gradient-to-r from-black/60 via-transparent to-transparent pointer-events-none" />
       </div>
 
-     
+      {/* 2. Top-Left Subtle Collection Label */}
+      {/* <div className="absolute top-7 sm:top-10 left-6 sm:left-12 lg:left-14 z-30">
+        <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-[11px] uppercase tracking-[0.22em] font-medium text-white/85">
+          <span>{item.roman}</span>
+          <span className="w-1 h-1 rounded-full bg-white/40" />
+          <span>{item.badge}</span>
+        </span>
+      </div> */}
 
-      {/* 3. Bottom-Left Editorial Content */}
-      <div className="absolute bottom-10 sm:bottom-14 left-6 sm:left-12 lg:left-16 z-30 max-w-xl text-white">
-        <p className="text-xs uppercase tracking-[0.24em] font-medium text-white/70 mb-2">
+      {/* 3. Bottom-Left Editorial Content (Golden Collection Name Only) */}
+      <div className="absolute bottom-8 sm:bottom-12 left-6 sm:left-12 lg:left-14 z-30 max-w-xl text-white">
+        <p className="text-xs uppercase tracking-[0.24em] font-medium text-white/75 mb-2">
           {item.subtitle}
         </p>
 
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-white leading-[1.05] mb-4">
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-[#dfb16b] leading-[1.05] mb-4">
           {item.name}
         </h2>
 
-        <p className="text-sm sm:text-base text-white/80 font-normal tracking-tight leading-relaxed max-w-lg mb-6">
+        <p className="text-sm sm:text-base text-white/85 font-normal tracking-tight leading-relaxed max-w-lg mb-7">
           {item.description}
         </p>
 
         <div className="flex items-center gap-4">
           <a
             href="#cta"
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white text-black text-xs uppercase tracking-[0.2em] font-medium hover:bg-stone-200 transition-all active:scale-95 shadow-md"
+            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#491239] hover:bg-[#5e184a] text-white border border-white/15 text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 shadow-lg"
           >
             <span>Reserve Viewing</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5 text-white/85" />
           </a>
         </div>
       </div>
 
-      {/* 4. Bottom-Right Perspective Controls (Apple Capsule Style) */}
-      <div className="absolute bottom-10 sm:bottom-14 right-6 sm:right-12 z-30 flex items-center gap-3">
+      {/* 4. Bottom-Right Perspective Controls */}
+      <div className="absolute bottom-8 sm:bottom-12 right-6 sm:right-12 z-30 flex items-center gap-3">
         {/* Step Indicator Pill */}
-        <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/20">
-          {item.images.map((image: string, dotIdx: number) => {
+        <div className="flex items-center gap-1.5 bg-black/45 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/15">
+          {item.images.map((_, dotIdx) => {
             const isSelected = activeImgIdx === dotIdx;
             return (
               <button
@@ -260,14 +261,14 @@ function AppleCollectionCard({ item, index }: { item: any; index: number }) {
           <button
             onClick={prevSlide}
             aria-label="Previous Perspective"
-            className="w-9 h-9 rounded-full bg-black/40 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+            className="w-9 h-9 rounded-full bg-black/45 hover:bg-[#491239] text-white border border-white/20 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={nextSlide}
             aria-label="Next Perspective"
-            className="w-9 h-9 rounded-full bg-black/40 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+            className="w-9 h-9 rounded-full bg-black/45 hover:bg-[#491239] text-white border border-white/20 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
@@ -277,12 +278,12 @@ function AppleCollectionCard({ item, index }: { item: any; index: number }) {
   );
 }
 
-// --- Footer Component ---
+// --- Clean Footer Component ---
 function CleanFooter() {
   return (
     <footer
       id="footer"
-      className="relative z-20 w-full bg-[#F5F5F7] text-[#86868B] text-[13px] sm:text-sm py-12 px-6 sm:px-10 lg:px-16 border-t border-black/10 select-none"
+      className="relative z-20 w-full bg-[#FAF8F5] text-[#491239]/80 text-[13px] sm:text-sm py-12 px-6 sm:px-10 lg:px-16 border-t border-black/10 select-none"
     >
       <div className="max-w-[1280px] mx-auto">
         {/* Brand Header & Tag */}
@@ -295,7 +296,7 @@ function CleanFooter() {
             />
           </a>
 
-          <span className="text-xs uppercase tracking-[0.2em] font-medium text-[#86868B]">
+          <span className="text-xs uppercase tracking-[0.2em] font-medium text-[#491239]">
             The Malleshwaram Flagship &bull; Bengaluru
           </span>
         </div>
@@ -303,7 +304,7 @@ function CleanFooter() {
         {/* Matrix Directory */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-10 border-b border-black/10">
           <div>
-            <h4 className="font-semibold text-[#1D1D1F] mb-3 text-sm tracking-tight">
+            <h4 className="font-semibold text-[#491239] mb-3 text-sm tracking-tight">
               Collections
             </h4>
             <ul className="space-y-2">
@@ -311,7 +312,7 @@ function CleanFooter() {
                 <li key={col.id}>
                   <a
                     href={`#${col.id}`}
-                    className="hover:text-[#1D1D1F] transition-colors"
+                    className="hover:text-[#dfb16b] transition-colors"
                   >
                     {col.name}
                   </a>
@@ -321,7 +322,7 @@ function CleanFooter() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-[#1D1D1F] mb-3 text-sm tracking-tight">
+            <h4 className="font-semibold text-[#491239] mb-3 text-sm tracking-tight">
               Archival
             </h4>
             <ul className="space-y-2">
@@ -329,7 +330,7 @@ function CleanFooter() {
                 <li key={col.id}>
                   <a
                     href={`#${col.id}`}
-                    className="hover:text-[#1D1D1F] transition-colors"
+                    className="hover:text-[#dfb16b] transition-colors"
                   >
                     {col.name}
                   </a>
@@ -339,27 +340,27 @@ function CleanFooter() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-[#1D1D1F] mb-3 text-sm tracking-tight">
+            <h4 className="font-semibold text-[#491239] mb-3 text-sm tracking-tight">
               Atelier Boutique
             </h4>
             <p className="leading-relaxed mb-2 text-xs sm:text-[13px]">
               #249, Margosa Road, Between 16th &amp; 17th Cross, Malleshwaram,
               Bengaluru 560003
             </p>
-            <p className="text-xs text-[#86868B]">
+            <p className="text-xs text-[#491239]/70">
               Daily 10:30 AM – 8:30 PM &bull; Valet
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold text-[#1D1D1F] mb-3 text-sm tracking-tight">
+            <h4 className="font-semibold text-[#491239] mb-3 text-sm tracking-tight">
               Concierge
             </h4>
             <div className="space-y-2 text-xs sm:text-[13px]">
               <p>
                 <a
                   href="tel:+919535125553"
-                  className="hover:text-[#1D1D1F] transition-colors"
+                  className="hover:text-[#dfb16b] transition-colors"
                 >
                   +91 95351 25553
                 </a>
@@ -367,7 +368,7 @@ function CleanFooter() {
               <p>
                 <a
                   href="mailto:support@srigajkesari.com"
-                  className="hover:text-[#1D1D1F] transition-colors"
+                  className="hover:text-[#dfb16b] transition-colors"
                 >
                   support@srigajkesari.com
                 </a>
@@ -377,7 +378,7 @@ function CleanFooter() {
                   href="https://www.instagram.com/srigajkesarijewellers/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#1D1D1F]"
+                  className="hover:text-[#dfb16b]"
                 >
                   Instagram
                 </a>
@@ -386,7 +387,7 @@ function CleanFooter() {
                   href="https://www.youtube.com/@SriGajKesari-h8"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#1D1D1F]"
+                  className="hover:text-[#dfb16b]"
                 >
                   YouTube
                 </a>
@@ -396,14 +397,18 @@ function CleanFooter() {
         </div>
 
         {/* Sub-Footer */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs tracking-tight">
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs tracking-tight text-[#491239]/65">
           <span>&copy; 2026 Sri Gajkesari Jewellers. All rights reserved.</span>
           <div className="flex items-center gap-4">
-            <span className="hover:text-[#1D1D1F] cursor-pointer">Privacy</span>
+            <span className="hover:text-[#491239] cursor-pointer">Privacy</span>
             <span>&bull;</span>
-            <span className="hover:text-[#1D1D1F] cursor-pointer">BIS Hallmarking</span>
+            <span className="hover:text-[#491239] cursor-pointer">
+              BIS Hallmarking
+            </span>
             <span>&bull;</span>
-            <span className="hover:text-[#1D1D1F] cursor-pointer">Certifications</span>
+            <span className="hover:text-[#491239] cursor-pointer">
+              Certifications
+            </span>
           </div>
         </div>
       </div>
@@ -414,16 +419,16 @@ function CleanFooter() {
 // --- Main App / Page Component ---
 export default function App() {
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1D1D1F] selection:bg-[#4C1137] selection:text-white ">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#1D1D1F] selection:bg-[#491239] selection:text-white">
       <SriGajkesariNavbar theme="dark" />
 
-      {/* 2. Apple Editorial Centered Hero */}
+      {/* 1. Editorial Centered Hero */}
       <section
         id="hero"
-        className="relative w-full pt-36 sm:pt-44 lg:pt-48 pb-16 sm:pb-24 px-6 sm:px-10 lg:px-16 text-center select-none bg-[#FFFFFF]"
+        className="relative w-full pt-36 sm:pt-44 lg:pt-48 pb-14 sm:pb-20 px-6 sm:px-10 lg:px-16 text-center select-none bg-[#FFFFFF]"
       >
         <div className="max-w-3xl mx-auto flex flex-col items-center">
-          <p className="text-[12px] uppercase tracking-[0.26em] font-medium text-[#86868B] mb-3">
+          <p className="text-[12px] uppercase tracking-[0.26em] font-medium text-[#491239]/75 mb-3">
             The Archival Catalogue
           </p>
 
@@ -432,18 +437,18 @@ export default function App() {
             <span className="text-[#dfb16b]">has a story.</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-[#86868B] font-normal tracking-tight leading-relaxed max-w-xl mb-8">
+          <p className="text-base sm:text-lg md:text-xl text-stone-600 font-normal tracking-tight leading-relaxed max-w-xl mb-8">
             Explore handcrafted heirlooms created with uncompromised gold purity,
             rare uncut gemstones, and ancestral devotion sculpted across generations.
           </p>
 
-          {/* Quick Anchor Jumper Pills */}
+          {/* Clean Light Anchor Pills */}
           <div className="flex items-center justify-center gap-2 flex-wrap max-w-2xl">
             {collectionsData.map((col) => (
               <a
                 key={col.id}
                 href={`#${col.id}`}
-                className="px-3.5 py-1.5 rounded-full bg-[#F5F5F7] hover:bg-black hover:text-white text-xs font-medium tracking-tight text-[#1D1D1F] transition-all"
+                className="px-4 py-2 rounded-full bg-[#FAF8F5] hover:bg-[#491239] text-[#491239] hover:text-white border border-[#491239]/15 text-xs font-medium tracking-tight transition-all"
               >
                 {col.name}
               </a>
@@ -452,55 +457,54 @@ export default function App() {
         </div>
       </section>
 
-      {/* 3. Fullscreen Curated Collection Stages */}
-      <main className="w-full">
-        {collectionsData.map((item, index) => (
-          <AppleCollectionCard key={item.id} item={item} index={index} />
+      {/* 2. Spaced Fullscreen Curated Collection Stages */}
+      <main className="w-full px-4 sm:px-8 lg:px-12 pb-16 sm:pb-24 space-y-8 sm:space-y-12">
+        {collectionsData.map((item) => (
+          <AppleCollectionCard key={item.id} item={item} />
         ))}
       </main>
 
-      {/* 4. Minimal Centered Apple Conversion Section */}
+      {/* 3. Minimal Centered Conversion Section */}
       <section
         id="cta"
-        className="w-full bg-[#F5F5F7] py-20 sm:py-28 px-6 sm:px-12 border-t border-black/5 select-none text-center"
+        className="w-full bg-[#FAF8F5] py-20 sm:py-28 px-6 sm:px-12 border-t border-black/5 select-none text-center"
       >
         <div className="max-w-2xl mx-auto flex flex-col items-center">
-          <p className="text-[12px] uppercase tracking-[0.24em] font-medium text-[#86868B] mb-3">
-            Atelier Sanctuary
-          </p>
+         
 
           <h2 className="text-3xl sm:text-5xl font-semibold tracking-tight text-[#1D1D1F] leading-tight mb-4">
             Found something that <br />
-            <span className="text-[#86868B]">feels like you?</span>
+            <span className="text-[#dfb16b]">feels like you?</span>
           </h2>
 
-          <p className="text-base sm:text-lg text-[#86868B] font-normal tracking-tight leading-relaxed max-w-lg mb-8">
-            Experience our archival heirlooms in total discretion. Book a private
-            viewing salon at our Malleshwaram boutique or commission custom karigari.
+          <p className="text-base sm:text-lg text-stone-600 font-normal tracking-tight leading-relaxed max-w-lg mb-8">
+            Experience our archival heirlooms in total discretion. Book a personal
+            consultation at our Malleshwaram boutique or commission custom karigari.
           </p>
 
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <a
               href="tel:+919535125553"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-black hover:bg-stone-800 text-white text-xs uppercase tracking-[0.2em] font-medium transition-all shadow-md active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#491239] hover:bg-[#360b29] text-white text-xs uppercase tracking-[0.2em] font-medium transition-all shadow-md active:scale-95 cursor-pointer"
             >
-              <span>Speak to Atelier</span>
-              <Phone className="w-3.5 h-3.5" />
+              <span>Connect</span>
+              <Phone className="w-3.5 h-3.5 text-white/85" />
             </a>
 
             <a
               href="#footer"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-stone-200 text-black border border-black/10 text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-[#491239]/5 text-[#491239] border border-[#491239]/20 text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 cursor-pointer"
             >
-              <span>Explore Flagship</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Explore </span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#491239]" />
             </a>
           </div>
         </div>
       </section>
 
-      {/* 5. Minimalist Matching Footer */}
-      <CleanFooter />
+      {/* 4. Minimalist Matching Footer */}
+      {/* <CleanFooter /> */}
+      <Footer  />
     </div>
   );
 }

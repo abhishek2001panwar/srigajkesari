@@ -104,7 +104,6 @@ function AppleCollectionCard({ item }: { item: CollectionItem }) {
       const progress = (vh - rect.top) / travel;
       const clamped = Math.min(Math.max(progress, 0), 1);
 
-      // Subtle, controlled Apple-like glide
       const offset = (clamped - 0.5) * -10;
       setParallaxY(offset);
       ticking = false;
@@ -126,32 +125,31 @@ function AppleCollectionCard({ item }: { item: CollectionItem }) {
   return (
     <div
       ref={cardRef}
-      className="group relative flex flex-col rounded-3xl overflow-hidden bg-[#F5F5F7] border border-black/[0.04] select-none transition-all duration-500 hover:shadow-xl"
+      className="group relative flex flex-col rounded-3xl overflow-hidden bg-[#491239] border border-[#dfb16b]/20 select-none transition-all duration-500 shadow-[0_18px_40px_-14px_rgba(73,18,57,0.35)] hover:shadow-[0_28px_56px_-12px_rgba(73,18,57,0.5)] hover:border-[#dfb16b]/55"
     >
-      {/* 1. Header Spec Block (Clean Apple Hierarchy) */}
-      <div className="p-8 sm:p-10 pb-0 z-10 flex flex-col items-start justify-between">
-        <span className="text-[12px] uppercase tracking-[0.2em] font-medium text-[#86868B] mb-1.5">
+      {/* 1. Clean Separated Header Block */}
+      <div className="p-8 sm:p-10 z-10 flex flex-col items-start justify-between">
+        <span className="text-[12px] uppercase tracking-[0.2em] font-medium text-[#dfb16b]/80 mb-1.5">
           {item.tagline}
         </span>
-        <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#1D1D1F] mb-3">
+        <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#dfb16b] mb-3">
           {item.name}
         </h3>
-        <p className="text-sm sm:text-base text-[#86868B] font-normal tracking-tight leading-relaxed max-w-sm mb-6">
+        <p className="text-sm sm:text-base text-[#f5e6cc]/85 font-normal tracking-tight leading-relaxed max-w-sm mb-6">
           {item.description}
         </p>
 
-        {/* Apple Text Action Link */}
         <Link
           href={item.href}
-          className="inline-flex items-center gap-1 text-xs sm:text-sm font-medium tracking-tight text-[#4C1137] hover:underline group/btn"
+          className="inline-flex items-center gap-1 text-xs sm:text-sm font-medium tracking-tight text-[#dfb16b] hover:text-white hover:underline group/btn transition-colors"
         >
           <span>Explore collection</span>
           <ChevronRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
         </Link>
       </div>
 
-      {/* 2. Seamless Visual Stage with Soft Parallax */}
-      <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] mt-6 overflow-hidden">
+      {/* 2. Crisp Separated Image Section (No Blur / No Overlay) */}
+      <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] overflow-hidden border-t border-[#dfb16b]/15">
         <div
           className="absolute -top-[10%] inset-x-0 h-[120%] w-full will-change-transform transition-transform duration-100 ease-out"
           style={{
@@ -177,7 +175,7 @@ export default function CollectionsShowcase() {
     >
       <div className="max-w-[1280px] mx-auto">
         
-        {/* ================= APPLE EDITORIAL HEADER ================= */}
+        {/* ================= EDITORIAL HEADER ================= */}
         <div className="flex flex-col md:flex-row md:items-end justify-between pb-10 sm:pb-14 mb-10 sm:mb-14 border-b border-black/10 gap-6">
           <div className="max-w-2xl">
             <span className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#86868B] block mb-2.5">

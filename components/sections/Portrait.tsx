@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 
 interface VideoItem {
   id: string;
@@ -24,14 +25,14 @@ const atelierReels: VideoItem[] = [
     id: "reel-8",
     videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/fourth.mp4",
   },
-  {
-    id: "reel-10",
-    videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/sixth.mp4",
-  },
-  {
-    id: "reel-1",
-    videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/IMG_9140.mp4",
-  },
+  // {
+  //   id: "reel-10",
+  //   videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/sixth.mp4",
+  // },
+  // {
+  //   id: "reel-1",
+  //   videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/IMG_9140.mp4",
+  // },
   {
     id: "reel-2",
     videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9163-1.mp4",
@@ -56,20 +57,27 @@ const atelierReels: VideoItem[] = [
     id: "reel-13",
     videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9093.mp4",
   },
+  {
+    id: "reel-14",
+    videoUrl: "/C9104.mp4",
+  },
 ];
 
 function PortraitVideoCard({
   item,
   index,
-  scrollProgress,
+  isPlaying,
+  onTogglePlay,
 }: {
   item: VideoItem;
   index: number;
-  scrollProgress: number;
+  isPlaying: boolean;
+  onTogglePlay: (id: string) => void;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [inView, setInView] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(index < 4);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   const lockMute = () => {
     const video = videoRef.current;
@@ -84,15 +92,21 @@ function PortraitVideoCard({
     if (videoRef.current) {
       videoRef.current.defaultMuted = true;
       lockMute();
+      if (videoRef.current.readyState >= 2) {
+        setIsVideoReady(true);
+      }
     }
+
+    if (shouldLoad) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setInView(true);
+          setShouldLoad(true);
+          observer.disconnect();
         }
       },
-      { threshold: 0.12 }
+      { rootMargin: "450px" }
     );
 
     if (cardRef.current) {
@@ -100,47 +114,88 @@ function PortraitVideoCard({
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [shouldLoad]);
 
-  const colIndex = index % 4;
-  const isOddColumn = colIndex % 2 === 1;
+  // Sync play/pause state so only one reel plays cleanly at a time
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
 
-  // Editorial "hanging" base offset + continuous luxury scroll parallax on desktop
-  const baseHangingOffset = isOddColumn ? 36 : 0;
-  const parallaxShift = isOddColumn
-    ? scrollProgress * -26
-    : scrollProgress * 16;
+    if (isPlaying) {
+      lockMute();
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [isPlaying]);
 
   return (
     <div
       ref={cardRef}
-      style={{
-        transitionDelay: `${colIndex * 95}ms`,
-        ["--parallax-y" as string]: `${baseHangingOffset + parallaxShift}px`,
-      }}
-      className={`relative w-full aspect-[9/16] rounded-[20px] p-[5px] bg-white/80 backdrop-blur-sm border border-[#E5DDD3] shadow-[0_14px_34px_-12px_rgba(76,17,55,0.12)] hover:shadow-[0_28px_56px_-12px_rgba(76,17,55,0.24)] hover:border-[#dfb16b] transition-[opacity,box-shadow,border-color] duration-700 ease-out group select-none will-change-transform lg:[transform:translate3d(0,var(--parallax-y),0)] ${
-        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      onClick={() => onTogglePlay(item.id)}
+      className={`flex-shrink-0 w-[80vw] sm:w-[44vw] md:w-[32vw] lg:w-[calc((100%-3.5rem)/3)] xl:w-[348px] aspect-[9/16] rounded-[26px] p-[6px] bg-white border transition-all duration-500 ease-out group select-none snap-start cursor-pointer ${
+        isPlaying
+          ? "border-[#dfb16b] shadow-[0_28px_60px_-14px_rgba(73,18,57,0.28)] -translate-y-1"
+          : "border-[#E6DDD1] shadow-[0_14px_34px_-14px_rgba(73,18,57,0.12)] hover:shadow-[0_24px_50px_-12px_rgba(73,18,57,0.22)] hover:border-[#dfb16b]/80 hover:-translate-y-0.5"
       }`}
     >
-      {/* Inner Gallery Bezel */}
-      <div className="relative w-full h-full rounded-[15px] overflow-hidden bg-[#160510]">
+      {/* Inner Gallery Frame */}
+      <div className="relative w-full h-full rounded-[20px] overflow-hidden bg-[#F7F3EC]">
         <video
           ref={videoRef}
-          src={`${item.videoUrl}#t=0.001`}
-          controls
-          controlsList="nodownload noplaybackrate"
+          src={shouldLoad ? `${item.videoUrl}#t=0.001` : undefined}
           disablePictureInPicture
           loop
           muted
           playsInline
-          preload="metadata"
+          preload={index < 4 ? "auto" : "metadata"}
+          onLoadedData={() => setIsVideoReady(true)}
+          onCanPlay={() => setIsVideoReady(true)}
           onVolumeChange={lockMute}
-          onPlay={lockMute}
-          className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] [&::-webkit-media-controls-mute-button]:hidden [&::-webkit-media-controls-volume-slider]:hidden"
+          className={`w-full h-full object-cover object-center transition-all duration-700 ease-out ${
+            isPlaying ? "scale-[1.01]" : "group-hover:scale-[1.03]"
+          } ${isVideoReady ? "opacity-100" : "opacity-0"}`}
         />
 
-        {/* Subtle Inner Hairline Rim for Depth */}
-        <div className="absolute inset-0 rounded-[15px] ring-1 ring-inset ring-black/10 group-hover:ring-[#dfb16b]/40 transition-all duration-700 pointer-events-none" />
+        {/* Subtle Bottom Vignette for Control Contrast */}
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#24061a]/65 via-[#24061a]/20 to-transparent pointer-events-none transition-opacity duration-500" />
+
+        {/* Archival Index Pill (Top-Left) */}
+        {/* <div className="absolute top-3.5 left-3.5 z-20 px-3 py-1 rounded-full bg-[#491239]/80 backdrop-blur-md border border-[#dfb16b]/35 pointer-events-none">
+          <span className="text-[11px] font-medium tracking-[0.2em] text-[#dfb16b]">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </div> */}
+
+        {/* Custom Royal Plum & Gold Play/Pause Medallion (Bottom-Right) */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onTogglePlay(item.id);
+          }}
+          aria-label={isPlaying ? "Pause video" : "Play video"}
+          className={`absolute bottom-4 right-4 z-20 w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-md border transition-all duration-300 cursor-pointer active:scale-90 ${
+            isPlaying
+              ? "bg-[#dfb16b] text-[#24061a] border-[#dfb16b] shadow-[0_8px_24px_rgba(223,177,107,0.45)]"
+              : "bg-[#491239]/85 text-[#dfb16b] border-[#dfb16b]/45 group-hover:bg-[#dfb16b] group-hover:text-[#24061a] shadow-lg"
+          }`}
+        >
+          {isPlaying ? (
+            <Pause className="w-4 h-4 fill-current" />
+          ) : (
+            <Play className="w-4 h-4 fill-current translate-x-[1px]" />
+          )}
+        </button>
+
+        {/* Inner Champagne Hairline Rim */}
+        <div
+          className={`absolute inset-0 rounded-[20px] ring-1 ring-inset transition-all duration-500 pointer-events-none ${
+            isPlaying
+              ? "ring-[#dfb16b]/60"
+              : "ring-[#491239]/10 group-hover:ring-[#dfb16b]/45"
+          }`}
+        />
       </div>
     </div>
   );
@@ -148,8 +203,21 @@ function PortraitVideoCard({
 
 export default function AtelierVideoShowcase() {
   const sectionRef = useRef<HTMLElement>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
   const [headerVisible, setHeaderVisible] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [scrollRatio, setScrollRatio] = useState(0);
+
+  const updateScrollState = () => {
+    const el = rowRef.current;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    setCanScrollLeft(el.scrollLeft > 8);
+    setCanScrollRight(el.scrollLeft < maxScroll - 8);
+    setScrollRatio(maxScroll > 0 ? el.scrollLeft / maxScroll : 0);
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -165,77 +233,110 @@ export default function AtelierVideoShowcase() {
       observer.observe(sectionRef.current);
     }
 
-    // Smooth continuous scroll-driven column parallax
-    let rafId: number | null = null;
-    const handleScroll = () => {
-      if (rafId !== null) return;
-      rafId = requestAnimationFrame(() => {
-        if (sectionRef.current) {
-          const rect = sectionRef.current.getBoundingClientRect();
-          const windowHeight = window.innerHeight;
-          const totalTravel = rect.height + windowHeight;
-          const currentPos = windowHeight - rect.top;
-          const normalized = Math.max(
-            -0.5,
-            Math.min(0.5, currentPos / totalTravel - 0.5)
-          );
-          setScrollProgress(normalized);
-        }
-        rafId = null;
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    const rowEl = rowRef.current;
+    if (rowEl) {
+      rowEl.addEventListener("scroll", updateScrollState, { passive: true });
+      updateScrollState();
+    }
+    window.addEventListener("resize", updateScrollState);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("scroll", handleScroll);
-      if (rafId !== null) cancelAnimationFrame(rafId);
+      if (rowEl) rowEl.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
     };
   }, []);
+
+  const handleSlide = (direction: "left" | "right") => {
+    const el = rowRef.current;
+    if (!el) return;
+    const step = el.clientWidth * 0.78;
+    el.scrollBy({
+      left: direction === "right" ? step : -step,
+      behavior: "smooth",
+    });
+  };
+
+  const handleTogglePlay = (id: string) => {
+    setPlayingId((prev) => (prev === id ? null : id));
+  };
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-24 sm:py-32 lg:pb-44 bg-gradient-to-b from-[#FAF8F5] via-[#F7F3EC] to-[#FAF8F5] border-y border-[#E5DDD3] overflow-hidden select-none"
+      className="relative w-full py-20 sm:py-28 bg-gradient-to-b from-[#FAF8F5] via-[#F7F3EC] to-[#FAF8F5] border-y border-[#E5DDD3] overflow-hidden select-none"
     >
-      {/* Ambient Champagne Gold & Plum Atmospheric Glow */}
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[340px] bg-[radial-gradient(ellipse_at_center,rgba(223,177,107,0.12),transparent_70%)]" />
+      {/* Subtle Champagne Gold Glow */}
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(223,177,107,0.14),transparent_70%)]" />
 
-      <div className="relative z-10 max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
-        {/* Luxury Editorial Header */}
+      <div className="relative z-10 max-w-[1440px] mx-auto">
+        {/* Header + Controls (Zero Extra Text) */}
         <div
-          className={`mb-14 sm:mb-20 flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-[#E5DDD3]/80 pb-8 transition-all duration-700 ease-out ${
+          className={`px-6 sm:px-10 lg:px-16 mb-10 sm:mb-14 transition-all duration-700 ease-out ${
             headerVisible
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-6"
           }`}
         >
-          <div>
-            <div className="flex items-center gap-3 mb-3">
-           
+          <div className="border-b border-[#dfb16b]/30 pb-7 w-full flex items-end justify-between gap-6">
+            <div>
+              <div className="w-10 h-[1.5px] bg-[#dfb16b] mb-4" />
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-normal tracking-[0.03em] text-[#491239] leading-[1.08]">
+                Video <span className="text-[#dfb16b]">Gallery</span>
+              </h1>
             </div>
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-normal tracking-[0.04em] text-[#4C1137] leading-[1.08]">
-              Video <span className="text-[#dfb16b]">Gallery</span>
-            </h1>
-          </div>
 
-          <p className="text-xs sm:text-sm text-stone-500 font-light tracking-wide max-w-xs sm:text-right leading-relaxed">
-            Intimate glimpses of 22KT hand-sculpted gold, uncut Polki, and heritage artistry.
-          </p>
+            {/* Navigation Arrows */}
+            <div className="flex items-center gap-2.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => handleSlide("left")}
+                disabled={!canScrollLeft}
+                aria-label="Previous videos"
+                className="w-11 h-11 rounded-full border border-[#491239]/25 bg-white text-[#491239] flex items-center justify-center hover:bg-[#491239] hover:text-[#dfb16b] hover:border-[#491239] disabled:opacity-25 disabled:hover:bg-white disabled:hover:text-[#491239] transition-all cursor-pointer active:scale-95 shadow-xs"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSlide("right")}
+                disabled={!canScrollRight}
+                aria-label="Next videos"
+                className="w-11 h-11 rounded-full border border-[#491239]/25 bg-white text-[#491239] flex items-center justify-center hover:bg-[#491239] hover:text-[#dfb16b] hover:border-[#491239] disabled:opacity-25 disabled:hover:bg-white disabled:hover:text-[#491239] transition-all cursor-pointer active:scale-95 shadow-xs"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* 4-Column Responsive Editorial Grid (3 Rows x 4 Videos = 12 Videos) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7 lg:gap-8">
+        {/* Single-Row Gallery Track */}
+        <div
+          ref={rowRef}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          className="flex items-stretch gap-6 sm:gap-7 px-6 sm:px-10 lg:px-16 overflow-x-auto scroll-smooth snap-x snap-mandatory py-3 [&::-webkit-scrollbar]:hidden"
+        >
           {atelierReels.map((item, index) => (
             <PortraitVideoCard
               key={item.id}
               item={item}
               index={index}
-              scrollProgress={scrollProgress}
+              isPlaying={playingId === item.id}
+              onTogglePlay={handleTogglePlay}
             />
           ))}
+        </div>
+
+        {/* Minimal Champagne Gold Scroll Progress Track */}
+        <div className="px-6 sm:px-10 lg:px-16 mt-8">
+          <div className="w-full h-[2px] bg-[#491239]/10 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-[#491239] to-[#dfb16b] rounded-full transition-all duration-200 ease-out"
+              style={{
+                width: `${Math.max(18, scrollRatio * 100)}%`,
+              }}
+            />
+          </div>
         </div>
       </div>
     </section>

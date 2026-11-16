@@ -1,33 +1,30 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "ImperatorSmallCaps";
-  src: url("/fonts/ImperatorSmallCaps.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme {
-  --font-logo: "ImperatorSmallCaps", serif;
-  --font-sans: var(--font-poppins), sans-serif;
+  --font-sans: var(--font-opensans), sans-serif;
+  --font-logo: var(--font-opensans), sans-serif;
   --color-brand-gold: #dfb16b;
 }
 
-/* Headings in ImperatorSmallCaps */
-h1, h2, h3, h4, h5, h6 {
-  font-family: "ImperatorSmallCaps", serif !important;
-  font-weight: 400;
+/* Global Typography in Open Sans */
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-opensans), sans-serif;
+  
 }
-p {
-  font-family: var(--font-poppins), sans-serif;
-}
-
-/* Body & UI in Poppins */
-body {
-  font-family: var(--font-poppins), sans-serif;
-}
-
 /* Smooth Scroll (Lenis) */
 html.lenis,
 html.lenis body {

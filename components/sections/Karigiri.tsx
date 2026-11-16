@@ -77,7 +77,7 @@ export default function ParallaxVisualBreak() {
           </h2>
 
           {/* Micro Narrative */}
-          <p className="text-sm sm:text-base md:text-lg text-[#86868B] font-normal tracking-tight leading-relaxed max-w-xl mb-8">
+          <p className="text-sm sm:text-base md:text-lg text-white font-normal tracking-tight leading-relaxed max-w-xl mb-8">
             Every stroke of our karigar’s hammer carries generational devotion. Born in Malleshwaram, designed to be passed across unbroken generations.
           </p>
 
