@@ -117,11 +117,11 @@ export default function BuiltOnIntegrity() {
         {/* Punchy Minimal Headline */}
         <h2 className="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-[#F5F5F7] leading-[1.08] mb-4">
           Built on integrity. <br />
-          <span className="text-[#86868B] font-normal">Shaped by hand.</span>
+          <span className="text-[#dfb16b] font-normal">Shaped by hand.</span>
         </h2>
 
         {/* Direct Subtitle */}
-        <p className="text-sm sm:text-base md:text-lg text-[#86868B] font-normal tracking-tight leading-relaxed max-w-xl mb-12 sm:mb-16">
+        <p className="text-sm sm:text-base md:text-lg text-white font-normal tracking-tight leading-relaxed max-w-xl mb-12 sm:mb-16">
           In an age of rapid machine reproduction, every piece we shape honors unbroken purity and deliberate generational craft.
         </p>
 

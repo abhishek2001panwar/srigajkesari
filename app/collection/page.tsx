@@ -429,7 +429,7 @@ export default function App() {
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#1D1D1F] leading-[1.05] mb-5">
             Every piece <br />
-            <span className="text-[#86868B]">has a story.</span>
+            <span className="text-[#dfb16b]">has a story.</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-[#86868B] font-normal tracking-tight leading-relaxed max-w-xl mb-8">

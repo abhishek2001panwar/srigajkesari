@@ -185,7 +185,7 @@ export default function CollectionsShowcase() {
             </span>
             <h2 className="text-4xl sm:text-6xl font-semibold tracking-tight text-[#1D1D1F] leading-[1.05]">
               Explore the <br />
-              <span className="text-[#86868B]">archival collections.</span>
+              <span className="text-[#dfb16b]">archival collections.</span>
             </h2>
           </div>
 

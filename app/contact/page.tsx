@@ -70,7 +70,7 @@ export default function ContactPage() {
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#4C1137] leading-[1.05] mb-5">
             Private consultations. <br />
-            <span className="text-stone-500 font-normal">Dedicated salon.</span>
+            <span className="text-[#dfb16b] font-normal">Dedicated salon.</span>
           </h1>
 
           <p className="text-base sm:text-lg text-stone-600 font-light tracking-tight leading-relaxed max-w-2xl">

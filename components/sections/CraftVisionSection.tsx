@@ -51,7 +51,7 @@ export default function CraftVisionSection() {
           </span>
           <h2 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.06] text-[#1D1D1F] mb-6">
             Hundreds of hours. <br />
-            <span className="text-[#86868B]">A single vision.</span>
+            <span className="text-[#dfb16b]">A single vision.</span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-[#86868B] font-normal tracking-tight leading-relaxed max-w-2xl mx-auto">
             Machine replication cannot mirror human devotion. From sacred Nakshi hand-sculpting to bespoke Kundan setting, every piece is shaped as an irreproducible heirloom.

@@ -4,10 +4,51 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
+const HERO_IMAGES = [
+  {
+    src: "/hero/1.jpg",
+    alt: "Sri Gajkesari Fine Jewellery — Royal Collection",
+  },
+  {
+    src: "/hero/2.jpg",
+    alt: "Sri Gajkesari — Rajasi Jadau Couture",
+  },
+  {
+    src: "/hero/3.jpg",
+    alt: "Sri Gajkesari — Devatri Temple Gold",
+  },
+  {
+    src: "/hero/4.jpg",
+    alt: "Sri Gajkesari — Ratnavali Gemstones",
+  },
+  {
+    src: "/hero/5.jpg",
+    alt: "Sri Gajkesari — Heritage Kasu Malai",
+  },
+  {
+    src: "/hero/6.jpg",
+    alt: "Sri Gajkesari — Niharika Solitaires",
+  },
+  {
+    src: "/hero/7.jpg",
+    alt: "Sri Gajkesari — Suvarna 22KT Gold",
+  },
+  {
+    src: "/hero/8.jpg",
+    alt: "Sri Gajkesari — Viraasat Antique Heirlooms",
+  },
+  {
+    src: "/hero/9.jpg",
+    alt: "Sri Gajkesari — Purusa Men's Couture",
+  },
+];
+
 export default function HeroWithLoader() {
   const [phase, setPhase] = useState<"loading" | "expanding" | "ready">("loading");
   const [loadPercent, setLoadPercent] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
 
+  // Initial Loader Progress
   useEffect(() => {
     const interval = setInterval(() => {
       setLoadPercent((prev) => {
@@ -22,6 +63,7 @@ export default function HeroWithLoader() {
     return () => clearInterval(interval);
   }, []);
 
+  // Expansion & Content Reveal Choreography
   useEffect(() => {
     if (loadPercent === 100) {
       const expandTimer = setTimeout(() => {
@@ -42,10 +84,21 @@ export default function HeroWithLoader() {
   const isExpanded = phase === "expanding" || phase === "ready";
   const isContentReady = phase === "ready";
 
+  // Auto-advance carousel every 5 seconds once hero is ready
+  useEffect(() => {
+    if (!isContentReady) return;
+
+    const slideTimer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000);
+
+    return () => clearInterval(slideTimer);
+  }, [isContentReady, activeSlide]);
+
   return (
     <div className="relative w-full h-[100dvh] overflow-hidden select-none bg-[#000000] text-[#F5F5F7]">
       
-      {/* ================= 1. CENTERING STAGE (IMAGE TO FULLSCREEN) ================= */}
+      {/* ================= 1. CENTERING STAGE (9-IMAGE CAROUSEL TO FULLSCREEN) ================= */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <div
           className={`relative overflow-hidden will-change-[width,height,transform,border-radius] transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
@@ -54,18 +107,30 @@ export default function HeroWithLoader() {
               : "w-[300px] sm:w-[420px] md:w-[500px] h-[190px] sm:h-[260px] md:h-[310px] rounded-3xl shadow-2xl border border-white/10"
           }`}
         >
-          {/* Hero Image */}
-          <img
-            src="/hero.jpg"
-            alt="Sri Gajkesari Fine Jewellery"
-            className={`w-full h-full object-cover object-[center_30%] sm:object-center transition-transform duration-[1400ms] ease-out ${
-              isExpanded ? "scale-100" : "scale-115"
-            }`}
-          />
+          {/* 9-Image Luxury Cross-Fade & Subtle Ken Burns Zoom Stack */}
+          {HERO_IMAGES.map((slide, idx) => {
+            const isActive = idx === activeSlide;
+            return (
+              <img
+                key={slide.src}
+                src={slide.src}
+                alt={slide.alt}
+                className={`absolute inset-0 w-full h-full object-cover object-[center_30%] sm:object-center transition-all duration-[1500ms] ease-out will-change-[opacity,transform] ${
+                  isActive ? "opacity-100 z-[1]" : "opacity-0 z-0"
+                } ${
+                  !isExpanded
+                    ? "scale-115"
+                    : isActive
+                    ? "scale-105"
+                    : "scale-100"
+                }`}
+              />
+            );
+          })}
 
           {/* Minimal Contrast Gradients */}
           <div
-            className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${
+            className={`absolute inset-0 z-[2] pointer-events-none transition-opacity duration-1000 ${
               isExpanded
                 ? "bg-gradient-to-t from-black via-black/45 to-black/20 opacity-90"
                 : "bg-black/30 opacity-70"
@@ -102,7 +167,7 @@ export default function HeroWithLoader() {
       </div>
 
       {/* ================= 3. HERO CONTENT ================= */}
-      <div className="relative z-10 w-full h-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 flex flex-col justify-end pb-10 sm:pb-12 lg:pb-14 pointer-events-none">
+      <div className="relative z-10 w-full h-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 flex flex-col justify-end pb-14 sm:pb-12 lg:pb-14 pointer-events-none">
         <div className="w-full max-w-6xl mr-auto">
           
           {/* Eyebrow */}
@@ -118,16 +183,15 @@ export default function HeroWithLoader() {
             </span>
           </div>
 
-          {/* Refined Heading (Medium Weight, Less Bold) */}
-          <h1 className="text-4xl  sm:text-6xl md:text-7xl lg:text-[84px] font-normal sm:font-medium tracking-tight leading-[1.05] text-white mb-3 sm:mb-4">
+          {/* Refined Heading */}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[84px] font-normal sm:font-medium tracking-tight leading-[1.05] text-white mb-3 sm:mb-4">
             <span className="block overflow-hidden py-1">
               <span
-                className=" inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
+                className="inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
                 style={{
                   transform: isContentReady ? "translate3d(0, 0, 0)" : "translate3d(0, 110%, 0)",
                   opacity: isContentReady ? 1 : 0,
                   transitionDelay: "100ms",
-                
                 }}
               >
                 Crafted for every
@@ -162,7 +226,7 @@ export default function HeroWithLoader() {
             </p>
           </div>
 
-          {/* Action Buttons (Brand Palette: Deep Plum & Champagne Gold) */}
+          {/* Action Buttons */}
           <div
             className={`flex items-center gap-5 flex-wrap transition-all duration-700 ease-out will-change-[transform,opacity] pointer-events-auto ${
               isContentReady
@@ -182,7 +246,7 @@ export default function HeroWithLoader() {
               href="/story"
               className="flex items-center gap-1.5 text-[#dfb16b] hover:text-white hover:underline text-xs sm:text-sm font-normal tracking-wide transition-colors group"
             >
-              <span>Our  story</span>
+              <span>Our story</span>
               <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
@@ -190,17 +254,32 @@ export default function HeroWithLoader() {
         </div>
       </div>
 
-      {/* ================= 4. CORNER SCROLL CUE ================= */}
+      {/* ================= 4. BOTTOM-RIGHT CAROUSEL DOTS ================= */}
       <div
-        className={`absolute bottom-6 sm:bottom-8 right-6 sm:right-10 lg:right-16 z-10 hidden sm:flex items-center gap-2 transition-opacity duration-1000 ${
-          isContentReady ? "opacity-60" : "opacity-0"
+        className={`absolute bottom-5 sm:bottom-8 right-6 sm:right-10 lg:right-16 z-20 flex items-center gap-2 px-3.5 py-2 rounded-full bg-black/35 backdrop-blur-md border border-white/10 transition-all duration-700 ${
+          isContentReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}
-        style={{ transitionDelay: "700ms" }}
+        style={{ transitionDelay: "600ms" }}
+        role="tablist"
+        aria-label="Hero showcase slides"
       >
-        <span className="text-[11px] tracking-tight text-[#86868B]">
-          Scroll to explore
-        </span>
-        <ChevronRight className="w-3.5 h-3.5 text-[#86868B] rotate-90" />
+        {HERO_IMAGES.map((_, idx) => {
+          const isActive = idx === activeSlide;
+          return (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => setActiveSlide(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+              aria-selected={isActive}
+              className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
+                isActive
+                  ? "w-6 bg-[#dfb16b]"
+                  : "w-1.5 bg-white/35 hover:bg-white/70"
+              }`}
+            />
+          );
+        })}
       </div>
 
     </div>

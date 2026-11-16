@@ -73,7 +73,7 @@ export default function ParallaxVisualBreak() {
           {/* Minimal Display Headline */}
           <h2 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.06] text-white mb-5">
             Sculpted with <br />
-            <span className="text-[#86868B] font-normal">unbroken purity.</span>
+            <span className="text-[#dfb16b] font-normal">unbroken purity.</span>
           </h2>
 
           {/* Micro Narrative */}

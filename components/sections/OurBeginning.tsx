@@ -55,7 +55,7 @@ export default function OurBeginning() {
           </span>
           <h2 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.08] text-stone-900">
             Ancestral trust. <br />
-            <span className="text-stone-500 font-normal">Captured in gold.</span>
+            <span className="text-[#dfb16b] font-normal">Captured in gold.</span>
           </h2>
         </div>
 
