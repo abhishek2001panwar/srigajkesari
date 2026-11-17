@@ -18,7 +18,7 @@ const reviewsData: Review[] = [
     title: "Pristine Presentation",
     comment:
       "Helpful, genuinely patient staff. Our bespoke anniversary acquisition was packaged with pristine presentation and certified paperwork ready on arrival.",
-    author: "Dean Stevens",
+    author: "Rohan Deshmukh",
     location: "Bengaluru",
     date: "Oct 2026",
   },
@@ -27,7 +27,7 @@ const reviewsData: Review[] = [
     title: "Generational Kundan",
     comment:
       "Exceptional after-sales artistry. Their karigars polished our grandmother’s heirloom Kundan choker and adjusted the safety clasp seamlessly.",
-    author: "Stella Overall",
+    author: "Ananya Kulkarni",
     location: "Bengaluru",
     date: "Oct 2026",
   },
@@ -36,7 +36,7 @@ const reviewsData: Review[] = [
     title: "Temple Nakshi Gold",
     comment:
       "Guided us with immense devotion through their temple gold vault in the Malleshwaram boutique. Every motif carries true ancestral weight.",
-    author: "Neil Crossland",
+    author: "Karthik Narayanan",
     location: "Malleshwaram",
     date: "Oct 2026",
   },
@@ -45,7 +45,7 @@ const reviewsData: Review[] = [
     title: "Bespoke Royal Solitaire",
     comment:
       "I absolutely love my ring. It is even more magnificent in person and feels irreplaceable to wear. Unique, balanced, and full of royal character.",
-    author: "Aileen",
+    author: "Meera Hegde",
     location: "Bengaluru",
     date: "Oct 2026",
   },
@@ -54,7 +54,7 @@ const reviewsData: Review[] = [
     title: "Sentimental Bridal Trousseau",
     comment:
       "A precious necklace from our wedding day required custom restringing. The atelier handled it with absolute reverence and care.",
-    author: "Ellie Brown",
+    author: "Kavya Subramanian",
     location: "Bengaluru",
     date: "Oct 2026",
   },

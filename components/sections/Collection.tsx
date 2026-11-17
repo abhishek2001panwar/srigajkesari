@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
@@ -10,6 +10,7 @@ interface CollectionItem {
   tagline: string;
   description: string;
   image: string;
+  objectPosition: string; // Set exact focal point per image e.g. "50% 50%", "50% 25%", "center top"
   href: string;
 }
 
@@ -21,6 +22,7 @@ const collectionsData: CollectionItem[] = [
     description:
       "Hand-strung natural pearls, luminous emerald beads, and fluid heritage strands.",
     image: "/ratnavali.webp",
+    objectPosition: "80% 75%",
     href: "/collection#ratnavali",
   },
   {
@@ -30,6 +32,7 @@ const collectionsData: CollectionItem[] = [
     description:
       "Rooted in Karnataka’s deep-earth gold traditions, sculpted with generational heft.",
     image: "/suvarna.jpg",
+    objectPosition: "50% 50%",
     href: "/collection#suvarna",
   },
   {
@@ -39,6 +42,7 @@ const collectionsData: CollectionItem[] = [
     description:
       "Uncut Polki and hand-set Kundan capturing the durbar aesthetics of Rajasthan.",
     image: "/rajasi.jpg",
+    objectPosition: "50% 80%",
     href: "/collection#rajasi",
   },
   {
@@ -48,6 +52,7 @@ const collectionsData: CollectionItem[] = [
     description:
       "Hand-carved sacred iconography and divine relief motifs in pure gold.",
     image: "/devatri.jpg",
+    objectPosition: "50% 50%",
     href: "/collection#devatri",
   },
   {
@@ -57,6 +62,7 @@ const collectionsData: CollectionItem[] = [
     description:
       "Vintage-finish gold holding historic patinas and permanent family heirloom value.",
     image: "/viraasat.jpg",
+    objectPosition: "50% 80%",
     href: "/collection#viraasat",
   },
   {
@@ -66,6 +72,7 @@ const collectionsData: CollectionItem[] = [
     description:
       "Certified rare solitaires paired with sleek modern architectural silhouettes.",
     image: "/niharika.jpg",
+    objectPosition: "50% 50%",
     href: "/collection#niharika",
   },
   {
@@ -75,6 +82,7 @@ const collectionsData: CollectionItem[] = [
     description:
       "Ergonomic weight, solid gold precision, and understated solitaire craftsmanship.",
     image: "/purusa.jpg",
+    objectPosition: "50% 50%",
     href: "/collection#purusa",
   },
   {
@@ -84,58 +92,23 @@ const collectionsData: CollectionItem[] = [
     description:
       "Auspicious coin strands of prosperity designed to transition across generations.",
     image: "/kasu.jpg",
+    objectPosition: "50% 50%",
     href: "/collection#kasu",
   },
 ];
 
 function AppleCollectionCard({ item }: { item: CollectionItem }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [parallaxY, setParallaxY] = useState(0);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!cardRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      const vh = window.innerHeight;
-
-      const travel = vh + rect.height;
-      const progress = (vh - rect.top) / travel;
-      const clamped = Math.min(Math.max(progress, 0), 1);
-
-      const offset = (clamped - 0.5) * -10;
-      setParallaxY(offset);
-      ticking = false;
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(handleScroll);
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    handleScroll();
-
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <div
-      ref={cardRef}
-      className="group relative flex flex-col rounded-3xl overflow-hidden bg-[#491239] border border-[#dfb16b]/20 select-none transition-all duration-500 shadow-[0_18px_40px_-14px_rgba(73,18,57,0.35)] hover:shadow-[0_28px_56px_-12px_rgba(73,18,57,0.5)] hover:border-[#dfb16b]/55"
-    >
+    <div className="group relative flex flex-col justify-between rounded-3xl overflow-hidden bg-[#491239] border border-[#dfb16b]/25 select-none transition-all duration-500 shadow-[0_18px_40px_-14px_rgba(73,18,57,0.35)] hover:shadow-[0_28px_56px_-12px_rgba(73,18,57,0.5)] hover:border-[#dfb16b]/60">
       {/* 1. Clean Separated Header Block */}
-      <div className="p-8 sm:p-10 z-10 flex flex-col items-start justify-between">
-        <span className="text-[12px] uppercase tracking-[0.2em] font-medium text-[#dfb16b]/80 mb-1.5">
+      <div className="p-8 sm:p-10 z-10 flex flex-col items-start">
+        <span className="text-[12px] uppercase tracking-[0.2em] font-medium text-[#dfb16b]/85 mb-1.5">
           {item.tagline}
         </span>
         <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#dfb16b] mb-3">
           {item.name}
         </h3>
-        <p className="text-sm sm:text-base text-[#f5e6cc]/85 font-normal tracking-tight leading-relaxed max-w-sm mb-6">
+        <p className="text-sm sm:text-base text-[#f5e6cc]/85 font-normal tracking-tight leading-relaxed max-w-md mb-6">
           {item.description}
         </p>
 
@@ -148,20 +121,14 @@ function AppleCollectionCard({ item }: { item: CollectionItem }) {
         </Link>
       </div>
 
-      {/* 2. Crisp Separated Image Section (No Blur / No Overlay) */}
-      <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] overflow-hidden border-t border-[#dfb16b]/15">
-        <div
-          className="absolute -top-[10%] inset-x-0 h-[120%] w-full will-change-transform transition-transform duration-100 ease-out"
-          style={{
-            transform: `translate3d(0, ${parallaxY}%, 0) scale(1.04)`,
-          }}
-        >
-          <img
-            src={item.image}
-            alt={item.name}
-            className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-          />
-        </div>
+      {/* 2. Unzoomed Full-Frame Image Stage with Direct Inline objectPosition */}
+      <div className="relative w-full aspect-[4/4.2] sm:aspect-[4/3.8] overflow-hidden border-t border-[#dfb16b]/20 bg-[#320a26]">
+        <img
+          src={item.image}
+          alt={item.name}
+          style={{ objectPosition: item.objectPosition }}
+          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+        />
       </div>
     </div>
   );
@@ -171,28 +138,31 @@ export default function CollectionsShowcase() {
   return (
     <section
       id="collections"
-      className="relative z-20 w-full bg-[#FFFFFF] text-[#1D1D1F] py-24 sm:py-36 px-6 sm:px-10 lg:px-16 select-none border-t border-black/5"
+      className="relative z-20 w-full bg-[#FFFFFF] text-[#491239] py-24 sm:py-36 px-6 sm:px-10 lg:px-16 select-none border-t border-[#dfb16b]/25"
     >
       <div className="max-w-[1280px] mx-auto">
         
         {/* ================= EDITORIAL HEADER ================= */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-10 sm:pb-14 mb-10 sm:mb-14 border-b border-black/10 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-10 sm:pb-14 mb-10 sm:mb-14 border-b border-[#dfb16b]/25 gap-6">
           <div className="max-w-2xl">
-            <span className="text-[12px] uppercase tracking-[0.22em] font-medium text-[#86868B] block mb-2.5">
-              Curated Heirlooms
-            </span>
-            <h2 className="text-4xl sm:text-6xl font-semibold tracking-tight text-[#1D1D1F] leading-[1.05]">
+            <div className="flex items-center gap-3 mb-2.5">
+            
+              <span className="text-[12px] uppercase tracking-[0.22em] font-semibold text-[#9f732e] block">
+                Curated Heirlooms
+              </span>
+            </div>
+            <h2 className="text-4xl sm:text-6xl font-semibold tracking-tight text-[#491239] leading-[1.05]">
               Explore the <br />
-              <span className="text-[#dfb16b]">archival collections.</span>
+              <span className="text-[#dfb16b] font-normal">archival collections.</span>
             </h2>
           </div>
 
           <Link
             href="/collection"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium tracking-tight text-[#4C1137] hover:underline self-start md:self-end group"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium tracking-tight text-[#491239] hover:text-[#9f732e] hover:underline self-start md:self-end group transition-colors"
           >
             <span>View all archival editions</span>
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight className="w-4 h-4 text-[#dfb16b] group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
 

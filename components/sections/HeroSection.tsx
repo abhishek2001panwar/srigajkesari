@@ -10,11 +10,11 @@ const HERO_IMAGES = [
     alt: "Sri Gajkesari Fine Jewellery — Royal Collection",
     position: "object-[center_75%]",
   },
-  {
-    src: "/hero/2.jpg",
-    alt: "Sri Gajkesari — Rajasi Jadau Couture",
-    position: "object-[center_75%]",
-  },
+  // {
+  //   src: "/hero/2.jpg",
+  //   alt: "Sri Gajkesari — Rajasi Jadau Couture",
+  //   position: "object-[center_75%]",
+  // },
   {
     src: "/hero/3.jpg",
     alt: "Sri Gajkesari — Devatri Temple Gold",
@@ -35,11 +35,11 @@ const HERO_IMAGES = [
     alt: "Sri Gajkesari — Niharika Solitaires",
     position: "object-[center_75%]",
   },
-  {
-    src: "/hero/7.jpg",
-    alt: "Sri Gajkesari — Suvarna 22KT Gold",
-    position: "object-[center_75%]",
-  },
+  // {
+  //   src: "/hero/7.jpg",
+  //   alt: "Sri Gajkesari — Suvarna 22KT Gold",
+  //   position: "object-[center_75%]",
+  // },
   {
     src: "/hero/8.jpg",
     alt: "Sri Gajkesari — Viraasat Antique Heirlooms",

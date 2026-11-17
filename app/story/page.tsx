@@ -191,16 +191,15 @@ export default function StoryPage() {
       {/* 1. FIXED LIGHT THEME NAVBAR FOR DARK HERO */}
       <SriGajkesariNavbar theme="light" />
 
-      {/* 2. HERO SECTION WITH /story-bg.webp PARALLAX BACKDROP */}
-      {/* 2. HERO SECTION WITH BOTTOM-LEFT TEXT OVERLAY */}
-      <section
+   
+     <section
         ref={heroRef}
-        className="relative w-full min-h-[82vh] sm:min-h-[88vh] pt-36 sm:pt-44 pb-16 sm:pb-24 px-6 sm:px-10 lg:px-16 flex flex-col justify-end bg-[#26071c] overflow-hidden select-none"
+        className="relative w-full min-h-[82vh] sm:min-h-[88vh] pt-36 sm:pt-44 pb-16 sm:pb-24 px-6 sm:px-10 lg:px-16 flex flex-col justify-end bg-[#491239] overflow-hidden select-none"
       >
-        {/* Background Image with Parallax */}
+        {/* Background Image with Parallax & Customizable Center Position */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <div
-            className="absolute -top-[15%] inset-x-0 h-[130%] w-full will-change-transform"
+            className="absolute -top-[1%] inset-x-0 h-[130%] w-full will-change-transform"
             style={{
               transform: `translate3d(0, ${heroBgParallax}px, 0) scale(1.06)`,
               transition: "transform 0.08s linear",
@@ -209,21 +208,19 @@ export default function StoryPage() {
             <img
               src="/story-bg.webp"
               alt="Sri Gajkesari Heritage Story"
-              className="w-full h-full object-cover object-center"
+              style={{ objectPosition: "50% 50%" }} // Adjust X% Y% here (e.g., "50% 35%" or "65% 50%")
+              className="w-full h-full object-cover"
             />
           </div>
 
-          {/* Targeted Bottom-Left Gradient Overlay (Top & Right Stay 100% Clear) */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#1d0515]/95 via-[#26071c]/55 to-transparent" />
-          <div className="absolute bottom-0 left-0 w-full lg:w-[68%] h-[65%] bg-[radial-gradient(ellipse_at_bottom_left,rgba(24,4,17,0.92)_0%,rgba(38,7,28,0.5)_48%,transparent_78%)]" />
+          {/* Royal Plum (#491239) Theme Gradient from Bottom-Left (Top & Right Stay 100% Clear) */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#491239]/95 via-[#491239]/55 to-transparent" />
+          <div className="absolute bottom-0 left-0 w-full lg:w-[68%] h-[65%] bg-[radial-gradient(ellipse_at_bottom_left,rgba(73,18,57,0.95)_0%,rgba(73,18,57,0.52)_48%,transparent_78%)]" />
         </div>
 
-        {/* Hero Typography Above Bottom-Left Overlay */}
         <div className="relative z-10 max-w-[1400px] w-full mx-auto">
           <div className="max-w-2xl">
-           
-
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.05] text-white mb-6 drop-shadow-[0_2px_16px_rgba(0,0,0,0.35)]">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.05] text-white mb-6 drop-shadow-[0_2px_16px_rgba(73,18,57,0.45)]">
               <ScrollRevealLine progress={heroProgress} threshold={0.09}>
                 The soul behind
               </ScrollRevealLine>

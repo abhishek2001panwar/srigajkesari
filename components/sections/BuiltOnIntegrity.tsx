@@ -12,7 +12,7 @@ const pillars = [
   },
   {
     icon: Gem,
-    metric: "0.00",
+    metric: "0%",
     title: "Cloud Spec",
     subtitle: "GIA & IGI certified solitaires, unclouded weights and honest karigari.",
   },
@@ -23,7 +23,6 @@ const pillars = [
     subtitle: "Archival temple restoration, continuous care and buyback equity.",
   },
 ];
-
 export default function BuiltOnIntegrity() {
   const sectionRef = useRef<HTMLElement>(null);
   const [smoothExpansion, setSmoothExpansion] = useState(0);

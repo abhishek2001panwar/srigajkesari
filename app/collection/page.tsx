@@ -433,7 +433,7 @@ export default function App() {
           </p>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#1D1D1F] leading-[1.05] mb-5">
-            Every piece <br />
+            Every piece  {' '}
             <span className="text-[#dfb16b]">has a story.</span>
           </h1>
 

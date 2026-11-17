@@ -75,7 +75,7 @@ export default function ContactPage() {
 
           <p className="text-base sm:text-lg text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-2xl">
             Reserve a quiet personal session with our karigars and jewellery stylists.
-            Experience our pure 916 gold and archival Polki collections in complete privacy.
+            Experience our collections in complete privacy.
           </p>
         </div>
 
@@ -332,7 +332,7 @@ export default function ContactPage() {
                 <div>
                   <p className="font-semibold text-[#491239] mb-1">Direct Concierge</p>
                   <p className="text-[#491239] font-medium">+91 95351 25553</p>
-                  <p className="text-[#9f732e] font-normal text-xs">support@srigajkesari.com</p>
+                  <p className="text-[#9f732e] font-normal text-xs">project@srigajkesari.com</p>
                 </div>
               </div>
             </div>

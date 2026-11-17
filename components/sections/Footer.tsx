@@ -108,10 +108,10 @@ export default function Footer() {
               </p>
               <p>
                 <a
-                  href="mailto:support@srigajkesari.com"
+                  href="mailto:project@srigajkesari.com"
                   className="hover:text-[#9f732e] transition-colors tracking-tight"
                 >
-                  support@srigajkesari.com
+                  project@srigajkesari.com
                 </a>
               </p>
               <div className="flex items-center space-x-3 pt-2 text-xs sm:text-[13px]">
