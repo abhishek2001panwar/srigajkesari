@@ -57,6 +57,17 @@ const pillars = [
 export default function BuiltOnIntegrity() {
   const sectionRef = useRef<HTMLElement>(null);
   const [smoothExpansion, setSmoothExpansion] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkViewport = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkViewport();
+    window.addEventListener("resize", checkViewport, { passive: true });
+    return () => window.removeEventListener("resize", checkViewport);
+  }, []);
 
   useEffect(() => {
     let rAFId: number;
@@ -67,13 +78,18 @@ export default function BuiltOnIntegrity() {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const vh = window.innerHeight;
+      const mobile = window.innerWidth < 768;
 
       const totalDistance = vh + rect.height;
       const scrolled = vh - rect.top;
       const rawScroll = Math.min(Math.max(scrolled / totalDistance, 0), 1);
 
-      // Smooth cinematic portal scrub
-      const normalized = Math.min(Math.max((rawScroll - 0.12) / 0.52, 0), 1);
+      const startOffset = mobile ? 0.04 : 0.12;
+      const scrubRange = mobile ? 0.28 : 0.52;
+      const normalized = Math.min(
+        Math.max((rawScroll - startOffset) / scrubRange, 0),
+        1
+      );
       targetExp = normalized * (2 - normalized);
     };
 
@@ -101,13 +117,12 @@ export default function BuiltOnIntegrity() {
     };
   }, []);
 
-  // Apple-grade dynamic rounded portal expansion
-  const insetX = (1 - smoothExpansion) * 8;
-  const insetY = (1 - smoothExpansion) * 5;
-  const cornerRadius = (1 - smoothExpansion) * 44;
-  const imageScale = 1.15 - smoothExpansion * 0.12;
+  const insetX = (1 - smoothExpansion) * (isMobile ? 2.5 : 8);
+  const insetY = (1 - smoothExpansion) * (isMobile ? 1.5 : 5);
+  const cornerRadius = (1 - smoothExpansion) * (isMobile ? 24 : 44);
+  const imageScale = (isMobile ? 1.06 : 1.15) - smoothExpansion * (isMobile ? 0.05 : 0.12);
   const contentOpacity = Math.min(
-    Math.max((smoothExpansion - 0.18) * 2.2, 0),
+    Math.max((smoothExpansion - (isMobile ? 0.08 : 0.18)) * 2.4, 0),
     1
   );
 
@@ -116,11 +131,11 @@ export default function BuiltOnIntegrity() {
       id="integrity"
       ref={sectionRef}
       data-nav-theme="dark"
-      className="relative z-30 w-full min-h-screen text-white flex flex-col items-center justify-center overflow-hidden py-24 sm:py-28 px-6 sm:px-10 lg:px-16 select-none"
+      className="relative z-30 w-full min-h-screen overflow-hidden text-white flex flex-col items-center justify-center py-16 sm:py-24 lg:py-28 px-5 sm:px-8 md:px-10 lg:px-16 select-none"
     >
       {/* ================= 1. APPLE FULL-FRAME PORTAL ================= */}
       <div
-        className="absolute inset-0 w-full h-full pointer-events-none z-0 will-change-[clip-path]"
+        className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden will-change-[clip-path]"
         style={{
           clipPath: `inset(${insetY}% ${insetX}% ${insetY}% ${insetX}% round ${cornerRadius}px)`,
         }}
@@ -134,6 +149,7 @@ export default function BuiltOnIntegrity() {
             transition: "transform 0.1s linear",
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a0413]/55 via-[#1a0413]/45 to-[#1a0413]/65" />
       </div>
 
       {/* ================= 2. CLEAN EDITORIAL CONTENT ================= */}
@@ -142,18 +158,18 @@ export default function BuiltOnIntegrity() {
         style={{ opacity: contentOpacity }}
       >
         {/* Brand Gold Sub-Eyebrow */}
-        <span className="text-[12px] uppercase tracking-[0.24em] font-medium text-[#dfb16b] block mb-3">
+        <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.24em] font-medium text-[#dfb16b] block mb-2.5 sm:mb-3">
           OUR PROMISE
         </span>
 
         {/* Punchy Minimal Headline */}
-        <h2 className="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white leading-[1.08] mb-5">
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white leading-[1.08] mb-4 sm:mb-5">
           Built on integrity. <br />
           <span className="text-[#dfb16b] font-normal">Shaped by hand.</span>
         </h2>
 
         {/* Wider Editorial Intro Paragraphs */}
-        <div className="space-y-3 text-sm sm:text-base md:text-[17px] text-white/95 font-normal tracking-tight leading-relaxed max-w-4xl mb-12 sm:mb-14">
+        <div className="space-y-3 text-sm sm:text-base md:text-[17px] text-white/95 font-normal tracking-tight leading-relaxed max-w-4xl mb-10 sm:mb-14">
           <p>
             Some things are valued for their beauty. Others become precious for
             the memories, relationships and trust they hold.
@@ -165,30 +181,30 @@ export default function BuiltOnIntegrity() {
           </p>
         </div>
 
-        {/* ================= 3. WIDER BOX-FREE 6-PILLAR SPEC MATRIX ================= */}
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-10 pt-10 border-t border-white/25">
+        {/* ================= 3. RESPONSIVE BOX-FREE 6-PILLAR SPEC MATRIX ================= */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-10 gap-y-8 sm:gap-y-10 pt-8 sm:pt-10 border-t border-white/25">
           {pillars.map((pillar) => {
             const Icon = pillar.icon;
             return (
               <div
                 key={pillar.title}
-                className="flex flex-col items-center text-center group"
+                className="flex flex-col items-center text-center group px-2 sm:px-0"
               >
                 {/* Metric / Stat Highlight with Icon */}
-                <div className="flex items-center gap-2 mb-1.5">
-                  <Icon className="w-4 h-4 text-[#dfb16b] group-hover:scale-110 transition-transform" />
-                  <span className="text-xl sm:text-2xl font-semibold text-white tracking-tight">
+                <div className="flex items-center gap-2 mb-1 sm:mb-1.5">
+                  <Icon className="w-4 h-4 text-[#dfb16b] shrink-0 group-hover:scale-110 transition-transform" />
+                  <span className="text-lg sm:text-xl md:text-2xl font-semibold text-white tracking-tight">
                     {pillar.metric}
                   </span>
                 </div>
 
                 {/* Spec Label */}
-                <span className="text-xs sm:text-sm font-medium text-[#dfb16b] tracking-tight mb-1.5">
+                <span className="text-xs sm:text-sm font-medium text-[#dfb16b] tracking-tight mb-1 sm:mb-1.5">
                   {pillar.title}
                 </span>
 
-                {/* Wider Supporting Spec Text */}
-                <p className="text-xs sm:text-[13px] text-white/90 font-normal tracking-tight leading-relaxed max-w-[330px]">
+                {/* Supporting Spec Text */}
+                <p className="text-xs sm:text-[13px] text-white/90 font-normal tracking-tight leading-relaxed max-w-[320px] sm:max-w-[330px]">
                   {pillar.subtitle}
                 </p>
               </div>

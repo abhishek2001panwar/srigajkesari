@@ -119,7 +119,7 @@ const collectionsData = [
   },
 ];
 
-// --- Centered Editorial Header Outside + Taller Auto-Scrolling (3s) Image Stage ---
+// --- Centered Editorial Header Outside + Responsive Auto-Scrolling (3s) Image Stage ---
 function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] }) {
   const [activeImgIdx, setActiveImgIdx] = useState(0);
   const [parallaxOffset, setParallaxOffset] = useState(0);
@@ -136,12 +136,18 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
     return () => window.clearInterval(timer);
   }, [activeImgIdx, item.images.length]);
 
-  // 2. Subtle vertical parallax on the image stage
+  // 2. Subtle vertical parallax on desktop/tablet only (prevents mobile crop/shift)
   useEffect(() => {
     let ticking = false;
 
     const handleScroll = () => {
       if (!stageRef.current) return;
+      if (window.innerWidth < 768) {
+        setParallaxOffset(0);
+        ticking = false;
+        return;
+      }
+
       const rect = stageRef.current.getBoundingClientRect();
       const vh = window.innerHeight;
 
@@ -160,9 +166,13 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   const nextSlide = () => {
@@ -176,26 +186,26 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
   return (
     <article
       id={item.id}
-      className="w-full py-14 sm:py-20 border-b border-[#dfb16b]/25 last:border-b-0 select-none scroll-mt-24"
+      className="w-full py-12 sm:py-16 lg:py-20 border-b border-[#dfb16b]/25 last:border-b-0 select-none scroll-mt-24"
     >
       {/* ================= 1. CENTERED EDITORIAL HEADER & CTA OUTSIDE IMAGE ================= */}
-      <div className="max-w-3xl mx-auto px-6 text-center mb-10 sm:mb-12">
-        <h2 className="text-4xl sm:text-5xl lg:text-[54px] font-normal uppercase tracking-[0.14em] text-[#491239] leading-[1.08] mb-2.5">
+      <div className="max-w-3xl mx-auto px-3 sm:px-6 text-center mb-8 sm:mb-12">
+        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-normal uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[#491239] leading-[1.1] mb-2">
           {item.name}
         </h2>
 
-        <p className="text-xs sm:text-sm uppercase tracking-[0.22em] font-medium text-[#9f732e] mb-5">
+        <p className="text-[11px] sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.22em] font-medium text-[#9f732e] mb-4 sm:mb-5">
           {item.subtitle}
         </p>
 
-        <p className="text-sm sm:text-base text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-2xl mx-auto mb-7">
+        <p className="text-sm sm:text-base text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-2xl mx-auto mb-6 sm:mb-7">
           {item.description}
         </p>
 
         <div className="flex items-center justify-center">
           <a
             href="#cta"
-            className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full bg-[#491239] hover:bg-[#360b29] text-[#dfb16b] border border-[#dfb16b]/45 text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 shadow-[0_12px_28px_-8px_rgba(73,18,57,0.32)]"
+            className="inline-flex items-center gap-2.5 px-6 sm:px-7 py-3 rounded-full bg-[#491239] hover:bg-[#360b29] text-[#dfb16b] border border-[#dfb16b]/45 text-[11px] sm:text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 shadow-[0_12px_28px_-8px_rgba(73,18,57,0.32)]"
           >
             <span>Reserve Viewing</span>
             <ArrowRight className="w-3.5 h-3.5 text-[#dfb16b]" />
@@ -203,10 +213,10 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
         </div>
       </div>
 
-      {/* ================= 2. TALLER AUTO-SCROLLING (3s) HORIZONTAL SLIDER STAGE ================= */}
+      {/* ================= 2. RESPONSIVE AUTO-SCROLLING (3s) HORIZONTAL SLIDER STAGE ================= */}
       <div
         ref={stageRef}
-        className="relative w-full h-[66vh] sm:h-[78vh] lg:h-[86vh] min-h-[460px] max-h-[920px] rounded-3xl overflow-hidden bg-[#26071c] border border-[#dfb16b]/30 shadow-[0_24px_60px_-16px_rgba(73,18,57,0.22)] group"
+        className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/9] max-h-[860px] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#26071c] border border-[#dfb16b]/30 shadow-[0_24px_60px_-16px_rgba(73,18,57,0.22)] group"
       >
         {/* Smooth Horizontal Sliding Track */}
         <div
@@ -218,10 +228,10 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
           {item.images.map((img, i) => (
             <div
               key={i}
-              className="relative w-full h-full shrink-0 overflow-hidden"
+              className="relative w-full h-full shrink-0 overflow-hidden bg-[#26071c]"
             >
               <div
-                className="absolute -top-[5%] inset-x-0 h-[110%] w-full will-change-transform flex items-center justify-center"
+                className="absolute inset-0 md:-top-[5%] md:h-[110%] w-full will-change-transform flex items-center justify-center"
                 style={{
                   transform: `translate3d(0, ${parallaxOffset}px, 0)`,
                   transition: "transform 0.08s linear",
@@ -243,13 +253,13 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
           type="button"
           onClick={prevSlide}
           aria-label="Previous Perspective"
-          className="absolute bottom-5 sm:bottom-7 left-5 sm:left-7 z-30 w-10 h-10 rounded-lg bg-[#24061a]/65 hover:bg-[#491239] text-[#dfb16b] border border-[#dfb16b]/45 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+          className="absolute bottom-3.5 sm:bottom-7 left-3.5 sm:left-7 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#24061a]/70 hover:bg-[#491239] text-[#dfb16b] border border-[#dfb16b]/45 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
 
         {/* Bottom-Center Perspective Dots */}
-        <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-[#24061a]/55 backdrop-blur-md px-3.5 py-2 rounded-full border border-[#dfb16b]/30">
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-[#24061a]/60 backdrop-blur-md px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full border border-[#dfb16b]/30">
           {item.images.map((_, dotIdx) => {
             const isSelected = activeImgIdx === dotIdx;
             return (
@@ -260,7 +270,7 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
                 aria-label={`View perspective ${dotIdx + 1}`}
                 className={`transition-all duration-300 rounded-full cursor-pointer ${
                   isSelected
-                    ? "w-6 h-1.5 bg-[#dfb16b]"
+                    ? "w-5 sm:w-6 h-1.5 bg-[#dfb16b]"
                     : "w-1.5 h-1.5 bg-white/45 hover:bg-white/85"
                 }`}
               />
@@ -273,13 +283,13 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
           type="button"
           onClick={nextSlide}
           aria-label="Next Perspective"
-          className="absolute bottom-5 sm:bottom-7 right-5 sm:right-7 z-30 w-10 h-10 rounded-lg bg-[#24061a]/65 hover:bg-[#491239] text-[#dfb16b] border border-[#dfb16b]/45 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+          className="absolute bottom-3.5 sm:bottom-7 right-3.5 sm:right-7 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-[#24061a]/70 hover:bg-[#491239] text-[#dfb16b] border border-[#dfb16b]/45 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
 
         {/* Subtle Inner Champagne Gold Hairline Rim */}
-        <div className="absolute inset-0 z-20 rounded-3xl ring-1 ring-inset ring-[#dfb16b]/25 pointer-events-none" />
+        <div className="absolute inset-0 z-20 rounded-2xl sm:rounded-3xl ring-1 ring-inset ring-[#dfb16b]/25 pointer-events-none" />
       </div>
     </article>
   );
@@ -288,23 +298,21 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
 // --- Main App / Page Component ---
 export default function App() {
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#491239] selection:bg-[#491239] selection:text-[#dfb16b]">
+    <div className="min-h-screen w-full overflow-x-hidden bg-[#FAF8F5] text-[#491239] selection:bg-[#491239] selection:text-[#dfb16b]">
       <SriGajkesariNavbar theme="dark" />
 
       {/* 1. Editorial Centered Hero */}
       <section
         id="hero"
-        className="relative w-full pt-36 sm:pt-44 lg:pt-48 pb-12 sm:pb-16 px-6 sm:px-10 lg:px-16 text-center select-none bg-[#FAF8F5] border-b border-[#dfb16b]/25"
+        className="relative w-full pt-28 sm:pt-40 lg:pt-48 pb-10 sm:pb-16 px-4 sm:px-10 lg:px-16 text-center select-none bg-[#FAF8F5] border-b border-[#dfb16b]/25"
       >
         <div className="max-w-3xl mx-auto flex flex-col items-center">
-         
-
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#491239] leading-[1.05] mb-5">
+          <h1 className="text-3xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#491239] leading-[1.08] mb-4 sm:mb-5">
             Every piece{" "}
             <span className="text-[#dfb16b] font-normal">has a story.</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-xl mb-8">
+          <p className="text-sm sm:text-lg md:text-xl text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-xl mb-7 sm:mb-8">
             Explore handcrafted heirlooms created with uncompromised gold purity,
             rare uncut gemstones, and ancestral devotion sculpted across generations.
           </p>
@@ -315,7 +323,7 @@ export default function App() {
               <a
                 key={col.id}
                 href={`#${col.id}`}
-                className="px-4 py-2 rounded-full bg-white hover:bg-[#491239] text-[#491239] hover:text-[#dfb16b] border border-[#dfb16b]/40 text-xs font-medium tracking-tight transition-all"
+                className="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white hover:bg-[#491239] text-[#491239] hover:text-[#dfb16b] border border-[#dfb16b]/40 text-[11px] sm:text-xs font-medium tracking-tight transition-all"
               >
                 {col.name}
               </a>
@@ -324,8 +332,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* 2. Centered Header + Taller Auto-Scrolling Collection Stages */}
-      <main className="w-full max-w-[1380px] mx-auto px-4 sm:px-8 lg:px-12 pb-12 sm:pb-20">
+      {/* 2. Centered Header + Responsive Auto-Scrolling Collection Stages */}
+      <main className="w-full max-w-[1380px] mx-auto px-4 sm:px-8 lg:px-12 pb-10 sm:pb-20">
         {collectionsData.map((item) => (
           <AppleCollectionCard key={item.id} item={item} />
         ))}
@@ -334,7 +342,7 @@ export default function App() {
       {/* 3. Minimal Centered Conversion Section */}
       <section
         id="cta"
-        className="w-full bg-[#FFFFFF] py-20 sm:py-28 px-6 sm:px-12 border-t border-[#dfb16b]/25 select-none text-center"
+        className="w-full bg-[#FFFFFF] py-16 sm:py-28 px-5 sm:px-12 border-t border-[#dfb16b]/25 select-none text-center"
       >
         <div className="max-w-2xl mx-auto flex flex-col items-center">
           <h2 className="text-3xl sm:text-5xl font-semibold tracking-tight text-[#491239] leading-tight mb-4">
@@ -342,15 +350,15 @@ export default function App() {
             <span className="text-[#dfb16b] font-normal">feels like you?</span>
           </h2>
 
-          <p className="text-base sm:text-lg text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-lg mb-8">
+          <p className="text-sm sm:text-lg text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-lg mb-8">
             Experience our archival heirlooms in total discretion. Book a personal
             consultation at our Malleshwaram boutique or commission custom karigari.
           </p>
 
-          <div className="flex items-center justify-center gap-4 flex-wrap">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 w-full sm:w-auto">
             <a
               href="tel:+919535125553"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#491239] hover:bg-[#360b29] text-[#dfb16b] text-xs uppercase tracking-[0.2em] font-medium transition-all shadow-md active:scale-95 cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-[#491239] hover:bg-[#360b29] text-[#dfb16b] text-xs uppercase tracking-[0.2em] font-medium transition-all shadow-md active:scale-95 cursor-pointer"
             >
               <span>Connect</span>
               <Phone className="w-3.5 h-3.5 text-[#dfb16b]" />
@@ -358,7 +366,7 @@ export default function App() {
 
             <a
               href="#footer"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#FAF8F5] hover:bg-[#491239]/5 text-[#491239] border border-[#dfb16b]/45 text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#FAF8F5] hover:bg-[#491239]/5 text-[#491239] border border-[#dfb16b]/45 text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 cursor-pointer"
             >
               <span>Explore</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#491239]" />

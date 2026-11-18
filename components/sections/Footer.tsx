@@ -7,7 +7,7 @@ const navigationLinks = [
   { label: "Home", href: "/" },
   { label: "Our Story", href: "/story" },
   { label: "Archival Collections", href: "/collection" },
-  { label: "Malleshwaram Atelier", href: "/contact" },
+  { label: "Malleshwaram Showroom", href: "/contact" },
 ];
 
 const collectionLinks = [
@@ -20,32 +20,32 @@ const collectionLinks = [
 
 export default function Footer() {
   return (
-    <footer className="relative z-20 w-full bg-white text-[#491239]/80 text-[13px] sm:text-sm py-10 px-6 sm:px-10 lg:px-16 border-t border-[#dfb16b]/30 select-none">
+    <footer className="relative z-20 w-full overflow-x-hidden bg-white text-[#491239]/80 text-[13px] sm:text-sm py-10 px-6 sm:px-10 lg:px-16 border-t border-[#dfb16b]/30 select-none">
       <div className="max-w-8xl mx-auto">
         
-        {/* ================= 1. BRAND LOGO (EXACT NAVBAR DIMENSIONS) ================= */}
+        {/* ================= 1. BRAND LOGO (RESPONSIVE MOBILE + DESKTOP) ================= */}
         <div className="pb-8 mb-8 border-b border-[#dfb16b]/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <Link href="/" className="flex items-center shrink-0 overflow-visible py-5">
+          <Link href="/" className="flex items-center max-w-full py-2 sm:py-5">
             <img
               src="/logo.png"
               alt="Sri Gajkesari"
-              className="h-24 sm:h-32 lg:h-32 w-auto max-w-none object-contain scale-125 sm:scale-150 origin-left transition-transform duration-300"
+              className="h-20 sm:h-28 lg:h-32 w-auto max-w-[240px] sm:max-w-none object-contain sm:scale-125 lg:scale-150 origin-left transition-transform duration-300"
             />
           </Link>
 
-          <h2 className="text-xs uppercase tracking-[0.2em] font-bold text-[#9f732e]">
-            The Malleshwaram  &bull; Bengaluru
+          <h2 className="text-[11px] sm:text-xs uppercase tracking-[0.2em] font-bold text-[#9f732e]">
+            Malleshwaram &bull; Bengaluru
           </h2>
         </div>
 
         {/* ================= 2. DIRECTORY COLUMNS ================= */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-10 border-b border-[#dfb16b]/25 leading-relaxed">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 pb-10 border-b border-[#dfb16b]/25 leading-relaxed">
           
           {/* Column 1: Navigation */}
           <div>
-            <h1 className="font-semibold text-[#491239] block mb-3 text-sm sm:text-[15px] tracking-tight">
+            <h3 className="font-semibold text-[#491239] block mb-3 text-sm sm:text-[15px] tracking-tight">
               Navigation
-            </h1>
+            </h3>
             <ul className="space-y-2.5">
               {navigationLinks.map((link) => (
                 <li key={link.label}>
@@ -62,9 +62,9 @@ export default function Footer() {
 
           {/* Column 2: Collections Vault */}
           <div>
-            <h1 className="font-semibold text-[#491239] block mb-3 text-sm sm:text-[15px] tracking-tight">
+            <h3 className="font-semibold text-[#491239] block mb-3 text-sm sm:text-[15px] tracking-tight">
               Collections
-            </h1>
+            </h3>
             <ul className="space-y-2.5">
               {collectionLinks.map((col) => (
                 <li key={col.label}>
@@ -79,12 +79,12 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Atelier Boutique */}
+          {/* Column 3: Flagship Showroom */}
           <div>
-            <h1 className="font-semibold text-[#491239] block mb-3 text-sm sm:text-[15px] tracking-tight">
+            <h3 className="font-semibold text-[#491239] block mb-3 text-sm sm:text-[15px] tracking-tight">
               Malleshwaram Flagship
-            </h1>
-            <p className="leading-relaxed mb-3 text-[13px] sm:text-sm text-[#491239]/80 tracking-tight">
+            </h3>
+            <p className="leading-relaxed mb-3 text-[13px] sm:text-sm text-[#491239]/80 tracking-tight break-words">
               #249, Margosa Road, Between 16th &amp; 17th Cross, Malleshwaram, Bengaluru 560003
             </p>
             <p className="text-xs sm:text-[13px] text-[#9f732e] font-medium tracking-tight">
@@ -92,11 +92,11 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 4: Direct Atelier Contact */}
-          <div>
-            <h1 className="font-semibold text-[#491239] block mb-3 text-sm sm:text-[15px] tracking-tight">
+          {/* Column 4: Direct Contact */}
+          <div className="min-w-0">
+            <h3 className="font-semibold text-[#491239] block mb-3 text-sm sm:text-[15px] tracking-tight">
               Connect
-            </h1>
+            </h3>
             <div className="space-y-2.5">
               <p>
                 <a
@@ -109,12 +109,12 @@ export default function Footer() {
               <p>
                 <a
                   href="mailto:project@srigajkesari.com"
-                  className="hover:text-[#9f732e] transition-colors tracking-tight"
+                  className="hover:text-[#9f732e] transition-colors tracking-tight break-all sm:break-normal"
                 >
                   project@srigajkesari.com
                 </a>
               </p>
-              <div className="flex items-center space-x-3 pt-2 text-xs sm:text-[13px]">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-2 text-xs sm:text-[13px]">
                 <a
                   href="https://www.instagram.com/srigajkesarijewellers/"
                   target="_blank"
@@ -148,15 +148,15 @@ export default function Footer() {
         </div>
 
         {/* ================= 3. COPYRIGHT & BOTTOM SPECS ================= */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-[13px] tracking-tight text-[#491239]/70">
+        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left text-xs sm:text-[13px] tracking-tight text-[#491239]/70">
           <span>Copyright &copy; 2026 Sri Gajkesari Jewellers. All rights reserved.</span>
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-4 gap-y-2">
             <Link href="/" className="hover:text-[#9f732e] transition-colors">
               Privacy Policy
             </Link>
             <span className="text-[#dfb16b]">|</span>
             <Link href="/" className="hover:text-[#9f732e] transition-colors">
-              Terms of Atelier
+              Terms of Service
             </Link>
             <span className="text-[#dfb16b]">|</span>
             <Link href="/contact" className="hover:text-[#9f732e] transition-colors">
