@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 
 const narrativeLines = [
   "Every creation has a story, shaped by the hands that bring it to life.",
@@ -39,8 +37,8 @@ export default function CraftVisionSection() {
           }
         },
         {
-          rootMargin: "0px 0px -18% 0px",
-          threshold: 0.25,
+          rootMargin: "0px 0px -16% 0px",
+          threshold: 0.2,
         }
       );
 
@@ -64,8 +62,8 @@ export default function CraftVisionSection() {
 
       if (rect.bottom >= 0 && rect.top <= vh) {
         const centerOffset = rect.top + rect.height / 2 - vh / 2;
-        const offset = -centerOffset * 0.18;
-        parallaxRef.current.style.transform = `translate3d(0, ${offset}px, 0) scale(1.05)`;
+        const offset = -centerOffset * 0.16;
+        parallaxRef.current.style.transform = `translate3d(0, ${offset}px, 0) scale(1.06)`;
       }
       ticking = false;
     };
@@ -87,37 +85,51 @@ export default function CraftVisionSection() {
     <section
       ref={sectionRef}
       id="karigar-vision"
-      className="relative z-20 w-full bg-[#FFFFFF] text-[#1D1D1F] py-24 sm:py-36 px-6 sm:px-10 lg:px-16 select-none border-t border-black/5"
+      className="relative z-20 w-full bg-[#FAF8F5] text-[#491239] py-24 sm:py-36 px-6 sm:px-10 lg:px-16 select-none border-t border-[#dfb16b]/25"
     >
-      <div className="max-w-[1280px] mx-auto flex flex-col items-center">
+      <div className="max-w-[1280px] mx-auto">
         
-        {/* ================= 1. WIDER APPLE EDITORIAL HEADER ================= */}
-        <div className="w-full max-w-5xl text-center mb-14 sm:mb-20">
-          <span className="text-[12px] uppercase tracking-[0.24em] font-medium text-[#86868B] block mb-3">
-            The Art of Karigari
-          </span>
-          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.06] text-[#1D1D1F] mb-9">
-            Hundreds of Hours. <br />
-            <span className="text-[#dfb16b]">A Single Vision.</span>
-          </h2>
+        {/* ================= 1. ASYMMETRIC ARCHITECTURAL EDITORIAL SPLIT ================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start mb-16 sm:mb-24">
+          
+          {/* Left Column: Sticky-Feel Minimal Heading */}
+          <div className="lg:col-span-5 text-left">
+            <div className="inline-flex items-center gap-3 mb-4">
+             
+              <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.26em] font-semibold text-[#9f732e]">
+                The Art of Karigari
+              </span>
+            </div>
 
-          {/* Line-by-Line Scroll Reveal (Refined Smaller Paragraph Scale, No Dash) */}
-          <div className="space-y-4 text-sm sm:text-base md:text-[17px] tracking-tight leading-relaxed max-w-3xl mx-auto">
+            <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-semibold tracking-tight leading-[1.06] text-[#491239]">
+              Hundreds of Hours. <br />
+              <span className="text-[#dfb16b] font-normal">A Single Vision.</span>
+            </h2>
+          </div>
+
+          {/* Right Column: Hairline-Framed Line-by-Line Narrative */}
+          <div className="lg:col-span-7 lg:pl-10 lg:border-l border-[#dfb16b]/35 space-y-5 text-sm sm:text-base md:text-[17px] tracking-tight leading-[1.72] text-left">
             {narrativeLines.map((line, idx) => {
               const isRevealed = visibleLines[idx];
+              const isClosing = idx === narrativeLines.length - 1;
+
               return (
                 <p
                   key={idx}
                   ref={(el) => {
                     lineRefs.current[idx] = el;
                   }}
-                  style={{ transitionDelay: `${idx * 140}ms` }}
+                  style={{ transitionDelay: `${idx * 130}ms` }}
                   className={`transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                    idx === narrativeLines.length - 1 ? "font-medium" : "font-normal"
+                    isClosing
+                      ? "pt-2 font-medium text-[#491239]"
+                      : "font-normal"
                   } ${
                     isRevealed
-                      ? "opacity-100 translate-y-0 text-[#1D1D1F]"
-                      : "opacity-15 translate-y-5 text-[#86868B]"
+                      ? isClosing
+                        ? "opacity-100 translate-y-0 text-[#491239]"
+                        : "opacity-100 translate-y-0 text-[#491239]/85"
+                      : "opacity-15 translate-y-4 text-[#491239]/40"
                   }`}
                 >
                   {line}
@@ -127,13 +139,13 @@ export default function CraftVisionSection() {
           </div>
         </div>
 
-        {/* ================= 2. CINEMATIC ROUNDED CANVAS STAGE ================= */}
-        <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] max-h-[640px] rounded-3xl overflow-hidden bg-stone-100 border border-black/[0.04] shadow-sm">
+        {/* ================= 2. UNOBSTRUCTED WIDE CINEMATIC STAGE ================= */}
+        <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] max-h-[660px] rounded-[28px] overflow-hidden bg-[#24061a] border border-[#dfb16b]/30 shadow-[0_28px_65px_-18px_rgba(73,18,57,0.2)]">
           <div
             ref={parallaxRef}
-            className="absolute -top-[15%] inset-x-0 h-[130%] w-full will-change-transform"
+            className="absolute -top-[14%] inset-x-0 h-[128%] w-full will-change-transform"
             style={{
-              transform: "translate3d(0, 0px, 0) scale(1.05)",
+              transform: "translate3d(0, 0px, 0) scale(1.06)",
               transition: "transform 0.08s linear",
             }}
           >
@@ -146,10 +158,9 @@ export default function CraftVisionSection() {
             />
           </div>
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+          {/* Subtle Inner Champagne Gold Hairline Rim */}
+          <div className="absolute inset-0 rounded-[28px] ring-1 ring-inset ring-[#dfb16b]/25 pointer-events-none" />
         </div>
-
-       
 
       </div>
     </section>

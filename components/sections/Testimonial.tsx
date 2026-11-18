@@ -3,13 +3,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
+const CLOUDINARY_VIDEO_URL =
+  "https://res.cloudinary.com/gwfdqhai/video/upload/f_auto,q_auto,w_720/v1794982812/IMG_6432_1.mp4";
+
+const CLOUDINARY_POSTER_URL =
+  "https://res.cloudinary.com/gwfdqhai/video/upload/so_0.1,f_auto,q_auto,w_720/v1794982812/IMG_6432_1.jpg";
+
 export default function TestimonialVideoSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [isReady, setIsReady] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   // Scroll-triggered staggered text entrance
   useEffect(() => {
@@ -38,7 +44,10 @@ export default function TestimonialVideoSection() {
       video.muted = isMuted;
       video
         .play()
-        .then(() => setIsPlaying(true))
+        .then(() => {
+          setIsPlaying(true);
+          setHasStarted(true);
+        })
         .catch(() => {});
     } else {
       video.pause();
@@ -56,19 +65,6 @@ export default function TestimonialVideoSection() {
     setIsMuted(nextMuted);
   };
 
-  const handleLoadedData = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    setIsReady(true);
-    if (video.paused && video.currentTime === 0) {
-      try {
-        video.currentTime = 0.05;
-      } catch {
-        // Ignore seek errors
-      }
-    }
-  };
-
   return (
     <section
       ref={sectionRef}
@@ -77,8 +73,6 @@ export default function TestimonialVideoSection() {
     >
       {/* Subtle Ambient Champagne Gold Glow */}
       <div className="pointer-events-none absolute top-1/2 right-0 -translate-y-1/2 w-[620px] h-[520px] bg-[radial-gradient(circle_at_center,rgba(223,177,107,0.12)_0%,transparent_70%)]" />
-
-     
 
       {/* ================= 2-COLUMN SPLIT: LEFT EDITORIAL STORY + RIGHT PORTRAIT VIDEO ================= */}
       <div className="relative z-10 max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
@@ -200,22 +194,31 @@ export default function TestimonialVideoSection() {
             }`}
           >
             <div className="relative w-full h-full rounded-[23px] overflow-hidden bg-[#26071c]">
-              {!isReady && (
-                <div className="absolute inset-0 bg-gradient-to-br from-[#491239] via-[#320a26] to-[#26071c] animate-pulse" />
-              )}
+              {/* Instant-Load High-Speed Poster Image (Always visible before play) */}
+              <img
+                src={CLOUDINARY_POSTER_URL}
+                alt="Sri Gajkesari Customer Story"
+                decoding="async"
+                className={`absolute inset-0 z-[5] w-full h-full object-cover object-center transition-all duration-700 ease-out ${
+                  hasStarted ? "opacity-0 pointer-events-none" : "opacity-100 group-hover:scale-[1.03]"
+                }`}
+              />
 
+              {/* Optimized Cloudinary Video Stream (f_auto,q_auto,w_720) */}
               <video
                 ref={videoRef}
-                src="https://res.cloudinary.com/gwfdqhai/video/upload/v1794982812/IMG_6432_1.mp4"
+                src={CLOUDINARY_VIDEO_URL}
+                poster={CLOUDINARY_POSTER_URL}
                 playsInline
                 webkit-playsinline="true"
-                preload="auto"
-                onLoadedData={handleLoadedData}
-                onCanPlay={() => setIsReady(true)}
-                onEnded={() => setIsPlaying(false)}
+                preload="metadata"
+                onEnded={() => {
+                  setIsPlaying(false);
+                  setHasStarted(false);
+                }}
                 className={`relative z-10 w-full h-full object-cover object-center transition-transform duration-700 ease-out ${
                   isPlaying ? "scale-100" : "group-hover:scale-[1.02]"
-                } ${isReady ? "opacity-100" : "opacity-0"}`}
+                }`}
               />
 
               {/* Bottom Gradient */}

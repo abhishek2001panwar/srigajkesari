@@ -20,10 +20,12 @@ const getVideoPosterUrl = (publicId: string) =>
 
 const atelierReels: VideoItem[] = [
   { id: "reel-5", publicId: "v1794982826/first" },
-  { id: "reel-6", publicId: "v1794982826/second" },
-  { id: "reel-1", publicId: "v1794982819/third" },
-  { id: "reel-2", publicId: "v1794982852/fourth" },
+   { id: "reel-2", publicId: "/v1794997555/IMG_9155" },
+   { id: "reel-2", publicId: "v1794982852/fourth" },
   { id: "reel-3", publicId: "v1794982849/fifth" },
+  // { id: "reel-6", publicId: "v1794982826/second" },
+  { id: "reel-1", publicId: "v1794982819/third" },
+  
   { id: "reel-11", publicId: "v1794982820/sixth" },
   { id: "reel-12", publicId: "v1794982831/9" },
   { id: "reel-13", publicId: "v1794982820/8" },
