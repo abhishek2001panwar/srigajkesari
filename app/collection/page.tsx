@@ -119,23 +119,35 @@ const collectionsData = [
   },
 ];
 
-// --- Fullscreen Stage Item (With Spacing & Golden Collection Name Only) ---
+// --- Centered Editorial Header Outside + Taller Auto-Scrolling (3s) Image Stage ---
 function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] }) {
   const [activeImgIdx, setActiveImgIdx] = useState(0);
   const [parallaxOffset, setParallaxOffset] = useState(0);
-  const cardRef = useRef<HTMLElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
 
+  // 1. Reliable 3-Second Auto-Scroll Timer (Resets cleanly on manual navigation)
+  useEffect(() => {
+    if (item.images.length <= 1) return;
+
+    const timer = window.setInterval(() => {
+      setActiveImgIdx((prev) => (prev + 1) % item.images.length);
+    }, 3000);
+
+    return () => window.clearInterval(timer);
+  }, [activeImgIdx, item.images.length]);
+
+  // 2. Subtle vertical parallax on the image stage
   useEffect(() => {
     let ticking = false;
 
     const handleScroll = () => {
-      if (!cardRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
+      if (!stageRef.current) return;
+      const rect = stageRef.current.getBoundingClientRect();
       const vh = window.innerHeight;
 
       if (rect.bottom >= 0 && rect.top <= vh) {
         const centerDiff = rect.top + rect.height / 2 - vh / 2;
-        setParallaxOffset(-centerDiff * 0.06);
+        setParallaxOffset(-centerDiff * 0.05);
       }
       ticking = false;
     };
@@ -163,23 +175,53 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
 
   return (
     <article
-      ref={cardRef}
       id={item.id}
-      className="relative w-full h-[84vh] sm:h-[88vh] lg:h-[92vh] min-h-[600px] max-h-[1000px] rounded-3xl overflow-hidden select-none bg-[#12030d] shadow-[0_24px_60px_-15px_rgba(18,3,13,0.28)] group scroll-mt-24"
+      className="w-full py-14 sm:py-20 border-b border-[#dfb16b]/25 last:border-b-0 select-none scroll-mt-24"
     >
-      {/* 1. Full-Bleed Imagery (Natural 1:1 Framing, No Over-Zoom) */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
-        {item.images.map((img, i) => {
-          const isCurrent = activeImgIdx === i;
-          return (
+      {/* ================= 1. CENTERED EDITORIAL HEADER & CTA OUTSIDE IMAGE ================= */}
+      <div className="max-w-3xl mx-auto px-6 text-center mb-10 sm:mb-12">
+        <h2 className="text-4xl sm:text-5xl lg:text-[54px] font-normal uppercase tracking-[0.14em] text-[#491239] leading-[1.08] mb-2.5">
+          {item.name}
+        </h2>
+
+        <p className="text-xs sm:text-sm uppercase tracking-[0.22em] font-medium text-[#9f732e] mb-5">
+          {item.subtitle}
+        </p>
+
+        <p className="text-sm sm:text-base text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-2xl mx-auto mb-7">
+          {item.description}
+        </p>
+
+        <div className="flex items-center justify-center">
+          <a
+            href="#cta"
+            className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full bg-[#491239] hover:bg-[#360b29] text-[#dfb16b] border border-[#dfb16b]/45 text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 shadow-[0_12px_28px_-8px_rgba(73,18,57,0.32)]"
+          >
+            <span>Reserve Viewing</span>
+            <ArrowRight className="w-3.5 h-3.5 text-[#dfb16b]" />
+          </a>
+        </div>
+      </div>
+
+      {/* ================= 2. TALLER AUTO-SCROLLING (3s) HORIZONTAL SLIDER STAGE ================= */}
+      <div
+        ref={stageRef}
+        className="relative w-full h-[66vh] sm:h-[78vh] lg:h-[86vh] min-h-[460px] max-h-[920px] rounded-3xl overflow-hidden bg-[#26071c] border border-[#dfb16b]/30 shadow-[0_24px_60px_-16px_rgba(73,18,57,0.22)] group"
+      >
+        {/* Smooth Horizontal Sliding Track */}
+        <div
+          className="flex h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform"
+          style={{
+            transform: `translate3d(-${activeImgIdx * 100}%, 0, 0)`,
+          }}
+        >
+          {item.images.map((img, i) => (
             <div
               key={i}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isCurrent ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-              }`}
+              className="relative w-full h-full shrink-0 overflow-hidden"
             >
               <div
-                className="absolute -top-[6%] inset-x-0 h-[112%] w-full will-change-transform flex items-center justify-center"
+                className="absolute -top-[5%] inset-x-0 h-[110%] w-full will-change-transform flex items-center justify-center"
                 style={{
                   transform: `translate3d(0, ${parallaxOffset}px, 0)`,
                   transition: "transform 0.08s linear",
@@ -187,268 +229,93 @@ function AppleCollectionCard({ item }: { item: (typeof collectionsData)[number] 
               >
                 <img
                   src={img}
-                  alt={item.name}
+                  alt={`${item.name} — View ${i + 1}`}
+                  decoding="async"
                   className="w-full h-full object-cover object-center"
-                  loading="lazy"
                 />
               </div>
             </div>
-          );
-        })}
-
-        {/* Clean Contrast Gradients */}
-        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/85 via-black/25 to-black/10 pointer-events-none" />
-        <div className="absolute inset-0 z-20 bg-gradient-to-r from-black/60 via-transparent to-transparent pointer-events-none" />
-      </div>
-
-      {/* 2. Top-Left Subtle Collection Label */}
-      {/* <div className="absolute top-7 sm:top-10 left-6 sm:left-12 lg:left-14 z-30">
-        <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-[11px] uppercase tracking-[0.22em] font-medium text-white/85">
-          <span>{item.roman}</span>
-          <span className="w-1 h-1 rounded-full bg-white/40" />
-          <span>{item.badge}</span>
-        </span>
-      </div> */}
-
-      {/* 3. Bottom-Left Editorial Content (Golden Collection Name Only) */}
-      <div className="absolute bottom-8 sm:bottom-12 left-6 sm:left-12 lg:left-14 z-30 max-w-xl text-white">
-        <p className="text-xs uppercase tracking-[0.24em] font-medium text-white/75 mb-2">
-          {item.subtitle}
-        </p>
-
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-[#dfb16b] leading-[1.05] mb-4">
-          {item.name}
-        </h2>
-
-        <p className="text-sm sm:text-base text-white/85 font-normal tracking-tight leading-relaxed max-w-lg mb-7">
-          {item.description}
-        </p>
-
-        <div className="flex items-center gap-4">
-          <a
-            href="#cta"
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#491239] hover:bg-[#5e184a] text-white border border-white/15 text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 shadow-lg"
-          >
-            <span>Reserve Viewing</span>
-            <ArrowRight className="w-3.5 h-3.5 text-white/85" />
-          </a>
+          ))}
         </div>
-      </div>
 
-      {/* 4. Bottom-Right Perspective Controls */}
-      <div className="absolute bottom-8 sm:bottom-12 right-6 sm:right-12 z-30 flex items-center gap-3">
-        {/* Step Indicator Pill */}
-        <div className="flex items-center gap-1.5 bg-black/45 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/15">
+        {/* Left Edge Prev Arrow */}
+        <button
+          type="button"
+          onClick={prevSlide}
+          aria-label="Previous Perspective"
+          className="absolute bottom-5 sm:bottom-7 left-5 sm:left-7 z-30 w-10 h-10 rounded-lg bg-[#24061a]/65 hover:bg-[#491239] text-[#dfb16b] border border-[#dfb16b]/45 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+
+        {/* Bottom-Center Perspective Dots */}
+        <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-[#24061a]/55 backdrop-blur-md px-3.5 py-2 rounded-full border border-[#dfb16b]/30">
           {item.images.map((_, dotIdx) => {
             const isSelected = activeImgIdx === dotIdx;
             return (
               <button
                 key={dotIdx}
+                type="button"
                 onClick={() => setActiveImgIdx(dotIdx)}
                 aria-label={`View perspective ${dotIdx + 1}`}
                 className={`transition-all duration-300 rounded-full cursor-pointer ${
                   isSelected
-                    ? "w-6 h-1.5 bg-white"
-                    : "w-1.5 h-1.5 bg-white/40 hover:bg-white/80"
+                    ? "w-6 h-1.5 bg-[#dfb16b]"
+                    : "w-1.5 h-1.5 bg-white/45 hover:bg-white/85"
                 }`}
               />
             );
           })}
         </div>
 
-        {/* Carousel Prev/Next Buttons */}
-        <div className="flex items-center gap-1.5">
-          <button
-            onClick={prevSlide}
-            aria-label="Previous Perspective"
-            className="w-9 h-9 rounded-full bg-black/45 hover:bg-[#491239] text-white border border-white/20 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <button
-            onClick={nextSlide}
-            aria-label="Next Perspective"
-            className="w-9 h-9 rounded-full bg-black/45 hover:bg-[#491239] text-white border border-white/20 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
+        {/* Right Edge Next Arrow */}
+        <button
+          type="button"
+          onClick={nextSlide}
+          aria-label="Next Perspective"
+          className="absolute bottom-5 sm:bottom-7 right-5 sm:right-7 z-30 w-10 h-10 rounded-lg bg-[#24061a]/65 hover:bg-[#491239] text-[#dfb16b] border border-[#dfb16b]/45 flex items-center justify-center backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+
+        {/* Subtle Inner Champagne Gold Hairline Rim */}
+        <div className="absolute inset-0 z-20 rounded-3xl ring-1 ring-inset ring-[#dfb16b]/25 pointer-events-none" />
       </div>
     </article>
-  );
-}
-
-// --- Clean Footer Component ---
-function CleanFooter() {
-  return (
-    <footer
-      id="footer"
-      className="relative z-20 w-full bg-[#FAF8F5] text-[#491239]/80 text-[13px] sm:text-sm py-12 px-6 sm:px-10 lg:px-16 border-t border-black/10 select-none"
-    >
-      <div className="max-w-[1280px] mx-auto">
-        {/* Brand Header & Tag */}
-        <div className="pb-8 mb-8 border-b border-black/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <a href="#hero" className="inline-block group">
-            <img
-              src="https://srigajkesari.com/wp-content/uploads/2026/09/gj-logo.svg"
-              alt="Sri Gajkesari Jewellers"
-              className="h-14 sm:h-16 w-auto object-contain transition-opacity duration-200 group-hover:opacity-75"
-            />
-          </a>
-
-          <span className="text-xs uppercase tracking-[0.2em] font-medium text-[#491239]">
-            The Malleshwaram Flagship &bull; Bengaluru
-          </span>
-        </div>
-
-        {/* Matrix Directory */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-10 border-b border-black/10">
-          <div>
-            <h4 className="font-semibold text-[#491239] mb-3 text-sm tracking-tight">
-              Collections
-            </h4>
-            <ul className="space-y-2">
-              {collectionsData.slice(0, 4).map((col) => (
-                <li key={col.id}>
-                  <a
-                    href={`#${col.id}`}
-                    className="hover:text-[#dfb16b] transition-colors"
-                  >
-                    {col.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-[#491239] mb-3 text-sm tracking-tight">
-              Archival
-            </h4>
-            <ul className="space-y-2">
-              {collectionsData.slice(4).map((col) => (
-                <li key={col.id}>
-                  <a
-                    href={`#${col.id}`}
-                    className="hover:text-[#dfb16b] transition-colors"
-                  >
-                    {col.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-[#491239] mb-3 text-sm tracking-tight">
-              Atelier Boutique
-            </h4>
-            <p className="leading-relaxed mb-2 text-xs sm:text-[13px]">
-              #249, Margosa Road, Between 16th &amp; 17th Cross, Malleshwaram,
-              Bengaluru 560003
-            </p>
-            <p className="text-xs text-[#491239]/70">
-              Daily 10:30 AM – 8:30 PM &bull; Valet
-            </p>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-[#491239] mb-3 text-sm tracking-tight">
-              Concierge
-            </h4>
-            <div className="space-y-2 text-xs sm:text-[13px]">
-              <p>
-                <a
-                  href="tel:+919535125553"
-                  className="hover:text-[#dfb16b] transition-colors"
-                >
-                  +91 95351 25553
-                </a>
-              </p>
-              <p>
-                <a
-                  href="mailto:support@srigajkesari.com"
-                  className="hover:text-[#dfb16b] transition-colors"
-                >
-                  support@srigajkesari.com
-                </a>
-              </p>
-              <div className="flex items-center gap-3 pt-1 text-xs">
-                <a
-                  href="https://www.instagram.com/srigajkesarijewellers/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-[#dfb16b]"
-                >
-                  Instagram
-                </a>
-                <span>&bull;</span>
-                <a
-                  href="https://www.youtube.com/@SriGajKesari-h8"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-[#dfb16b]"
-                >
-                  YouTube
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Sub-Footer */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs tracking-tight text-[#491239]/65">
-          <span>&copy; 2026 Sri Gajkesari Jewellers. All rights reserved.</span>
-          <div className="flex items-center gap-4">
-            <span className="hover:text-[#491239] cursor-pointer">Privacy</span>
-            <span>&bull;</span>
-            <span className="hover:text-[#491239] cursor-pointer">
-              BIS Hallmarking
-            </span>
-            <span>&bull;</span>
-            <span className="hover:text-[#491239] cursor-pointer">
-              Certifications
-            </span>
-          </div>
-        </div>
-      </div>
-    </footer>
   );
 }
 
 // --- Main App / Page Component ---
 export default function App() {
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1D1D1F] selection:bg-[#491239] selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#491239] selection:bg-[#491239] selection:text-[#dfb16b]">
       <SriGajkesariNavbar theme="dark" />
 
       {/* 1. Editorial Centered Hero */}
       <section
         id="hero"
-        className="relative w-full pt-36 sm:pt-44 lg:pt-48 pb-14 sm:pb-20 px-6 sm:px-10 lg:px-16 text-center select-none bg-[#FFFFFF]"
+        className="relative w-full pt-36 sm:pt-44 lg:pt-48 pb-12 sm:pb-16 px-6 sm:px-10 lg:px-16 text-center select-none bg-[#FAF8F5] border-b border-[#dfb16b]/25"
       >
         <div className="max-w-3xl mx-auto flex flex-col items-center">
-          <p className="text-[12px] uppercase tracking-[0.26em] font-medium text-[#491239]/75 mb-3">
-            The Archival Catalogue
-          </p>
+         
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#1D1D1F] leading-[1.05] mb-5">
-            Every piece  {' '}
-            <span className="text-[#dfb16b]">has a story.</span>
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#491239] leading-[1.05] mb-5">
+            Every piece{" "}
+            <span className="text-[#dfb16b] font-normal">has a story.</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-stone-600 font-normal tracking-tight leading-relaxed max-w-xl mb-8">
+          <p className="text-base sm:text-lg md:text-xl text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-xl mb-8">
             Explore handcrafted heirlooms created with uncompromised gold purity,
             rare uncut gemstones, and ancestral devotion sculpted across generations.
           </p>
 
-          {/* Clean Light Anchor Pills */}
+          {/* Clean Anchor Pills */}
           <div className="flex items-center justify-center gap-2 flex-wrap max-w-2xl">
             {collectionsData.map((col) => (
               <a
                 key={col.id}
                 href={`#${col.id}`}
-                className="px-4 py-2 rounded-full bg-[#FAF8F5] hover:bg-[#491239] text-[#491239] hover:text-white border border-[#491239]/15 text-xs font-medium tracking-tight transition-all"
+                className="px-4 py-2 rounded-full bg-white hover:bg-[#491239] text-[#491239] hover:text-[#dfb16b] border border-[#dfb16b]/40 text-xs font-medium tracking-tight transition-all"
               >
                 {col.name}
               </a>
@@ -457,8 +324,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* 2. Spaced Fullscreen Curated Collection Stages */}
-      <main className="w-full px-4 sm:px-8 lg:px-12 pb-16 sm:pb-24 space-y-8 sm:space-y-12">
+      {/* 2. Centered Header + Taller Auto-Scrolling Collection Stages */}
+      <main className="w-full max-w-[1380px] mx-auto px-4 sm:px-8 lg:px-12 pb-12 sm:pb-20">
         {collectionsData.map((item) => (
           <AppleCollectionCard key={item.id} item={item} />
         ))}
@@ -467,17 +334,15 @@ export default function App() {
       {/* 3. Minimal Centered Conversion Section */}
       <section
         id="cta"
-        className="w-full bg-[#FAF8F5] py-20 sm:py-28 px-6 sm:px-12 border-t border-black/5 select-none text-center"
+        className="w-full bg-[#FFFFFF] py-20 sm:py-28 px-6 sm:px-12 border-t border-[#dfb16b]/25 select-none text-center"
       >
         <div className="max-w-2xl mx-auto flex flex-col items-center">
-         
-
-          <h2 className="text-3xl sm:text-5xl font-semibold tracking-tight text-[#1D1D1F] leading-tight mb-4">
+          <h2 className="text-3xl sm:text-5xl font-semibold tracking-tight text-[#491239] leading-tight mb-4">
             Found something that <br />
-            <span className="text-[#dfb16b]">feels like you?</span>
+            <span className="text-[#dfb16b] font-normal">feels like you?</span>
           </h2>
 
-          <p className="text-base sm:text-lg text-stone-600 font-normal tracking-tight leading-relaxed max-w-lg mb-8">
+          <p className="text-base sm:text-lg text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-lg mb-8">
             Experience our archival heirlooms in total discretion. Book a personal
             consultation at our Malleshwaram boutique or commission custom karigari.
           </p>
@@ -485,26 +350,25 @@ export default function App() {
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <a
               href="tel:+919535125553"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#491239] hover:bg-[#360b29] text-white text-xs uppercase tracking-[0.2em] font-medium transition-all shadow-md active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#491239] hover:bg-[#360b29] text-[#dfb16b] text-xs uppercase tracking-[0.2em] font-medium transition-all shadow-md active:scale-95 cursor-pointer"
             >
               <span>Connect</span>
-              <Phone className="w-3.5 h-3.5 text-white/85" />
+              <Phone className="w-3.5 h-3.5 text-[#dfb16b]" />
             </a>
 
             <a
               href="#footer"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-[#491239]/5 text-[#491239] border border-[#491239]/20 text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#FAF8F5] hover:bg-[#491239]/5 text-[#491239] border border-[#dfb16b]/45 text-xs uppercase tracking-[0.2em] font-medium transition-all active:scale-95 cursor-pointer"
             >
-              <span>Explore </span>
+              <span>Explore</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#491239]" />
             </a>
           </div>
         </div>
       </section>
 
-      {/* 4. Minimalist Matching Footer */}
-      {/* <CleanFooter /> */}
-      <Footer  />
+      {/* 4. Footer */}
+      <Footer />
     </div>
   );
 }

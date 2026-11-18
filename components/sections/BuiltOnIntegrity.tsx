@@ -108,7 +108,7 @@ export default function BuiltOnIntegrity() {
       >
         {/* Brand Gold Sub-Eyebrow */}
         <span className="text-[12px] uppercase tracking-[0.24em] font-medium text-[#dfb16b] block mb-3">
-          The Atelier Standards
+          The  Standards
         </span>
 
         {/* Punchy Minimal Headline */}

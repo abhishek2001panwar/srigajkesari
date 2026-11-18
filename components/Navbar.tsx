@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -15,44 +15,95 @@ const links = [
   { label: "Contact Us", href: "/contact" },
 ];
 
+// Parses rgb/rgba strings and checks perceptual luminance to detect dark sections behind the navbar
+function isDarkBackgroundColor(bgColor: string): boolean | null {
+  const match = bgColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+  if (!match) return null;
+  const alpha = match[4] !== undefined ? parseFloat(match[4]) : 1;
+  if (alpha < 0.15) return null; // Transparent layer, keep checking beneath
+  const r = parseInt(match[1], 10);
+  const g = parseInt(match[2], 10);
+  const b = parseInt(match[3], 10);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance < 0.45;
+}
+
 export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isAtTop, setIsAtTop] = useState(true);
+  const [isOverDarkSurface, setIsOverDarkSurface] = useState(theme === "light");
+  const [isHidden, setIsHidden] = useState(false);
 
-  const isDark = theme === "dark";
-
-  useEffect(() => {
-    if (!isDark) {
-      setIsAtTop(true);
-      return;
+  const detectSurfaceBehindNavbar = useCallback(() => {
+    if (theme === "dark") {
+      setIsHidden(window.scrollY > 40 && !mobileMenuOpen);
+    } else {
+      setIsHidden(false);
     }
 
-    const handleScroll = () => {
-      setIsAtTop(window.scrollY <= 40);
+    // Sample the page background directly behind the navbar links (y = 64px)
+    const sampleY = 64;
+    const samplePoints = [window.innerWidth * 0.5, window.innerWidth * 0.25];
+
+    for (const x of samplePoints) {
+      const elements = document.elementsFromPoint(x, sampleY);
+      for (const el of elements) {
+        if (el.closest("nav")) continue;
+        // Check explicit dark section attribute if provided
+        if (el.closest("[data-nav-theme='dark']")) {
+          setIsOverDarkSurface(true);
+          return;
+        }
+        if (el.closest("[data-nav-theme='light']")) {
+          setIsOverDarkSurface(false);
+          return;
+        }
+
+        const bg = window.getComputedStyle(el).backgroundColor;
+        const darkDetected = isDarkBackgroundColor(bg);
+        if (darkDetected !== null) {
+          setIsOverDarkSurface(darkDetected);
+          return;
+        }
+      }
+    }
+
+    // Fallback when at the top of a hero image
+    setIsOverDarkSurface(theme === "light" && window.scrollY < window.innerHeight * 0.8);
+  }, [theme, mobileMenuOpen]);
+
+  useEffect(() => {
+    detectSurfaceBehindNavbar();
+    window.addEventListener("scroll", detectSurfaceBehindNavbar, { passive: true });
+    window.addEventListener("resize", detectSurfaceBehindNavbar, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", detectSurfaceBehindNavbar);
+      window.removeEventListener("resize", detectSurfaceBehindNavbar);
     };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isDark]);
-
-  const isHidden = isDark && !isAtTop && !mobileMenuOpen;
+  }, [detectSurfaceBehindNavbar]);
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 h-32 sm:h-32 select-none transition-all duration-500 ease-out ${
-        isDark
-          ? "bg-white shadow-xs border-b border-black/10"
-          : "bg-transparent"
-      } ${
+      className={`fixed top-0 inset-x-0 z-50 h-32 sm:h-32 select-none transition-all duration-500 ease-out bg-transparent ${
         isHidden
           ? "-translate-y-full opacity-0 pointer-events-none"
           : "translate-y-0 opacity-100"
       }`}
     >
+      {/* Purely Transparent Progressive Blur (Zero Solid Box) */}
       <div
-        className={`max-w-9xl mx-auto h-full px-6 sm:px-10 lg:px-10 flex items-center justify-between transition-colors duration-300 ${
-          isDark ? "text-black" : "text-white"
+        aria-hidden="true"
+        style={{
+          WebkitMaskImage:
+            "linear-gradient(to bottom, black 0%, black 35%, transparent 100%)",
+          maskImage:
+            "linear-gradient(to bottom, black 0%, black 35%, transparent 100%)",
+        }}
+        className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-transparent backdrop-blur-md"
+      />
+
+      <div
+        className={`relative z-10 max-w-9xl mx-auto h-full px-6 sm:px-10 lg:px-10 flex items-center justify-between transition-colors duration-300 ${
+          isOverDarkSurface ? "text-white" : "text-[#491239]"
         }`}
       >
         {/* 1. Brand Logo */}
@@ -70,10 +121,10 @@ export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
             <Link
               key={link.label}
               href={link.href}
-              className={`transition-colors tracking-tight text-[15px] sm:text-base font-medium whitespace-nowrap ${
-                isDark
-                  ? "text-black/80 hover:text-black"
-                  : "text-white/90 hover:text-white"
+              className={`transition-colors duration-300 tracking-tight text-[15px] sm:text-base font-medium whitespace-nowrap ${
+                isOverDarkSurface
+                  ? "text-white hover:text-[#dfb16b] drop-shadow-[0_1px_10px_rgba(0,0,0,0.65)]"
+                  : "text-[#491239] hover:text-[#9f732e]"
               }`}
             >
               {link.label}
@@ -86,9 +137,9 @@ export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
           <Link
             href="https://wa.me/919535125553?text=Hello%20Sri%20Gajkesari%2C%20I%20would%20like%20to%20request%20a%20private%20atelier%20consultation."
             className={`px-7 py-2.5 border text-xs sm:text-sm font-medium tracking-tight rounded-full transition-all duration-300 active:scale-95 whitespace-nowrap ${
-              isDark
-                ? "border-black/70 text-black hover:bg-black hover:text-white"
-                : "border-white/70 text-white hover:border-white hover:bg-white hover:text-black"
+              isOverDarkSurface
+                ? "border-[#dfb16b]/85 text-[#f5e6cc] hover:border-[#dfb16b] hover:bg-[#dfb16b] hover:text-[#24061a] drop-shadow-[0_1px_10px_rgba(0,0,0,0.55)]"
+                : "border-[#491239]/75 text-[#491239] hover:bg-[#491239] hover:text-[#dfb16b]"
             }`}
           >
             Consultation
@@ -100,7 +151,7 @@ export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={`p-2 transition-opacity opacity-90 hover:opacity-100 ${
-              isDark ? "text-black" : "text-white"
+              isOverDarkSurface ? "text-white" : "text-[#491239]"
             }`}
             aria-label="Toggle Navigation"
           >
@@ -117,9 +168,9 @@ export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
       {mobileMenuOpen && (
         <div
           className={`md:hidden fixed inset-x-0 top-20 sm:top-24 h-screen px-8 pt-8 space-y-6 backdrop-blur-2xl animate-in fade-in slide-in-from-top-2 duration-200 ${
-            isDark
-              ? "bg-white/98 text-black"
-              : "bg-black/95 text-white"
+            isOverDarkSurface
+              ? "bg-[#1a0413]/95 text-white"
+              : "bg-white/95 text-[#491239]"
           }`}
         >
           {links.map((link) => (
@@ -128,9 +179,9 @@ export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
               className={`block text-2xl font-semibold tracking-tight border-b pb-4 ${
-                isDark
-                  ? "border-black/10 text-black hover:text-stone-600"
-                  : "border-white/10 text-white hover:text-stone-300"
+                isOverDarkSurface
+                  ? "border-white/15 text-white hover:text-[#dfb16b]"
+                  : "border-[#491239]/15 text-[#491239] hover:text-[#9f732e]"
               }`}
             >
               {link.label}
@@ -142,9 +193,9 @@ export default function AppleNavbar({ theme = "light" }: AppleNavbarProps) {
               href="https://wa.me/919535125553?text=Hello%20Sri%20Gajkesari%2C%20I%20would%20like%20to%20request%20a%20private%20atelier%20consultation."
               onClick={() => setMobileMenuOpen(false)}
               className={`block w-full text-center py-4 border text-sm font-medium tracking-wide rounded-full active:scale-95 transition-all ${
-                isDark
-                  ? "border-black bg-black text-white hover:bg-stone-800"
-                  : "border-white text-white hover:bg-white hover:text-black"
+                isOverDarkSurface
+                  ? "border-[#dfb16b] bg-[#dfb16b] text-[#24061a] hover:bg-white"
+                  : "border-[#491239] bg-[#491239] text-[#dfb16b] hover:bg-[#320a26]"
               }`}
             >
               Book Private Consultation

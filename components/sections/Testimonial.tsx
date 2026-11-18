@@ -1,13 +1,34 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
 export default function TestimonialVideoSection() {
+  const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isReady, setIsReady] = useState(false);
+
+  // Scroll-triggered staggered text entrance
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.16 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -15,7 +36,10 @@ export default function TestimonialVideoSection() {
 
     if (video.paused) {
       video.muted = isMuted;
-      video.play().then(() => setIsPlaying(true)).catch(() => {});
+      video
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
     } else {
       video.pause();
       setIsPlaying(false);
@@ -40,106 +64,245 @@ export default function TestimonialVideoSection() {
       try {
         video.currentTime = 0.05;
       } catch {
-        // Ignore seek errors on strict range servers
+        // Ignore seek errors
       }
     }
   };
 
   return (
     <section
+      ref={sectionRef}
       id="testimonials"
       className="relative z-20 w-full bg-[#FFFFFF] text-[#491239] py-20 sm:py-28 px-6 sm:px-10 lg:px-16 border-t border-[#dfb16b]/25 select-none overflow-hidden"
     >
-      {/* Subtle Ambient Champagne Glow */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[540px] h-[540px] bg-[radial-gradient(circle,rgba(223,177,107,0.12)_0%,transparent_70%)]" />
+      {/* Subtle Ambient Champagne Gold Glow */}
+      <div className="pointer-events-none absolute top-1/2 right-0 -translate-y-1/2 w-[620px] h-[520px] bg-[radial-gradient(circle_at_center,rgba(223,177,107,0.12)_0%,transparent_70%)]" />
 
-      <div className="relative z-10 max-w-[1280px] mx-auto flex flex-col items-center">
+      {/* Crisp Editorial Serif Watermark Behind Stage */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center z-0 overflow-hidden opacity-65"
+      >
+        <svg
+          viewBox="0 0 1600 240"
+          className="w-[140vw] sm:w-[115vw] lg:w-[105vw] max-w-[1680px] h-auto overflow-visible"
+        >
+          <defs>
+            <linearGradient
+              id="testimonialStrokeGrad"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+            >
+              <stop offset="0%" stopColor="#dfb16b" stopOpacity="0" />
+              <stop offset="20%" stopColor="#dfb16b" stopOpacity="0.65" />
+              <stop offset="55%" stopColor="#491239" stopOpacity="0.32" />
+              <stop offset="88%" stopColor="#dfb16b" stopOpacity="0.7" />
+              <stop offset="100%" stopColor="#dfb16b" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <text
+            x="50%"
+            y="54%"
+            dominantBaseline="middle"
+            textAnchor="middle"
+            fill="none"
+            stroke="url(#testimonialStrokeGrad)"
+            strokeWidth="1.4"
+            style={{
+              fontFamily:
+                "'Cormorant Garamond', 'Playfair Display', 'Didot', Georgia, serif",
+              fontStyle: "italic",
+              fontWeight: 500,
+              fontSize: "190px",
+              letterSpacing: "0.08em",
+            }}
+          >
+            TESTIMONIAL
+          </text>
+        </svg>
+      </div>
+
+      {/* ================= 2-COLUMN SPLIT: LEFT EDITORIAL STORY + RIGHT PORTRAIT VIDEO ================= */}
+      <div className="relative z-10 max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
         
-        {/* ================= 1. MINIMAL CENTERED HEADER ================= */}
-        <div className="text-center max-w-xl mb-12 sm:mb-14">
-          <div className="inline-flex items-center justify-center gap-3 mb-3">
-           
-            <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.24em] font-semibold text-[#9f732e]">
-              Client Stories
+        {/* LEFT COLUMN: ANIMATED CUSTOMER STORIES NARRATIVE */}
+        <div className="lg:col-span-7 text-left space-y-6">
+          {/* Eyebrow */}
+          <div
+            className={`inline-flex items-center gap-3 transition-all duration-700 ease-out ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
+            }`}
+          >
+            <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.26em] font-semibold text-[#9f732e]">
+              Customer Stories
             </span>
-           
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-semibold tracking-tight text-[#491239] leading-[1.08]">
-           Voices of{" "}
-            <span className="text-[#dfb16b] font-normal"> Trust.</span>
+          {/* Masked Line-by-Line Main Heading */}
+          <h2 className="text-3xl sm:text-5xl lg:text-[52px] font-semibold tracking-tight text-[#491239] leading-[1.08]">
+            <span className="block overflow-hidden pb-1">
+              <span
+                className={`block transition-transform duration-700 delay-100 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  isVisible ? "translate-y-0" : "translate-y-full"
+                }`}
+              >
+                Our Greatest Treasure
+              </span>
+            </span>
+            <span className="block overflow-hidden pb-1">
+              <span
+                className={`block text-[#dfb16b] font-normal transition-transform duration-700 delay-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  isVisible ? "translate-y-0" : "translate-y-full"
+                }`}
+              >
+                Is Your Trust.
+              </span>
+            </span>
           </h2>
+
+          {/* Expanding Champagne Gold Divider */}
+          <div
+            className={`h-[1px] bg-gradient-to-r from-[#dfb16b] via-[#dfb16b]/50 to-transparent transition-all duration-1000 delay-250 ease-out ${
+              isVisible ? "w-32 opacity-100" : "w-0 opacity-0"
+            }`}
+          />
+
+          {/* Staggered Narrative Paragraphs */}
+          <div className="space-y-4 text-sm sm:text-base text-[#491239]/85 font-normal leading-relaxed tracking-tight max-w-2xl">
+            <p
+              style={{ transitionDelay: "300ms" }}
+              className={`transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-5"
+              }`}
+            >
+              Some customers have been with us for years. Some have introduced their children and grandchildren to us. And some have made us a part of their most memorable celebrations.
+            </p>
+
+            <p
+              style={{ transitionDelay: "400ms" }}
+              className={`transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-5"
+              }`}
+            >
+              Every relationship, every celebration and every return visit has become a part of our journey. We are grateful to the families who have chosen us and trusted us with their special moments.
+            </p>
+
+            <p
+              style={{ transitionDelay: "500ms" }}
+              className={`font-medium text-[#491239] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-5"
+              }`}
+            >
+              Because a legacy is not built by what we say about ourselves. It is built by the people who believe in us.
+            </p>
+          </div>
+
+          {/* Closing Sub-Heading Callout */}
+          <div
+            style={{ transitionDelay: "620ms" }}
+            className={`pt-4 pl-4 border-l-2 border-[#dfb16b] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-5"
+            }`}
+          >
+            <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-[#491239]">
+              Your Stories.{" "}
+              <span className="text-[#9f732e] font-normal">Our Legacy.</span>
+            </h3>
+            <p className="text-xs sm:text-sm text-[#491239]/75 mt-1">
+              Hear from the people who have made Sri Gajkesari a part of their stories.
+            </p>
+          </div>
         </div>
 
-        {/* ================= 2. CENTERED PORTRAIT VIDEO STAGE ================= */}
+        {/* RIGHT COLUMN: PORTRAIT TESTIMONIAL VIDEO FRAME */}
         <div
-          onClick={togglePlay}
-          className={`relative w-[290px] sm:w-[340px] md:w-[360px] aspect-[9/16] rounded-[30px] p-[7px] bg-[#FAF8F5] border transition-all duration-500 cursor-pointer group ${
-            isPlaying
-              ? "border-[#dfb16b] shadow-[0_32px_70px_-15px_rgba(73,18,57,0.28)]"
-              : "border-[#dfb16b]/45 shadow-[0_24px_54px_-15px_rgba(73,18,57,0.16)] hover:border-[#dfb16b] hover:shadow-[0_30px_65px_-14px_rgba(73,18,57,0.24)]"
+          style={{ transitionDelay: "320ms" }}
+          className={`lg:col-span-5 flex justify-center lg:justify-end transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            isVisible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-8"
           }`}
         >
-          <div className="relative w-full h-full rounded-[23px] overflow-hidden bg-[#26071c]">
-            {/* Royal Plum Shimmer Placeholder until First Frame Paints */}
-            {!isReady && (
-              <div className="absolute inset-0 bg-gradient-to-br from-[#491239] via-[#320a26] to-[#26071c] animate-pulse" />
-            )}
-
-            <video
-              ref={videoRef}
-              src="https://res.cloudinary.com/gwfdqhai/video/upload/v1794982812/IMG_6432_1.mp4"
-              playsInline
-              webkit-playsinline="true"
-              preload="auto"
-              onLoadedData={handleLoadedData}
-              onCanPlay={() => setIsReady(true)}
-              onEnded={() => setIsPlaying(false)}
-              className={`relative z-10 w-full h-full object-cover object-center transition-transform duration-700 ease-out ${
-                isPlaying ? "scale-100" : "group-hover:scale-[1.02]"
-              } ${isReady ? "opacity-100" : "opacity-0"}`}
-            />
-
-            {/* Bottom-Left Royal Plum Gradient for Clean Contrast */}
-            <div className="absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-[#24061a]/80 via-[#24061a]/25 to-transparent pointer-events-none" />
-
-            {/* Top-Right Sound Toggle (Appears when playing or hovered) */}
-            <button
-              type="button"
-              onClick={toggleMute}
-              aria-label={isMuted ? "Unmute testimonial" : "Mute testimonial"}
-              className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-[#491239]/80 hover:bg-[#491239] text-[#dfb16b] border border-[#dfb16b]/40 backdrop-blur-md flex items-center justify-center transition-all active:scale-90 cursor-pointer"
-            >
-              {isMuted ? (
-                <VolumeX className="w-3.5 h-3.5" />
-              ) : (
-                <Volume2 className="w-3.5 h-3.5" />
+          <div
+            onClick={togglePlay}
+            className={`relative w-[290px] sm:w-[330px] md:w-[355px] aspect-[9/16] rounded-[30px] p-[7px] bg-[#FAF8F5] border transition-all duration-500 cursor-pointer group ${
+              isPlaying
+                ? "border-[#dfb16b] shadow-[0_34px_75px_-15px_rgba(73,18,57,0.34)]"
+                : "border-[#dfb16b]/60 shadow-[0_28px_60px_-15px_rgba(73,18,57,0.22)] hover:border-[#dfb16b]"
+            }`}
+          >
+            <div className="relative w-full h-full rounded-[23px] overflow-hidden bg-[#26071c]">
+              {!isReady && (
+                <div className="absolute inset-0 bg-gradient-to-br from-[#491239] via-[#320a26] to-[#26071c] animate-pulse" />
               )}
-            </button>
 
-            {/* Center Play Medallion when Paused / Bottom-Right Pause Pill when Playing */}
-            {!isPlaying ? (
-              <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-                <div className="w-16 h-16 rounded-full bg-[#491239]/90 group-hover:bg-[#dfb16b] text-[#dfb16b] group-hover:text-[#24061a] border border-[#dfb16b]/60 backdrop-blur-md flex items-center justify-center shadow-[0_14px_34px_rgba(36,6,26,0.45)] transition-all duration-300 group-hover:scale-105">
-                  <Play className="w-6 h-6 fill-current translate-x-[1.5px]" />
-                </div>
-              </div>
-            ) : (
+              <video
+                ref={videoRef}
+                src="https://res.cloudinary.com/gwfdqhai/video/upload/v1794982812/IMG_6432_1.mp4"
+                playsInline
+                webkit-playsinline="true"
+                preload="auto"
+                onLoadedData={handleLoadedData}
+                onCanPlay={() => setIsReady(true)}
+                onEnded={() => setIsPlaying(false)}
+                className={`relative z-10 w-full h-full object-cover object-center transition-transform duration-700 ease-out ${
+                  isPlaying ? "scale-100" : "group-hover:scale-[1.02]"
+                } ${isReady ? "opacity-100" : "opacity-0"}`}
+              />
+
+              {/* Bottom Gradient */}
+              <div className="absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-[#24061a]/80 via-[#24061a]/25 to-transparent pointer-events-none" />
+
+              {/* Top-Right Sound Toggle */}
               <button
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  togglePlay();
-                }}
-                aria-label="Pause testimonial"
-                className="absolute bottom-4 right-4 z-20 w-10 h-10 rounded-full bg-[#dfb16b] text-[#24061a] border border-[#dfb16b] flex items-center justify-center shadow-lg transition-transform active:scale-90 cursor-pointer"
+                onClick={toggleMute}
+                aria-label={isMuted ? "Unmute testimonial" : "Mute testimonial"}
+                className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-[#491239]/85 hover:bg-[#491239] text-[#dfb16b] border border-[#dfb16b]/45 backdrop-blur-md flex items-center justify-center transition-all active:scale-90 cursor-pointer"
               >
-                <Pause className="w-4 h-4 fill-current" />
+                {isMuted ? (
+                  <VolumeX className="w-3.5 h-3.5" />
+                ) : (
+                  <Volume2 className="w-3.5 h-3.5" />
+                )}
               </button>
-            )}
 
-            {/* Inner Champagne Gold Hairline Rim */}
-            <div className="absolute inset-0 z-20 rounded-[23px] ring-1 ring-inset ring-[#dfb16b]/30 pointer-events-none" />
+              {/* Center Play Medallion / Bottom-Right Pause Pill */}
+              {!isPlaying ? (
+                <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+                  <div className="w-16 h-16 rounded-full bg-[#491239]/90 group-hover:bg-[#dfb16b] text-[#dfb16b] group-hover:text-[#24061a] border border-[#dfb16b]/65 backdrop-blur-md flex items-center justify-center shadow-[0_14px_34px_rgba(36,6,26,0.5)] transition-all duration-300 group-hover:scale-105">
+                    <Play className="w-6 h-6 fill-current translate-x-[1.5px]" />
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    togglePlay();
+                  }}
+                  aria-label="Pause testimonial"
+                  className="absolute bottom-4 right-4 z-20 w-10 h-10 rounded-full bg-[#dfb16b] text-[#24061a] border border-[#dfb16b] flex items-center justify-center shadow-lg transition-transform active:scale-90 cursor-pointer"
+                >
+                  <Pause className="w-4 h-4 fill-current" />
+                </button>
+              )}
+
+              {/* Inner Champagne Gold Rim */}
+              <div className="absolute inset-0 z-20 rounded-[23px] ring-1 ring-inset ring-[#dfb16b]/35 pointer-events-none" />
+            </div>
           </div>
         </div>
 

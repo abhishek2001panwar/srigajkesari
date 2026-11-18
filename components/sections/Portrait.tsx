@@ -5,73 +5,42 @@ import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 
 interface VideoItem {
   id: string;
-  videoUrl: string;
-  poster?: string;
+  publicId: string;
 }
 
+const CLOUDINARY_BASE = "https://res.cloudinary.com/gwfdqhai/video/upload";
+
+// Reliable MP4 stream with quality & width optimization (works across Safari, iOS, iPadOS, Chrome)
+const getOptimizedVideoUrl = (publicId: string) =>
+  `${CLOUDINARY_BASE}/q_auto,w_720/${publicId}.mp4`;
+
+// Instant JPG poster extracted from frame 0
+const getVideoPosterUrl = (publicId: string) =>
+  `${CLOUDINARY_BASE}/so_0,q_auto,w_720/${publicId}.jpg`;
+
 const atelierReels: VideoItem[] = [
-  {
-    id: "reel-5",
-    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/first.mp4",
-    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982826/first.mp4",
-  },
-  {
-    id: "reel-6",
-    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/second.mp4",
-    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982826/second.mp4",
-  },
-  {
-    id: "reel-1",
-    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/IMG_9142.mp4",
-    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982819/third.mp4",
-  },
-  {
-    id: "reel-2",
-    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9163-1.mp4",
-    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982852/fourth.mp4",
-  },
-  {
-    id: "reel-3",
-    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9165-1.mp4",
-    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982849/fifth.mp4",
-  },
-  {
-    id: "reel-11",
-    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9154.mp4",
-    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982820/sixth.mp4",
-  },
-  {
-    id: "reel-12",
-    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9095.MP4.mp4",
-    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982818/7.mp4",
-  },
-  {
-    id: "reel-13",
-    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9093.mp4",
-    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982820/8.mp4",
-  },
-  {
-    id: "reel-14",
-    // videoUrl: "/C9104.mp4",
-    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982831/9.mp4",
-  },
+  { id: "reel-5", publicId: "v1794982826/first" },
+  { id: "reel-6", publicId: "v1794982826/second" },
+  { id: "reel-1", publicId: "v1794982819/third" },
+  { id: "reel-2", publicId: "v1794982852/fourth" },
+  { id: "reel-3", publicId: "v1794982849/fifth" },
+  { id: "reel-11", publicId: "v1794982820/sixth" },
+  { id: "reel-12", publicId: "v1794982831/9" },
+  { id: "reel-13", publicId: "v1794982820/8" },
+ 
 ];
 
 function PortraitVideoCard({
   item,
-  index,
   isPlaying,
   onTogglePlay,
 }: {
   item: VideoItem;
-  index: number;
   isPlaying: boolean;
   onTogglePlay: (id: string) => void;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(index < 4);
-  const [isVideoReady, setIsVideoReady] = useState(false);
+  const [isStreamReady, setIsStreamReady] = useState(false);
 
   const lockMute = () => {
     const video = videoRef.current;
@@ -82,66 +51,53 @@ function PortraitVideoCard({
     }
   };
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (video) {
-      video.defaultMuted = true;
-      lockMute();
-      if (video.readyState >= 2) {
-        setIsVideoReady(true);
-      }
-    }
-
-    if (shouldLoad) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldLoad(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "350px" }
-    );
-
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [shouldLoad]);
-
-  // Paint opening frame on iPadOS & macOS Safari
-  const handleLoadedData = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    setIsVideoReady(true);
-    if (!isPlaying && video.currentTime === 0) {
-      try {
-        video.currentTime = 0.05;
-      } catch {
-        // Ignore range seek errors
-      }
-    }
-  };
-
+  // Pause when another reel is selected
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
-    if (isPlaying) {
-      setShouldLoad(true);
-      lockMute();
-      video.play().catch(() => {});
-    } else {
+    if (!isPlaying && !video.paused) {
       video.pause();
     }
   }, [isPlaying]);
 
+  // Trigger play() directly inside the user click handler (required by iPadOS & macOS Safari)
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+
+    if (video) {
+      video.defaultMuted = true;
+      lockMute();
+
+      if (isPlaying) {
+        video.pause();
+      } else {
+        const targetSrc = getOptimizedVideoUrl(item.publicId);
+        if (video.getAttribute("src") !== targetSrc) {
+          video.setAttribute("src", targetSrc);
+          video.load();
+        }
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Fallback to raw original Cloudinary URL if transformation is still processing
+            const fallbackSrc = `${CLOUDINARY_BASE}/${item.publicId}.mp4`;
+            if (video.getAttribute("src") !== fallbackSrc) {
+              video.setAttribute("src", fallbackSrc);
+              video.load();
+              video.play().catch(() => {});
+            }
+          });
+        }
+      }
+    }
+
+    onTogglePlay(item.id);
+  };
+
   return (
     <div
-      ref={cardRef}
-      onClick={() => onTogglePlay(item.id)}
+      onClick={handleCardClick}
       className={`shrink-0 w-[280px] sm:w-[310px] md:w-[325px] lg:w-[348px] aspect-[9/16] rounded-[26px] p-[6px] bg-white border transition-all duration-500 ease-out group snap-start cursor-pointer ${
         isPlaying
           ? "border-[#dfb16b] shadow-[0_28px_60px_-14px_rgba(73,18,57,0.28)] -translate-y-1"
@@ -150,26 +106,33 @@ function PortraitVideoCard({
     >
       {/* Inner Gallery Frame */}
       <div className="relative w-full h-full rounded-[20px] overflow-hidden bg-[#26071c]">
-        {!isVideoReady && (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#491239] via-[#320a26] to-[#26071c] animate-pulse" />
-        )}
+        {/* Instant Poster Cover (Visible until video frames render) */}
+        <img
+          src={getVideoPosterUrl(item.publicId)}
+          alt="Sri Gajkesari Atelier Craft"
+          loading="lazy"
+          decoding="async"
+          className={`absolute inset-0 z-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out ${
+            isPlaying ? "scale-[1.01]" : "group-hover:scale-[1.03]"
+          }`}
+        />
 
+        {/* Video Element (Always mounted with src set synchronously on tap) */}
         <video
           ref={videoRef}
-          src={shouldLoad ? item.videoUrl : undefined}
-          poster={item.poster}
+          poster={getVideoPosterUrl(item.publicId)}
           disablePictureInPicture
           loop
           muted
           playsInline
           webkit-playsinline="true"
-          preload={index < 4 ? "auto" : "metadata"}
-          onLoadedData={handleLoadedData}
-          onCanPlay={() => setIsVideoReady(true)}
+          preload="none"
+          onPlaying={() => setIsStreamReady(true)}
+          onCanPlay={() => setIsStreamReady(true)}
           onVolumeChange={lockMute}
-          className={`relative z-10 w-full h-full object-cover object-center transition-all duration-700 ease-out ${
-            isPlaying ? "scale-[1.01]" : "group-hover:scale-[1.03]"
-          } ${isVideoReady ? "opacity-100" : "opacity-0"}`}
+          className={`relative z-10 w-full h-full object-cover object-center transition-opacity duration-300 ${
+            isPlaying && isStreamReady ? "opacity-100" : "opacity-0"
+          }`}
         />
 
         {/* Subtle Bottom Vignette */}
@@ -178,10 +141,7 @@ function PortraitVideoCard({
         {/* Play/Pause Medallion */}
         <button
           type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onTogglePlay(item.id);
-          }}
+          onClick={handleCardClick}
           aria-label={isPlaying ? "Pause video" : "Play video"}
           className={`absolute bottom-4 right-4 z-20 w-11 h-11 rounded-full flex items-center justify-center backdrop-blur-md border transition-all duration-300 cursor-pointer active:scale-90 ${
             isPlaying
@@ -288,7 +248,6 @@ export default function AtelierVideoShowcase() {
         >
           <div className="border-b border-[#dfb16b]/30 pb-7 w-full flex items-end justify-between gap-6">
             <div>
-             
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-normal tracking-[0.03em] text-[#491239] leading-[1.08]">
                 Video <span className="text-[#dfb16b]">Gallery</span>
               </h1>
@@ -318,7 +277,7 @@ export default function AtelierVideoShowcase() {
           </div>
         </div>
 
-        {/* Single-Row Gallery Track (Safari Trackpad & iPad Touch Compatible) */}
+        {/* Single-Row Gallery Track */}
         <div
           ref={rowRef}
           style={{
@@ -328,11 +287,10 @@ export default function AtelierVideoShowcase() {
           }}
           className="flex flex-nowrap items-stretch gap-6 sm:gap-7 px-6 sm:px-10 lg:px-16 overflow-x-auto snap-x snap-proximity py-3 [&::-webkit-scrollbar]:hidden"
         >
-          {atelierReels.map((item, index) => (
+          {atelierReels.map((item) => (
             <PortraitVideoCard
               key={item.id}
               item={item}
-              index={index}
               isPlaying={playingId === item.id}
               onTogglePlay={handleTogglePlay}
             />

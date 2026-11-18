@@ -59,12 +59,7 @@ export default function ContactShowroom() {
       <div className="max-w-[1280px] mx-auto">
         {/* ================= 1. EDITORIAL HEADER ================= */}
         <div className="max-w-2xl mb-14 sm:mb-20">
-          <div className="flex items-center gap-3 mb-3">
-            
-            <span className="text-[12px] uppercase tracking-[0.24em] font-semibold text-[#9f732e] block">
-              Malleshwaram Flagship
-            </span>
-          </div>
+        
 
           <h2 className="text-4xl sm:text-6xl font-semibold tracking-tight text-[#491239] leading-[1.06] mb-4">
             Private viewing. <br />

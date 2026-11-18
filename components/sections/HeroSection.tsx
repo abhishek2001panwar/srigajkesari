@@ -5,49 +5,38 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
 const HERO_IMAGES = [
-   {
-    src: "/hero/3.jpg",
+  {
+    src: "/heronew/3.webp",
     alt: "Sri Gajkesari — Devatri Temple Gold",
     position: "object-[center_65%]",
   },
   {
-    src: "/hero/1.jpg",
+    src: "/heronew/1.webp",
     alt: "Sri Gajkesari Fine Jewellery — Royal Collection",
     position: "object-[center_80%]",
   },
-  // {
-  //   src: "/hero/2.jpg",
-  //   alt: "Sri Gajkesari — Rajasi Jadau Couture",
-  //   position: "object-[center_75%]",
-  // },
- 
   {
-    src: "/hero/4.jpg",
+    src: "/heronew/4.webp",
     alt: "Sri Gajkesari — Ratnavali Gemstones",
     position: "object-[center_75%]",
   },
   {
-    src: "/hero/5.jpg",
+    src: "/heronew/5.webp",
     alt: "Sri Gajkesari — Heritage Kasu Malai",
     position: "object-[center_80%]",
   },
   {
-    src: "/hero/6.jpg",
+    src: "/heronew/6.webp",
     alt: "Sri Gajkesari — Niharika Solitaires",
     position: "object-[center_80%]",
   },
-  // {
-  //   src: "/hero/7.jpg",
-  //   alt: "Sri Gajkesari — Suvarna 22KT Gold",
-  //   position: "object-[center_75%]",
-  // },
   {
-    src: "/hero/8.jpg",
+    src: "/heronew/8.webp",
     alt: "Sri Gajkesari — Viraasat Antique Heirlooms",
     position: "object-[center_80%]",
   },
   {
-    src: "/hero/9.jpg",
+    src: "/heronew/9.webp",
     alt: "Sri Gajkesari — Purusa Men's Couture",
     position: "object-[center_35%]",
   },
@@ -107,7 +96,7 @@ export default function HeroWithLoader() {
 
   return (
     <div className="relative w-full h-[100dvh] overflow-hidden select-none bg-[#12030d] text-[#F5F5F7]">
-      
+
       {/* ================= 1. FULLSCREEN CAROUSEL STAGE ================= */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <div
@@ -117,7 +106,6 @@ export default function HeroWithLoader() {
               : "w-[300px] sm:w-[420px] md:w-[500px] h-[190px] sm:h-[260px] md:h-[310px] rounded-3xl shadow-2xl border border-white/10"
           }`}
         >
-          {/* Full-Bleed Edge-to-Edge Photography (Balanced Upper-Chest Focal Point, Zero Extra Zoom) */}
           {HERO_IMAGES.map((slide, idx) => {
             const isActive = idx === activeSlide;
             return (
@@ -132,11 +120,11 @@ export default function HeroWithLoader() {
             );
           })}
 
-          {/* Light Bottom Readability Gradient Only (Top & Center Stay 100% Clear) */}
+          {/* Subtle Bottom Readability Gradient */}
           <div
             className={`absolute inset-0 z-[2] pointer-events-none transition-opacity duration-1000 ${
               isExpanded
-                ? "bg-gradient-to-t from-black/80 via-black/25 to-transparent opacity-100"
+                ? "bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-100"
                 : "bg-black/25 opacity-70"
             }`}
           />
@@ -160,7 +148,6 @@ export default function HeroWithLoader() {
             </span>
           </div>
 
-          {/* Hairline Progress Gauge */}
           <div className="w-32 h-[2px] bg-white/10 rounded-full overflow-hidden relative">
             <div
               className="absolute left-0 top-0 h-full bg-[#dfb16b] transition-all duration-300 ease-out rounded-full"
@@ -172,24 +159,24 @@ export default function HeroWithLoader() {
 
       {/* ================= 3. HERO CONTENT ================= */}
       <div className="relative z-10 w-full h-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 flex flex-col justify-end pb-14 sm:pb-12 lg:pb-14 pointer-events-none">
-        <div className="w-full max-w-6xl mr-auto">
-          
+        <div className="w-full max-w-5xl mr-auto">
+
           {/* Eyebrow */}
           <div className="overflow-hidden mb-2.5 sm:mb-3">
             <span
-              className={`text-[12px] uppercase tracking-[0.24em] font-medium text-[#f2dab0]/90 block transition-all duration-700 ease-out will-change-transform ${
+              className={`text-[11px] sm:text-[12px] uppercase tracking-[0.26em] font-medium text-[#f2dab0]/90 block transition-all duration-700 ease-out will-change-transform ${
                 isContentReady
                   ? "translate-y-0 opacity-100"
                   : "translate-y-full opacity-0"
               }`}
             >
-              The Atelier Flagship &bull; Malleshwaram
+              A Legacy of Trust. An Art of Royalty.
             </span>
           </div>
 
-          {/* Refined Heading */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[84px] font-normal tracking-tight leading-[1.05] text-white mb-3 sm:mb-4">
-            <span className="block overflow-hidden py-1">
+          {/* Refined Heading (Cleaned trailing period) */}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[82px] font-normal tracking-tight leading-[1.04] text-white mb-4 sm:mb-5">
+            <span className="block overflow-hidden py-0.5">
               <span
                 className="inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
                 style={{
@@ -198,11 +185,11 @@ export default function HeroWithLoader() {
                   transitionDelay: "100ms",
                 }}
               >
-                Crafted for every
+                A Celebration of
               </span>
             </span>
 
-            <span className="block overflow-hidden py-1">
+            <span className="block overflow-hidden py-0.5">
               <span
                 className="inline-block font-light text-[#dfb16b] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
                 style={{
@@ -211,23 +198,29 @@ export default function HeroWithLoader() {
                   transitionDelay: "220ms",
                 }}
               >
-                celebration.
+                Craftsmanship.
               </span>
             </span>
           </h1>
 
-          {/* Narrative Paragraph */}
-          <div className="overflow-hidden mb-6 sm:mb-8">
-            <p
-              className="text-sm sm:text-base md:text-lg text-white/90 font-light tracking-tight leading-relaxed max-w-2xl lg:max-w-3xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
+          {/* Refined Editorial Narrative Block with Champagne Gold Accent Rule */}
+          <div className="overflow-hidden mb-7 sm:mb-9 max-w-2xl">
+            <div
+              className=" space-y-2.5 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
               style={{
                 transform: isContentReady ? "translate3d(0, 0, 0)" : "translate3d(0, 100%, 0)",
                 opacity: isContentReady ? 1 : 0,
                 transitionDelay: "340ms",
               }}
             >
-              Pure 22KT gold, certified unclouded solitaires, and uncut Kundan-Polki shaped with deliberate human devotion.
-            </p>
+              <p className="text-sm sm:text-base md:text-[17px] text-[#f5e6cc] font-normal tracking-tight leading-[1.6] text-pretty">
+                Discover exquisite 22KT gold, fine diamonds, timeless temple jewellery, classic Victorian designs, signature KGF creations, and the grandeur of Jadau, Kundan, and Polki.
+              </p>
+
+              <p className="text-xs sm:text-sm md:text-[15px] text-white/75 font-light tracking-tight leading-[1.6] text-pretty">
+                At Sri Gajkesari Jewellers, every creation brings together the richness of Indian heritage, exceptional craftsmanship, and an appreciation for timeless design.
+              </p>
+            </div>
           </div>
 
           {/* Action Buttons */}
@@ -241,16 +234,16 @@ export default function HeroWithLoader() {
           >
             <Link
               href="/collection"
-              className="px-7 py-3 bg-[#491239] hover:bg-[#380b28] text-white text-xs sm:text-sm font-medium tracking-wide rounded-full transition-all duration-200 active:scale-95 shadow-lg border border-white/10"
+              className="px-7 py-3 bg-[#491239] hover:bg-[#380b28] text-white text-xs sm:text-sm font-medium tracking-wide rounded-full transition-all duration-200 active:scale-95 shadow-lg border border-[#dfb16b]/30"
             >
-              Explore Collections
+              Explore Our Collections
             </Link>
 
             <Link
               href="/story"
               className="flex items-center gap-1.5 text-[#dfb16b] hover:text-white hover:underline text-xs sm:text-sm font-normal tracking-wide transition-colors group"
             >
-              <span>Our story</span>
+              <span>Discover Our Story</span>
               <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
