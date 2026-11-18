@@ -65,7 +65,6 @@ export default function ContactPage() {
         {/* ================= EDITORIAL HEADER ================= */}
         <div className="max-w-[1400px] mx-auto mb-14 sm:mb-20">
           <div className="inline-flex items-center gap-3 mb-2">
-            
             <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.26em] font-semibold text-[#9f732e]">
               Visit Us
             </span>
@@ -82,17 +81,12 @@ export default function ContactPage() {
 
           <div className="space-y-3 text-base sm:text-lg text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-3xl">
             <p>
-              Discover a world of exquisite jewellery, traditional artistry and
-              personalised hospitality at our Malleshwaram showroom.
+              Discover exquisite jewellery, traditional artistry and
+              personalised service at our Malleshwaram showroom.
             </p>
             <p>
-              Whether you’re choosing your wedding jewellery, commissioning a
-              custom creation, finding a meaningful gift or exploring something
-              special for yourself, our team is here to guide you with personal
-              attention and care.
-            </p>
-            <p className="font-medium text-[#491239] pt-1">
-              We look forward to welcoming you.
+              Whether choosing your wedding jewellery, finding a special gift or
+              exploring a custom creation, we look forward to welcoming you.
             </p>
           </div>
         </div>
