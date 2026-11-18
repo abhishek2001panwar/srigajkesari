@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle2, Phone, Compass, Link } from "lucide-react";
+import { CheckCircle2, Phone, Compass } from "lucide-react";
 import SriGajkesariNavbar from "@/components/Navbar";
 import Footer from "@/components/sections/Footer";
 
 const appointmentTypes = [
-  "Private Atelier Suite",
+  "Private Viewing Suite",
   "Virtual Video Preview",
   "Bridal Trousseau Styling",
   "Bespoke Commission",
@@ -29,7 +29,7 @@ export default function ContactPage() {
     fullName: "",
     phone: "",
     email: "",
-    appointmentType: "Private Atelier Suite",
+    appointmentType: "Private Viewing Suite",
     collection: "Rajasi (Jadau & Polki)",
     preferredDate: "",
     requirements: "",
@@ -46,7 +46,7 @@ export default function ContactPage() {
         fullName: "",
         phone: "",
         email: "",
-        appointmentType: "Private Atelier Suite",
+        appointmentType: "Private Viewing Suite",
         collection: "Rajasi (Jadau & Polki)",
         preferredDate: "",
         requirements: "",
@@ -64,19 +64,37 @@ export default function ContactPage() {
         
         {/* ================= EDITORIAL HEADER ================= */}
         <div className="max-w-[1400px] mx-auto mb-14 sm:mb-20">
-          <div className="flex items-center gap-3 mb-3">
-           
+          <div className="inline-flex items-center gap-3 mb-2">
+            
+            <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.26em] font-semibold text-[#9f732e]">
+              Visit Us
+            </span>
           </div>
 
+          <p className="text-sm sm:text-base font-medium tracking-tight text-[#491239]/80 mb-3">
+            Experience Sri Gajkesari.
+          </p>
+
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#491239] leading-[1.05] mb-5">
-            Private viewing. <br />
-            <span className="text-[#dfb16b] font-normal">Personal consultation.</span>
+            Private Viewing. <br />
+            <span className="text-[#dfb16b] font-normal">Personal Consultation.</span>
           </h1>
 
-          <p className="text-base sm:text-lg text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-2xl">
-            Reserve a quiet personal session with our karigars and jewellery stylists.
-            Experience our collections in complete privacy.
-          </p>
+          <div className="space-y-3 text-base sm:text-lg text-[#491239]/80 font-normal tracking-tight leading-relaxed max-w-3xl">
+            <p>
+              Discover a world of exquisite jewellery, traditional artistry and
+              personalised hospitality at our Malleshwaram showroom.
+            </p>
+            <p>
+              Whether you’re choosing your wedding jewellery, commissioning a
+              custom creation, finding a meaningful gift or exploring something
+              special for yourself, our team is here to guide you with personal
+              attention and care.
+            </p>
+            <p className="font-medium text-[#491239] pt-1">
+              We look forward to welcoming you.
+            </p>
+          </div>
         </div>
 
         {/* ================= 2-COLUMN ROYAL PLUM & GOLD BENTO GRID ================= */}
@@ -86,7 +104,7 @@ export default function ContactPage() {
           <div className="lg:col-span-5 relative rounded-3xl overflow-hidden bg-[#26071c] border border-[#dfb16b]/35 shadow-[0_20px_50px_-15px_rgba(73,18,57,0.22)] min-h-[460px] sm:min-h-[560px] lg:min-h-full group">
             <img
               src="https://srigajkesari.com/wp-content/uploads/2026/09/store-contact.webp"
-              alt="Sri Gajkesari Jewellers Boutique"
+              alt="Sri Gajkesari Jewellers Showroom"
               className="w-full h-full object-cover object-center group-hover:scale-[1.02] transition-transform duration-700 ease-out"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#26071c]/80 via-[#26071c]/15 to-transparent pointer-events-none" />
@@ -95,7 +113,7 @@ export default function ContactPage() {
             <div className="absolute bottom-6 inset-x-6 sm:bottom-8 sm:inset-x-8 p-6 rounded-2xl bg-[#491239]/95 backdrop-blur-md border border-[#dfb16b]/35 shadow-xl space-y-3">
               <div>
                 <p className="text-[11px] uppercase tracking-[0.22em] font-medium text-[#dfb16b] mb-1">
-                  Dedicated Atelier
+                  Flagship Showroom
                 </p>
                 <h3 className="text-base sm:text-lg font-semibold tracking-tight text-white">
                   Sri Gajkesari Jewellers
@@ -125,12 +143,10 @@ export default function ContactPage() {
             <div>
               <div className="mb-8 pb-6 border-b border-[#dfb16b]/25 flex items-center justify-between">
                 <div>
-                 
                   <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#491239]">
-                    Schedule Your Session
+                    Request a Private Consultation
                   </h2>
                 </div>
-              
               </div>
 
               {isSubmitted ? (
@@ -295,7 +311,7 @@ export default function ContactPage() {
                       type="submit"
                       className="px-8 py-3.5 bg-[#491239] hover:bg-[#320a26] text-white border border-[#dfb16b]/30 text-xs sm:text-sm font-medium tracking-wide rounded-full transition-all duration-200 shadow-md active:scale-95 cursor-pointer"
                     >
-                      Confirm Appointment Request
+                      Request a Private Consultation
                     </button>
                   </div>
                 </form>
@@ -309,11 +325,11 @@ export default function ContactPage() {
         <section className="max-w-[1400px] mx-auto mt-16 sm:mt-24 pt-14 border-t border-[#dfb16b]/30">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
-            {/* Atelier Details */}
+            {/* Showroom Details */}
             <div className="lg:col-span-5 space-y-6">
               <div>
                 <p className="text-[12px] uppercase tracking-[0.2em] font-medium text-[#9f732e] mb-2">
-                   Address
+                  Address
                 </p>
                
                 <p className="text-sm sm:text-base text-[#491239]/80 font-normal leading-relaxed">
@@ -332,12 +348,12 @@ export default function ContactPage() {
                 <div>
                   <p className="font-semibold text-[#491239] mb-1">Direct Concierge</p>
                   <p className="text-[#491239] font-medium">+91 95351 25553</p>
-                <a
-  href="mailto:project@srigajkesari.com"
-  className="text-[#9f732e] hover:text-[#dfb16b] transition-colors"
->
-  project@srigajkesari.com
-</a>
+                  <a
+                    href="mailto:project@srigajkesari.com"
+                    className="text-[#9f732e] hover:text-[#dfb16b] transition-colors"
+                  >
+                    project@srigajkesari.com
+                  </a>
                 </div>
               </div>
             </div>

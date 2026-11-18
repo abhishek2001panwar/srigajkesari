@@ -203,7 +203,7 @@ export default function CollectionsShowcase() {
             </span>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-[#491239] leading-[1.06]">
               Explore the{" "}
-              <span className="text-[#dfb16b] font-normal">archival collections.</span>
+              <span className="text-[#dfb16b] font-normal"> collections.</span>
             </h2>
           </div>
 
