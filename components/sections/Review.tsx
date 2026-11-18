@@ -20,7 +20,7 @@ const reviewsData: Review[] = [
       "Helpful, genuinely patient staff. Our bespoke anniversary acquisition was packaged with pristine presentation and certified paperwork ready on arrival.",
     author: "Rohan Deshmukh",
     location: "Bengaluru",
-    date: "Oct 2026",
+    date: "Nov 2026",
   },
   {
     id: "2",
@@ -37,8 +37,8 @@ const reviewsData: Review[] = [
     comment:
       "Guided us with immense devotion through their temple gold vault in the Malleshwaram boutique. Every motif carries true ancestral weight.",
     author: "Karthik Narayanan",
-    location: "Malleshwaram",
-    date: "Oct 2026",
+    location: "Bengaluru",
+    date: "Sep 2026",
   },
   {
     id: "4",
@@ -47,7 +47,7 @@ const reviewsData: Review[] = [
       "I absolutely love my ring. It is even more magnificent in person and feels irreplaceable to wear. Unique, balanced, and full of royal character.",
     author: "Meera Hegde",
     location: "Bengaluru",
-    date: "Oct 2026",
+    date: "Aug 2026",
   },
   {
     id: "5",
@@ -56,7 +56,7 @@ const reviewsData: Review[] = [
       "A precious necklace from our wedding day required custom restringing. The atelier handled it with absolute reverence and care.",
     author: "Kavya Subramanian",
     location: "Bengaluru",
-    date: "Oct 2026",
+    date: "Jul 2026",
   },
 ];
 

@@ -78,51 +78,7 @@ export default function TestimonialVideoSection() {
       {/* Subtle Ambient Champagne Gold Glow */}
       <div className="pointer-events-none absolute top-1/2 right-0 -translate-y-1/2 w-[620px] h-[520px] bg-[radial-gradient(circle_at_center,rgba(223,177,107,0.12)_0%,transparent_70%)]" />
 
-      {/* Crisp Editorial Serif Watermark Behind Stage */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center z-0 overflow-hidden opacity-65"
-      >
-        <svg
-          viewBox="0 0 1600 240"
-          className="w-[140vw] sm:w-[115vw] lg:w-[105vw] max-w-[1680px] h-auto overflow-visible"
-        >
-          <defs>
-            <linearGradient
-              id="testimonialStrokeGrad"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="0%"
-            >
-              <stop offset="0%" stopColor="#dfb16b" stopOpacity="0" />
-              <stop offset="20%" stopColor="#dfb16b" stopOpacity="0.65" />
-              <stop offset="55%" stopColor="#491239" stopOpacity="0.32" />
-              <stop offset="88%" stopColor="#dfb16b" stopOpacity="0.7" />
-              <stop offset="100%" stopColor="#dfb16b" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <text
-            x="50%"
-            y="54%"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            fill="none"
-            stroke="url(#testimonialStrokeGrad)"
-            strokeWidth="1.4"
-            style={{
-              fontFamily:
-                "'Cormorant Garamond', 'Playfair Display', 'Didot', Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 500,
-              fontSize: "190px",
-              letterSpacing: "0.08em",
-            }}
-          >
-            TESTIMONIAL
-          </text>
-        </svg>
-      </div>
+     
 
       {/* ================= 2-COLUMN SPLIT: LEFT EDITORIAL STORY + RIGHT PORTRAIT VIDEO ================= */}
       <div className="relative z-10 max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">

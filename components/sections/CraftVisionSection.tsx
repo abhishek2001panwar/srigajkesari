@@ -149,36 +149,7 @@ export default function CraftVisionSection() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
         </div>
 
-        {/* ================= 3. APPLE SPECS & ACTION LINK ================= */}
-        <div className="w-full max-w-4xl mt-14 sm:mt-18 pt-10 border-t border-black/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-          <div className="flex items-center gap-8 sm:gap-12">
-            <div>
-              <span className="block text-2xl sm:text-3xl font-semibold tracking-tight text-black">
-                100%
-              </span>
-              <span className="text-[11px] sm:text-xs text-[#86868B] tracking-tight">
-                Hand-Sculpted
-              </span>
-            </div>
-            <div className="w-[1px] h-8 bg-black/10" />
-            <div>
-              <span className="block text-2xl sm:text-3xl font-semibold tracking-tight text-black">
-                Zero
-              </span>
-              <span className="text-[11px] sm:text-xs text-[#86868B] tracking-tight">
-                Machine Casting
-              </span>
-            </div>
-          </div>
-
-          <Link
-            href="/story"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium tracking-tight text-[#4C1137] hover:underline group"
-          >
-            <span>Discover the  process</span>
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
-        </div>
+       
 
       </div>
     </section>

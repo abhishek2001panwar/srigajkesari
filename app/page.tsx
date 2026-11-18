@@ -30,15 +30,17 @@ export default function Home() {
 
       {/* 3. Built on Integrity (z-30, negative top margin pulls it ON TOP of Our Beginning) */}
       <BuiltOnIntegrity />
-      <OurPromiseSection />
+      {/* <OurPromiseSection /> */}
  <AtelierVideoShowcase />
      <CollectionsShowcase />
       <ParallaxVisualBreak />
+     
      <CraftVisionSection />
+      <CertificationsSection />
      <TestimonialVideoSection />
-     <CertificationsSection />
-     <ContactShowroom />
+     
      <CustomerReviews />
+     <ContactShowroom />
      <Footer  />
     </main>
   );

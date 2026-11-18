@@ -216,10 +216,13 @@ export default function HeroWithLoader() {
               <p className="text-sm sm:text-base md:text-[17px] text-[#f5e6cc] font-normal tracking-tight leading-[1.6] text-pretty">
                 Discover exquisite 22KT gold, fine diamonds, timeless temple jewellery, classic Victorian designs, signature KGF creations, and the grandeur of Jadau, Kundan, and Polki.
               </p>
-
-              <p className="text-xs sm:text-sm md:text-[15px] text-white/75 font-light tracking-tight leading-[1.6] text-pretty">
+              <p className="text-sm sm:text-base md:text-[17px] text-[#f5e6cc] font-normal tracking-tight leading-[1.6] text-pretty">
                 At Sri Gajkesari Jewellers, every creation brings together the richness of Indian heritage, exceptional craftsmanship, and an appreciation for timeless design.
               </p>
+
+              {/* <p className="text-xs sm:text-sm md:text-[15px] text-white/75 font-light tracking-tight leading-[1.6] text-pretty">
+                At Sri Gajkesari Jewellers, every creation brings together the richness of Indian heritage, exceptional craftsmanship, and an appreciation for timeless design.
+              </p> */}
             </div>
           </div>
 
