@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle2, Phone, Compass } from "lucide-react";
+import { CheckCircle2, Phone, Compass, Link } from "lucide-react";
 import SriGajkesariNavbar from "@/components/Navbar";
 import Footer from "@/components/sections/Footer";
 
@@ -332,7 +332,12 @@ export default function ContactPage() {
                 <div>
                   <p className="font-semibold text-[#491239] mb-1">Direct Concierge</p>
                   <p className="text-[#491239] font-medium">+91 95351 25553</p>
-                  <p className="text-[#9f732e] font-normal text-xs">project@srigajkesari.com</p>
+                <a
+  href="mailto:project@srigajkesari.com"
+  className="text-[#9f732e] hover:text-[#dfb16b] transition-colors"
+>
+  project@srigajkesari.com
+</a>
                 </div>
               </div>
             </div>

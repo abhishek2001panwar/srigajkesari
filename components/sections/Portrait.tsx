@@ -12,39 +12,48 @@ interface VideoItem {
 const atelierReels: VideoItem[] = [
   {
     id: "reel-5",
-    videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/first.mp4",
+    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/first.mp4",
+    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982826/first.mp4",
   },
   {
     id: "reel-6",
-    videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/second.mp4",
+    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/second.mp4",
+    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982826/second.mp4",
   },
   {
     id: "reel-1",
-    videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/IMG_9142.mp4",
+    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/IMG_9142.mp4",
+    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982819/third.mp4",
   },
   {
     id: "reel-2",
-    videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9163-1.mp4",
+    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9163-1.mp4",
+    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982852/fourth.mp4",
   },
   {
     id: "reel-3",
-    videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9165-1.mp4",
+    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9165-1.mp4",
+    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982849/fifth.mp4",
   },
   {
     id: "reel-11",
-    videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9154.mp4",
+    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9154.mp4",
+    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982820/sixth.mp4",
   },
   {
     id: "reel-12",
-    videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9095.MP4.mp4",
+    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9095.MP4.mp4",
+    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982818/7.mp4",
   },
   {
     id: "reel-13",
-    videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9093.mp4",
+    // videoUrl: "https://hsrtiles.in/wp-content/uploads/2026/11/C9093.mp4",
+    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982820/8.mp4",
   },
   {
     id: "reel-14",
-    videoUrl: "/C9104.mp4",
+    // videoUrl: "/C9104.mp4",
+    videoUrl: "https://res.cloudinary.com/gwfdqhai/video/upload/v1794982831/9.mp4",
   },
 ];
 

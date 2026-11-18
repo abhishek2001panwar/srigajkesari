@@ -9,6 +9,7 @@ import ParallaxVisualBreak from "@/components/sections/Karigiri";
 import OurBeginning from "@/components/sections/OurBeginning";
 import AtelierVideoShowcase from "@/components/sections/Portrait";
 import CustomerReviews from "@/components/sections/Review";
+import TestimonialVideoSection from "@/components/sections/Testimonial";
 
 
 export default function Home() {
@@ -31,6 +32,7 @@ export default function Home() {
      <CollectionsShowcase />
       <ParallaxVisualBreak />
      <CraftVisionSection />
+     <TestimonialVideoSection />
      <ContactShowroom />
      <CustomerReviews />
      <Footer  />

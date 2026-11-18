@@ -5,21 +5,22 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
 const HERO_IMAGES = [
+   {
+    src: "/hero/3.jpg",
+    alt: "Sri Gajkesari — Devatri Temple Gold",
+    position: "object-[center_65%]",
+  },
   {
     src: "/hero/1.jpg",
     alt: "Sri Gajkesari Fine Jewellery — Royal Collection",
-    position: "object-[center_75%]",
+    position: "object-[center_80%]",
   },
   // {
   //   src: "/hero/2.jpg",
   //   alt: "Sri Gajkesari — Rajasi Jadau Couture",
   //   position: "object-[center_75%]",
   // },
-  {
-    src: "/hero/3.jpg",
-    alt: "Sri Gajkesari — Devatri Temple Gold",
-    position: "object-[center_65%]",
-  },
+ 
   {
     src: "/hero/4.jpg",
     alt: "Sri Gajkesari — Ratnavali Gemstones",
@@ -28,12 +29,12 @@ const HERO_IMAGES = [
   {
     src: "/hero/5.jpg",
     alt: "Sri Gajkesari — Heritage Kasu Malai",
-    position: "object-[center_75%]",
+    position: "object-[center_80%]",
   },
   {
     src: "/hero/6.jpg",
     alt: "Sri Gajkesari — Niharika Solitaires",
-    position: "object-[center_75%]",
+    position: "object-[center_80%]",
   },
   // {
   //   src: "/hero/7.jpg",
