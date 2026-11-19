@@ -121,14 +121,25 @@ export default function HeroWithLoader() {
             );
           })}
 
-          {/* Subtle Bottom Readability Gradient */}
+          {/* High-Contrast Bottom-Left Corner Gradient (Strictly behind text, fades cleanly before upper/right jewellery) */}
           <div
-            className={`absolute inset-0 z-[2] pointer-events-none transition-opacity duration-1000 ${
-              isExpanded
-                ? isMobileExpanded
-                  ? "bg-gradient-to-t from-black/95 via-black/65 sm:via-black/30 to-transparent opacity-100"
-                  : "bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-100"
-                : "bg-black/25 opacity-70"
+            style={{
+              background: isMobileExpanded
+                ? "radial-gradient(ellipse 160% 92% at 0% 100%, rgba(10, 2, 7, 1) 0%, rgba(10, 2, 7, 0.96) 52%, rgba(10, 2, 7, 0.65) 74%, rgba(10, 2, 7, 0) 92%)"
+                : "radial-gradient(ellipse 150% 82% at 0% 100%, rgba(10, 2, 7, 1) 0%, rgba(10, 2, 7, 0.94) 45%, rgba(10, 2, 7, 0.55) 66%, rgba(10, 2, 7, 0) 85%)",
+            }}
+            className={`sm:hidden absolute inset-0 z-[2] pointer-events-none transition-opacity duration-1000 ${
+              isExpanded ? "opacity-100" : "opacity-0"
+            }`}
+          />
+
+          <div
+            style={{
+              background:
+                "radial-gradient(ellipse 82% 64% at 10% 100%, rgba(10, 2, 7, 0.94) 0%, rgba(10, 2, 7, 0.65) 45%, rgba(10, 2, 7, 0) 76%)",
+            }}
+            className={`hidden sm:block absolute inset-0 z-[2] pointer-events-none transition-opacity duration-1000 ${
+              isExpanded ? "opacity-100" : "opacity-0"
             }`}
           />
         </div>
@@ -167,7 +178,7 @@ export default function HeroWithLoader() {
           {/* Eyebrow */}
           <div className="overflow-hidden mb-2 sm:mb-3">
             <span
-              className={`text-[10px] sm:text-[12px] uppercase tracking-[0.22em] sm:tracking-[0.26em] font-medium text-[#f2dab0]/90 block transition-all duration-700 ease-out will-change-transform ${
+              className={`text-[10px] sm:text-[12px] uppercase tracking-[0.22em] sm:tracking-[0.26em] font-semibold text-[#f5d393] block transition-all duration-700 ease-out will-change-transform [text-shadow:0_2px_6px_rgba(0,0,0,0.95)] ${
                 isContentReady
                   ? "translate-y-0 opacity-100"
                   : "translate-y-full opacity-0"
@@ -177,8 +188,8 @@ export default function HeroWithLoader() {
             </span>
           </div>
 
-          {/* Refined Heading */}
-          <h1 className="text-[36px] sm:text-6xl md:text-7xl lg:text-[82px] font-normal tracking-tight leading-[1.06] sm:leading-[1.04] text-white mb-3.5 sm:mb-5">
+          {/* Refined Heading (Medium weight on mobile for crisp contrast over bright gold) */}
+          <h1 className="text-[34px] sm:text-6xl md:text-7xl lg:text-[82px] font-medium sm:font-normal tracking-tight leading-[1.06] sm:leading-[1.04] text-white mb-3.5 sm:mb-5 [text-shadow:0_2px_6px_rgba(0,0,0,0.95),0_6px_22px_rgba(0,0,0,0.9)]">
             <span className="block overflow-hidden py-0.5">
               <span
                 className="inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
@@ -194,7 +205,7 @@ export default function HeroWithLoader() {
 
             <span className="block overflow-hidden py-0.5">
               <span
-                className="inline-block font-light text-[#dfb16b] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
+                className="inline-block font-medium sm:font-light text-[#e8be78] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
                 style={{
                   transform: isContentReady ? "translate3d(0, 0, 0)" : "translate3d(0, 110%, 0)",
                   opacity: isContentReady ? 1 : 0,
@@ -216,14 +227,14 @@ export default function HeroWithLoader() {
                 transitionDelay: "340ms",
               }}
             >
-              <p className="text-[13px] sm:text-base md:text-[17px] text-[#f5e6cc] font-normal tracking-tight leading-[1.6] text-pretty">
+              <p className="text-[13.5px] sm:text-base md:text-[17px] text-white sm:text-[#FAF3E6] font-normal tracking-tight leading-[1.6] text-pretty [text-shadow:0_1px_4px_rgba(0,0,0,0.98),0_3px_14px_rgba(0,0,0,0.95)]">
                 Discover exquisite 22KT gold, fine diamonds, timeless temple jewellery, classic Victorian designs, signature KGF creations, and the grandeur of Jadau, Kundan, and Polki.
               </p>
 
               <p
                 className={`${
                   isMobileExpanded ? "block" : "hidden sm:block"
-                } text-[13px] sm:text-base md:text-[17px] text-[#f5e6cc]/95 font-normal tracking-tight leading-[1.6] text-pretty`}
+                } text-[13.5px] sm:text-base md:text-[17px] text-white sm:text-[#FAF3E6] font-normal tracking-tight leading-[1.6] text-pretty [text-shadow:0_1px_4px_rgba(0,0,0,0.98),0_3px_14px_rgba(0,0,0,0.95)]`}
               >
                 At Sri Gajkesari Jewellers, every creation brings together the richness of Indian heritage, exceptional craftsmanship, and an appreciation for timeless design.
               </p>
@@ -234,11 +245,11 @@ export default function HeroWithLoader() {
                   type="button"
                   onClick={() => setIsMobileExpanded((prev) => !prev)}
                   aria-expanded={isMobileExpanded}
-                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#dfb16b] hover:text-white py-1 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#f5d393] hover:text-white py-1 transition-colors cursor-pointer [text-shadow:0_2px_6px_rgba(0,0,0,0.95)]"
                 >
                   <span>{isMobileExpanded ? "Read Less" : "Read More"}</span>
                   <ChevronDown
-                    className={`w-3.5 h-3.5 text-[#dfb16b] transition-transform duration-300 ${
+                    className={`w-3.5 h-3.5 text-[#f5d393] transition-transform duration-300 ${
                       isMobileExpanded ? "rotate-180" : "rotate-0"
                     }`}
                   />
@@ -258,14 +269,14 @@ export default function HeroWithLoader() {
           >
             <Link
               href="/collection"
-              className="px-6 sm:px-7 py-2.5 sm:py-3 bg-[#491239] hover:bg-[#380b28] text-white text-xs sm:text-sm font-medium tracking-wide rounded-full transition-all duration-200 active:scale-95 shadow-lg border border-[#dfb16b]/30"
+              className="px-6 sm:px-7 py-2.5 sm:py-3 bg-[#491239] hover:bg-[#380b28] text-white text-xs sm:text-sm font-medium tracking-wide rounded-full transition-all duration-200 active:scale-95 shadow-lg border border-[#dfb16b]/50"
             >
               Explore Our Collections
             </Link>
 
             <Link
               href="/story"
-              className="flex items-center gap-1.5 text-[#dfb16b] hover:text-white hover:underline text-xs sm:text-sm font-normal tracking-wide transition-colors group"
+              className="flex items-center gap-1.5 text-[#f5d393] hover:text-white hover:underline text-xs sm:text-sm font-medium tracking-wide transition-colors group [text-shadow:0_2px_6px_rgba(0,0,0,0.95)]"
             >
               <span>Discover Our Story</span>
               <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -277,7 +288,7 @@ export default function HeroWithLoader() {
 
       {/* ================= 4. CAROUSEL DOTS ================= */}
       <div
-        className={`absolute bottom-4 sm:bottom-8 left-5 sm:left-auto sm:right-10 lg:right-16 z-20 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 transition-all duration-700 ${
+        className={`absolute bottom-4 sm:bottom-8 left-5 sm:left-auto sm:right-10 lg:right-16 z-20 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-black/55 backdrop-blur-md border border-white/15 transition-all duration-700 ${
           isContentReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}
         style={{ transitionDelay: "600ms" }}
@@ -296,7 +307,7 @@ export default function HeroWithLoader() {
               className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
                 isActive
                   ? "w-5 sm:w-6 bg-[#dfb16b]"
-                  : "w-1.5 bg-white/35 hover:bg-white/70"
+                  : "w-1.5 bg-white/45 hover:bg-white/80"
               }`}
             />
           );
