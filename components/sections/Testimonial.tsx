@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, ChevronDown } from "lucide-react";
 
 const CLOUDINARY_VIDEO_URL =
   "https://res.cloudinary.com/gwfdqhai/video/upload/f_auto,q_auto,w_720/v1794982812/IMG_6432_1.mp4";
@@ -16,6 +16,7 @@ export default function TestimonialVideoSection() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [isMobileExpanded, setIsMobileExpanded] = useState(false);
 
   // Scroll-triggered staggered text entrance
   useEffect(() => {
@@ -69,16 +70,16 @@ export default function TestimonialVideoSection() {
     <section
       ref={sectionRef}
       id="testimonials"
-      className="relative z-20 w-full bg-[#FFFFFF] text-[#491239] py-20 sm:py-28 px-6 sm:px-10 lg:px-16 border-t border-[#dfb16b]/25 select-none overflow-hidden"
+      className="relative z-20 w-full bg-[#FFFFFF] text-[#491239] py-16 sm:py-24 lg:py-28 px-5 sm:px-10 lg:px-16 border-t border-[#dfb16b]/25 select-none overflow-hidden"
     >
       {/* Subtle Ambient Champagne Gold Glow */}
       <div className="pointer-events-none absolute top-1/2 right-0 -translate-y-1/2 w-[620px] h-[520px] bg-[radial-gradient(circle_at_center,rgba(223,177,107,0.12)_0%,transparent_70%)]" />
 
       {/* ================= 2-COLUMN SPLIT: LEFT EDITORIAL STORY + RIGHT PORTRAIT VIDEO ================= */}
-      <div className="relative z-10 max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
+      <div className="relative z-10 max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-9 sm:gap-12 items-center">
         
         {/* LEFT COLUMN: ANIMATED CUSTOMER STORIES NARRATIVE */}
-        <div className="lg:col-span-7 text-left space-y-6">
+        <div className="lg:col-span-7 text-left space-y-5 sm:space-y-6">
           {/* Eyebrow */}
           <div
             className={`inline-flex items-center gap-3 transition-all duration-700 ease-out ${
@@ -117,7 +118,7 @@ export default function TestimonialVideoSection() {
           {/* Expanding Champagne Gold Divider */}
           <div
             className={`h-[1px] bg-gradient-to-r from-[#dfb16b] via-[#dfb16b]/50 to-transparent transition-all duration-1000 delay-250 ease-out ${
-              isVisible ? "w-32 opacity-100" : "w-0 opacity-0"
+              isVisible ? "w-28 sm:w-32 opacity-100" : "w-0 opacity-0"
             }`}
           />
 
@@ -136,8 +137,10 @@ export default function TestimonialVideoSection() {
 
             <p
               style={{ transitionDelay: "400ms" }}
-              className={`transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                isVisible
+              className={`${
+                isMobileExpanded ? "block" : "hidden sm:block"
+              } transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isVisible || isMobileExpanded
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-5"
               }`}
@@ -147,8 +150,10 @@ export default function TestimonialVideoSection() {
 
             <p
               style={{ transitionDelay: "500ms" }}
-              className={`font-medium text-[#491239] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                isVisible
+              className={`${
+                isMobileExpanded ? "block" : "hidden sm:block"
+              } font-medium text-[#491239] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                isVisible || isMobileExpanded
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-5"
               }`}
@@ -157,22 +162,41 @@ export default function TestimonialVideoSection() {
             </p>
           </div>
 
-          {/* Closing Sub-Heading Callout */}
+          {/* Closing Sub-Heading Callout (Toggles with Read More on mobile) */}
           <div
             style={{ transitionDelay: "620ms" }}
-            className={`pt-4 pl-4 border-l-2 border-[#dfb16b] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-              isVisible
+            className={`${
+              isMobileExpanded ? "block" : "hidden sm:block"
+            } pt-3 sm:pt-4 pl-4 border-l-2 border-[#dfb16b] transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              isVisible || isMobileExpanded
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-5"
             }`}
           >
-            <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-[#491239]">
+            <h3 className="text-base sm:text-xl font-semibold tracking-tight text-[#491239]">
               Your Stories.{" "}
               <span className="text-[#9f732e] font-normal">Our Legacy.</span>
             </h3>
             <p className="text-xs sm:text-sm text-[#491239]/75 mt-1">
               Hear from the people who have made Sri Gajkesari a part of their stories.
             </p>
+          </div>
+
+          {/* Mobile-Only Read More / Read Less Toggle */}
+          <div className="sm:hidden pt-1">
+            <button
+              type="button"
+              onClick={() => setIsMobileExpanded((prev) => !prev)}
+              aria-expanded={isMobileExpanded}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#9f732e] hover:text-[#491239] py-1 transition-colors cursor-pointer"
+            >
+              <span>{isMobileExpanded ? "Read Less" : "Read More"}</span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 text-[#dfb16b] transition-transform duration-300 ${
+                  isMobileExpanded ? "rotate-180" : "rotate-0"
+                }`}
+              />
+            </button>
           </div>
         </div>
 
@@ -187,13 +211,13 @@ export default function TestimonialVideoSection() {
         >
           <div
             onClick={togglePlay}
-            className={`relative w-[290px] sm:w-[330px] md:w-[355px] aspect-[9/16] rounded-[30px] p-[7px] bg-[#FAF8F5] border transition-all duration-500 cursor-pointer group ${
+            className={`relative w-[270px] sm:w-[330px] md:w-[355px] aspect-[9/16] rounded-[28px] sm:rounded-[30px] p-[6px] sm:p-[7px] bg-[#FAF8F5] border transition-all duration-500 cursor-pointer group ${
               isPlaying
                 ? "border-[#dfb16b] shadow-[0_34px_75px_-15px_rgba(73,18,57,0.34)]"
                 : "border-[#dfb16b]/60 shadow-[0_28px_60px_-15px_rgba(73,18,57,0.22)] hover:border-[#dfb16b]"
             }`}
           >
-            <div className="relative w-full h-full rounded-[23px] overflow-hidden bg-[#26071c]">
+            <div className="relative w-full h-full rounded-[22px] sm:rounded-[23px] overflow-hidden bg-[#26071c]">
               {/* Instant-Load High-Speed Poster Image (Always visible before play) */}
               <img
                 src={CLOUDINARY_POSTER_URL}
@@ -229,7 +253,7 @@ export default function TestimonialVideoSection() {
                 type="button"
                 onClick={toggleMute}
                 aria-label={isMuted ? "Unmute testimonial" : "Mute testimonial"}
-                className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-[#491239]/85 hover:bg-[#491239] text-[#dfb16b] border border-[#dfb16b]/45 backdrop-blur-md flex items-center justify-center transition-all active:scale-90 cursor-pointer"
+                className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-20 w-9 h-9 rounded-full bg-[#491239]/85 hover:bg-[#491239] text-[#dfb16b] border border-[#dfb16b]/45 backdrop-blur-md flex items-center justify-center transition-all active:scale-90 cursor-pointer"
               >
                 {isMuted ? (
                   <VolumeX className="w-3.5 h-3.5" />
@@ -241,8 +265,8 @@ export default function TestimonialVideoSection() {
               {/* Center Play Medallion / Bottom-Right Pause Pill */}
               {!isPlaying ? (
                 <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-                  <div className="w-16 h-16 rounded-full bg-[#491239]/90 group-hover:bg-[#dfb16b] text-[#dfb16b] group-hover:text-[#24061a] border border-[#dfb16b]/65 backdrop-blur-md flex items-center justify-center shadow-[0_14px_34px_rgba(36,6,26,0.5)] transition-all duration-300 group-hover:scale-105">
-                    <Play className="w-6 h-6 fill-current translate-x-[1.5px]" />
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#491239]/90 group-hover:bg-[#dfb16b] text-[#dfb16b] group-hover:text-[#24061a] border border-[#dfb16b]/65 backdrop-blur-md flex items-center justify-center shadow-[0_14px_34px_rgba(36,6,26,0.5)] transition-all duration-300 group-hover:scale-105">
+                    <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current translate-x-[1.5px]" />
                   </div>
                 </div>
               ) : (
@@ -253,14 +277,14 @@ export default function TestimonialVideoSection() {
                     togglePlay();
                   }}
                   aria-label="Pause testimonial"
-                  className="absolute bottom-4 right-4 z-20 w-10 h-10 rounded-full bg-[#dfb16b] text-[#24061a] border border-[#dfb16b] flex items-center justify-center shadow-lg transition-transform active:scale-90 cursor-pointer"
+                  className="absolute bottom-3.5 right-3.5 sm:bottom-4 sm:right-4 z-20 w-10 h-10 rounded-full bg-[#dfb16b] text-[#24061a] border border-[#dfb16b] flex items-center justify-center shadow-lg transition-transform active:scale-90 cursor-pointer"
                 >
                   <Pause className="w-4 h-4 fill-current" />
                 </button>
               )}
 
               {/* Inner Champagne Gold Rim */}
-              <div className="absolute inset-0 z-20 rounded-[23px] ring-1 ring-inset ring-[#dfb16b]/35 pointer-events-none" />
+              <div className="absolute inset-0 z-20 rounded-[22px] sm:rounded-[23px] ring-1 ring-inset ring-[#dfb16b]/35 pointer-events-none" />
             </div>
           </div>
         </div>

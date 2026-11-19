@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ChevronDown } from "lucide-react";
 
 const HERO_IMAGES = [
   {
@@ -46,6 +46,7 @@ export default function HeroWithLoader() {
   const [phase, setPhase] = useState<"loading" | "expanding" | "ready">("loading");
   const [loadPercent, setLoadPercent] = useState(0);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isMobileExpanded, setIsMobileExpanded] = useState(false);
 
   // Initial Loader Progress
   useEffect(() => {
@@ -85,17 +86,17 @@ export default function HeroWithLoader() {
 
   // Auto-advance carousel every 5 seconds once hero is ready
   useEffect(() => {
-    if (!isContentReady) return;
+    if (!isContentReady || isMobileExpanded) return;
 
     const slideTimer = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % HERO_IMAGES.length);
     }, 5000);
 
     return () => clearInterval(slideTimer);
-  }, [isContentReady, activeSlide]);
+  }, [isContentReady, activeSlide, isMobileExpanded]);
 
   return (
-    <div className="relative w-full h-[100dvh] overflow-hidden select-none bg-[#12030d] text-[#F5F5F7]">
+    <div className="relative w-full h-[100dvh] min-h-[600px] overflow-hidden select-none bg-[#12030d] text-[#F5F5F7]">
 
       {/* ================= 1. FULLSCREEN CAROUSEL STAGE ================= */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
@@ -103,7 +104,7 @@ export default function HeroWithLoader() {
           className={`relative overflow-hidden will-change-[width,height,transform,border-radius] transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isExpanded
               ? "w-full h-full rounded-none"
-              : "w-[300px] sm:w-[420px] md:w-[500px] h-[190px] sm:h-[260px] md:h-[310px] rounded-3xl shadow-2xl border border-white/10"
+              : "w-[280px] sm:w-[420px] md:w-[500px] h-[180px] sm:h-[260px] md:h-[310px] rounded-3xl shadow-2xl border border-white/10"
           }`}
         >
           {HERO_IMAGES.map((slide, idx) => {
@@ -124,7 +125,9 @@ export default function HeroWithLoader() {
           <div
             className={`absolute inset-0 z-[2] pointer-events-none transition-opacity duration-1000 ${
               isExpanded
-                ? "bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-100"
+                ? isMobileExpanded
+                  ? "bg-gradient-to-t from-black/95 via-black/65 sm:via-black/30 to-transparent opacity-100"
+                  : "bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-100"
                 : "bg-black/25 opacity-70"
             }`}
           />
@@ -158,13 +161,13 @@ export default function HeroWithLoader() {
       </div>
 
       {/* ================= 3. HERO CONTENT ================= */}
-      <div className="relative z-10 w-full h-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 flex flex-col justify-end pb-14 sm:pb-12 lg:pb-14 pointer-events-none">
+      <div className="relative z-10 w-full h-full max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-16 flex flex-col justify-end pb-16 sm:pb-12 lg:pb-14 pointer-events-none">
         <div className="w-full max-w-5xl mr-auto">
 
           {/* Eyebrow */}
-          <div className="overflow-hidden mb-2.5 sm:mb-3">
+          <div className="overflow-hidden mb-2 sm:mb-3">
             <span
-              className={`text-[11px] sm:text-[12px] uppercase tracking-[0.26em] font-medium text-[#f2dab0]/90 block transition-all duration-700 ease-out will-change-transform ${
+              className={`text-[10px] sm:text-[12px] uppercase tracking-[0.22em] sm:tracking-[0.26em] font-medium text-[#f2dab0]/90 block transition-all duration-700 ease-out will-change-transform ${
                 isContentReady
                   ? "translate-y-0 opacity-100"
                   : "translate-y-full opacity-0"
@@ -174,8 +177,8 @@ export default function HeroWithLoader() {
             </span>
           </div>
 
-          {/* Refined Heading (Cleaned trailing period) */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[82px] font-normal tracking-tight leading-[1.04] text-white mb-4 sm:mb-5">
+          {/* Refined Heading */}
+          <h1 className="text-[36px] sm:text-6xl md:text-7xl lg:text-[82px] font-normal tracking-tight leading-[1.06] sm:leading-[1.04] text-white mb-3.5 sm:mb-5">
             <span className="block overflow-hidden py-0.5">
               <span
                 className="inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
@@ -203,32 +206,50 @@ export default function HeroWithLoader() {
             </span>
           </h1>
 
-          {/* Refined Editorial Narrative Block with Champagne Gold Accent Rule */}
-          <div className="overflow-hidden mb-7 sm:mb-9 max-w-2xl">
+          {/* Editorial Narrative Block (2nd paragraph tucked behind Read More on mobile) */}
+          <div className="overflow-hidden mb-5 sm:mb-9 max-w-2xl pointer-events-auto">
             <div
-              className=" space-y-2.5 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
+              className="space-y-2.5 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[transform,opacity]"
               style={{
                 transform: isContentReady ? "translate3d(0, 0, 0)" : "translate3d(0, 100%, 0)",
                 opacity: isContentReady ? 1 : 0,
                 transitionDelay: "340ms",
               }}
             >
-              <p className="text-sm sm:text-base md:text-[17px] text-[#f5e6cc] font-normal tracking-tight leading-[1.6] text-pretty">
+              <p className="text-[13px] sm:text-base md:text-[17px] text-[#f5e6cc] font-normal tracking-tight leading-[1.6] text-pretty">
                 Discover exquisite 22KT gold, fine diamonds, timeless temple jewellery, classic Victorian designs, signature KGF creations, and the grandeur of Jadau, Kundan, and Polki.
               </p>
-              <p className="text-sm sm:text-base md:text-[17px] text-[#f5e6cc] font-normal tracking-tight leading-[1.6] text-pretty">
+
+              <p
+                className={`${
+                  isMobileExpanded ? "block" : "hidden sm:block"
+                } text-[13px] sm:text-base md:text-[17px] text-[#f5e6cc]/95 font-normal tracking-tight leading-[1.6] text-pretty`}
+              >
                 At Sri Gajkesari Jewellers, every creation brings together the richness of Indian heritage, exceptional craftsmanship, and an appreciation for timeless design.
               </p>
 
-              {/* <p className="text-xs sm:text-sm md:text-[15px] text-white/75 font-light tracking-tight leading-[1.6] text-pretty">
-                At Sri Gajkesari Jewellers, every creation brings together the richness of Indian heritage, exceptional craftsmanship, and an appreciation for timeless design.
-              </p> */}
+              {/* Mobile-Only Read More / Read Less Toggle */}
+              <div className="sm:hidden pt-0.5">
+                <button
+                  type="button"
+                  onClick={() => setIsMobileExpanded((prev) => !prev)}
+                  aria-expanded={isMobileExpanded}
+                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#dfb16b] hover:text-white py-1 transition-colors cursor-pointer"
+                >
+                  <span>{isMobileExpanded ? "Read Less" : "Read More"}</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 text-[#dfb16b] transition-transform duration-300 ${
+                      isMobileExpanded ? "rotate-180" : "rotate-0"
+                    }`}
+                  />
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Action Buttons */}
           <div
-            className={`flex items-center gap-5 flex-wrap transition-all duration-700 ease-out will-change-[transform,opacity] pointer-events-auto ${
+            className={`flex items-center gap-4 sm:gap-5 flex-wrap transition-all duration-700 ease-out will-change-[transform,opacity] pointer-events-auto ${
               isContentReady
                 ? "translate-y-0 opacity-100"
                 : "translate-y-6 opacity-0"
@@ -237,7 +258,7 @@ export default function HeroWithLoader() {
           >
             <Link
               href="/collection"
-              className="px-7 py-3 bg-[#491239] hover:bg-[#380b28] text-white text-xs sm:text-sm font-medium tracking-wide rounded-full transition-all duration-200 active:scale-95 shadow-lg border border-[#dfb16b]/30"
+              className="px-6 sm:px-7 py-2.5 sm:py-3 bg-[#491239] hover:bg-[#380b28] text-white text-xs sm:text-sm font-medium tracking-wide rounded-full transition-all duration-200 active:scale-95 shadow-lg border border-[#dfb16b]/30"
             >
               Explore Our Collections
             </Link>
@@ -254,9 +275,9 @@ export default function HeroWithLoader() {
         </div>
       </div>
 
-      {/* ================= 4. BOTTOM-RIGHT CAROUSEL DOTS ================= */}
+      {/* ================= 4. CAROUSEL DOTS ================= */}
       <div
-        className={`absolute bottom-5 sm:bottom-8 right-6 sm:right-10 lg:right-16 z-20 flex items-center gap-2 px-3.5 py-2 rounded-full bg-black/35 backdrop-blur-md border border-white/10 transition-all duration-700 ${
+        className={`absolute bottom-4 sm:bottom-8 left-5 sm:left-auto sm:right-10 lg:right-16 z-20 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 transition-all duration-700 ${
           isContentReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}
         style={{ transitionDelay: "600ms" }}
@@ -274,7 +295,7 @@ export default function HeroWithLoader() {
               aria-selected={isActive}
               className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
                 isActive
-                  ? "w-6 bg-[#dfb16b]"
+                  ? "w-5 sm:w-6 bg-[#dfb16b]"
                   : "w-1.5 bg-white/35 hover:bg-white/70"
               }`}
             />

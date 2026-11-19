@@ -8,6 +8,7 @@ import {
   PenTool,
   Scale,
   HeartHandshake,
+  ChevronDown,
 } from "lucide-react";
 
 const pillars = [
@@ -58,6 +59,7 @@ export default function BuiltOnIntegrity() {
   const sectionRef = useRef<HTMLElement>(null);
   const [smoothExpansion, setSmoothExpansion] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMobileExpanded, setIsMobileExpanded] = useState(false);
 
   useEffect(() => {
     const checkViewport = () => {
@@ -168,13 +170,17 @@ export default function BuiltOnIntegrity() {
           <span className="text-[#dfb16b] font-normal">Shaped by hand.</span>
         </h2>
 
-        {/* Wider Editorial Intro Paragraphs */}
-        <div className="space-y-3 text-sm sm:text-base md:text-[17px] text-white/95 font-normal tracking-tight leading-relaxed max-w-4xl mb-10 sm:mb-14">
+        {/* Editorial Intro Paragraphs (2nd paragraph tucked on mobile until expanded) */}
+        <div className="space-y-3 text-sm sm:text-base md:text-[17px] text-white/95 font-normal tracking-tight leading-relaxed max-w-4xl mb-8 sm:mb-14">
           <p>
             Some things are valued for their beauty. Others become precious for
             the memories, relationships and trust they hold.
           </p>
-          <p className="text-white/85">
+          <p
+            className={`text-white/85 ${
+              isMobileExpanded ? "block" : "hidden sm:block"
+            }`}
+          >
             At Sri Gajkesari Jewellers, we believe jewellery carries both. That
             is why we honour the purity of every creation, the artistry behind it
             and the trust of every family who makes us part of their story.
@@ -182,13 +188,21 @@ export default function BuiltOnIntegrity() {
         </div>
 
         {/* ================= 3. RESPONSIVE BOX-FREE 6-PILLAR SPEC MATRIX ================= */}
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-10 gap-y-8 sm:gap-y-10 pt-8 sm:pt-10 border-t border-white/25">
-          {pillars.map((pillar) => {
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 lg:gap-x-10 gap-y-7 sm:gap-y-10 pt-8 sm:pt-10 border-t border-white/25">
+          {pillars.map((pillar, idx) => {
             const Icon = pillar.icon;
+            const isExtraMobilePillar = idx >= 3;
+
             return (
               <div
                 key={pillar.title}
-                className="flex flex-col items-center text-center group px-2 sm:px-0"
+                className={`${
+                  isExtraMobilePillar
+                    ? isMobileExpanded
+                      ? "flex"
+                      : "hidden sm:flex"
+                    : "flex"
+                } flex-col items-center text-center group px-2 sm:px-0`}
               >
                 {/* Metric / Stat Highlight with Icon */}
                 <div className="flex items-center gap-2 mb-1 sm:mb-1.5">
@@ -210,6 +224,25 @@ export default function BuiltOnIntegrity() {
               </div>
             );
           })}
+        </div>
+
+        {/* Mobile-Only Toggle Pill for Remaining Pillars */}
+        <div className="mt-8 sm:hidden">
+          <button
+            type="button"
+            onClick={() => setIsMobileExpanded((prev) => !prev)}
+            aria-expanded={isMobileExpanded}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-md border border-[#dfb16b]/45 text-xs font-semibold uppercase tracking-[0.18em] text-[#dfb16b] transition-all active:scale-95 cursor-pointer"
+          >
+            <span>
+              {isMobileExpanded ? "Show Less" : "Explore All 6 Pillars"}
+            </span>
+            <ChevronDown
+              className={`w-3.5 h-3.5 text-[#dfb16b] transition-transform duration-300 ${
+                isMobileExpanded ? "rotate-180" : "rotate-0"
+              }`}
+            />
+          </button>
         </div>
       </div>
     </section>

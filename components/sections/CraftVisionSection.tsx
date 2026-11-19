@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 const narrativeLines = [
   "Every creation has a story, shaped by the hands that bring it to life.",
@@ -13,6 +14,7 @@ export default function CraftVisionSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
   const lineRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const [isMobileExpanded, setIsMobileExpanded] = useState(false);
   const [visibleLines, setVisibleLines] = useState<boolean[]>(
     () => new Array(narrativeLines.length).fill(false)
   );
@@ -51,12 +53,18 @@ export default function CraftVisionSection() {
     };
   }, []);
 
-  // 2. Smooth Image Parallax
+  // 2. Smooth Image Parallax (disabled on narrow mobile screens for clean framing)
   useEffect(() => {
     let ticking = false;
 
     const handleScroll = () => {
       if (!sectionRef.current || !parallaxRef.current) return;
+      if (window.innerWidth < 768) {
+        parallaxRef.current.style.transform = "translate3d(0, 0px, 0) scale(1.01)";
+        ticking = false;
+        return;
+      }
+
       const rect = sectionRef.current.getBoundingClientRect();
       const vh = window.innerHeight;
 
@@ -76,74 +84,103 @@ export default function CraftVisionSection() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
     <section
       ref={sectionRef}
       id="karigar-vision"
-      className="relative z-20 w-full bg-[#FAF8F5] text-[#491239] py-24 sm:py-36 px-6 sm:px-10 lg:px-16 select-none border-t border-[#dfb16b]/25"
+      className="relative z-20 w-full bg-[#FAF8F5] text-[#491239] py-16 sm:py-28 lg:py-36 px-5 sm:px-10 lg:px-16 select-none border-t border-[#dfb16b]/25 overflow-hidden"
     >
       <div className="max-w-[1280px] mx-auto">
         
         {/* ================= 1. ASYMMETRIC ARCHITECTURAL EDITORIAL SPLIT ================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start mb-16 sm:mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-10 lg:gap-14 items-start mb-10 sm:mb-16 lg:mb-24">
           
-          {/* Left Column: Sticky-Feel Minimal Heading */}
+          {/* Left Column: Minimal Heading */}
           <div className="lg:col-span-5 text-left">
-            <div className="inline-flex items-center gap-3 mb-4">
-             
+            <div className="inline-flex items-center gap-3 mb-3 sm:mb-4">
               <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.26em] font-semibold text-[#9f732e]">
                 The Art of Karigari
               </span>
             </div>
 
-            <h2 className="text-4xl sm:text-5xl lg:text-[56px] font-semibold tracking-tight leading-[1.06] text-[#491239]">
+            <h2 className="text-3xl sm:text-5xl lg:text-[56px] font-semibold tracking-tight leading-[1.08] sm:leading-[1.06] text-[#491239]">
               Hundreds of Hours. <br />
               <span className="text-[#dfb16b] font-normal">A Single Vision.</span>
             </h2>
           </div>
 
-          {/* Right Column: Hairline-Framed Line-by-Line Narrative */}
-          <div className="lg:col-span-7 lg:pl-10 lg:border-l border-[#dfb16b]/35 space-y-5 text-sm sm:text-base md:text-[17px] tracking-tight leading-[1.72] text-left">
-            {narrativeLines.map((line, idx) => {
-              const isRevealed = visibleLines[idx];
-              const isClosing = idx === narrativeLines.length - 1;
+          {/* Right Column: Progressive Disclosure on Mobile, Full Narrative on Desktop */}
+          <div className="lg:col-span-7 lg:pl-10 lg:border-l border-[#dfb16b]/35 text-left">
+            <div className="space-y-4 sm:space-y-5 text-sm sm:text-base md:text-[17px] tracking-tight leading-[1.72]">
+              {narrativeLines.map((line, idx) => {
+                const isRevealed = visibleLines[idx];
+                const isClosing = idx === narrativeLines.length - 1;
+                const isExtraMobileLine = idx > 0;
 
-              return (
-                <p
-                  key={idx}
-                  ref={(el) => {
-                    lineRefs.current[idx] = el;
-                  }}
-                  style={{ transitionDelay: `${idx * 130}ms` }}
-                  className={`transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                    isClosing
-                      ? "pt-2 font-medium text-[#491239]"
-                      : "font-normal"
-                  } ${
-                    isRevealed
-                      ? isClosing
-                        ? "opacity-100 translate-y-0 text-[#491239]"
-                        : "opacity-100 translate-y-0 text-[#491239]/85"
-                      : "opacity-15 translate-y-4 text-[#491239]/40"
+                return (
+                  <p
+                    key={idx}
+                    ref={(el) => {
+                      lineRefs.current[idx] = el;
+                    }}
+                    style={{ transitionDelay: `${idx * 130}ms` }}
+                    className={`${
+                      isExtraMobileLine
+                        ? isMobileExpanded
+                          ? "block"
+                          : "hidden sm:block"
+                        : "block"
+                    } transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      isClosing
+                        ? "pt-1 sm:pt-2 font-medium text-[#491239]"
+                        : "font-normal"
+                    } ${
+                      isRevealed || isMobileExpanded
+                        ? isClosing
+                          ? "opacity-100 translate-y-0 text-[#491239]"
+                          : "opacity-100 translate-y-0 text-[#491239]/85"
+                        : "opacity-15 translate-y-4 text-[#491239]/40"
+                    }`}
+                  >
+                    {line}
+                  </p>
+                );
+              })}
+            </div>
+
+            {/* Mobile-Only Read More / Read Less Toggle */}
+            <div className="mt-4 sm:hidden">
+              <button
+                type="button"
+                onClick={() => setIsMobileExpanded((prev) => !prev)}
+                aria-expanded={isMobileExpanded}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#9f732e] hover:text-[#491239] py-1.5 transition-colors cursor-pointer"
+              >
+                <span>{isMobileExpanded ? "Read Less" : "Read More"}</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-[#dfb16b] transition-transform duration-300 ${
+                    isMobileExpanded ? "rotate-180" : "rotate-0"
                   }`}
-                >
-                  {line}
-                </p>
-              );
-            })}
+                />
+              </button>
+            </div>
           </div>
         </div>
 
         {/* ================= 2. UNOBSTRUCTED WIDE CINEMATIC STAGE ================= */}
-        <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] max-h-[660px] rounded-[28px] overflow-hidden bg-[#24061a] border border-[#dfb16b]/30 shadow-[0_28px_65px_-18px_rgba(73,18,57,0.2)]">
+        <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9] max-h-[660px] rounded-2xl sm:rounded-[28px] overflow-hidden bg-[#24061a] border border-[#dfb16b]/30 shadow-[0_28px_65px_-18px_rgba(73,18,57,0.2)]">
           <div
             ref={parallaxRef}
-            className="absolute -top-[14%] inset-x-0 h-[128%] w-full will-change-transform"
+            className="absolute inset-0 md:-top-[14%] md:h-[128%] w-full will-change-transform"
             style={{
               transform: "translate3d(0, 0px, 0) scale(1.06)",
               transition: "transform 0.08s linear",
@@ -159,7 +196,7 @@ export default function CraftVisionSection() {
           </div>
 
           {/* Subtle Inner Champagne Gold Hairline Rim */}
-          <div className="absolute inset-0 rounded-[28px] ring-1 ring-inset ring-[#dfb16b]/25 pointer-events-none" />
+          <div className="absolute inset-0 rounded-2xl sm:rounded-[28px] ring-1 ring-inset ring-[#dfb16b]/25 pointer-events-none" />
         </div>
 
       </div>
